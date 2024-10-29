@@ -1,7 +1,6 @@
 'use client';
 
 import { type patient as Patient } from "@prisma/client";
-import { form } from "framer-motion/client";
 import { useForm } from "react-hook-form";
 import { ControlledInput } from "../controlled-form-components";
 
@@ -32,7 +31,6 @@ const PatientForm = ({ patient }: PatientFormProps) => {
                     placeholder="Lastname"
                     description="We'll never share your email with anyone else."
                     errorMessage="Email is required"
-                    setValue={setValue}
                 />
 
                 </div>

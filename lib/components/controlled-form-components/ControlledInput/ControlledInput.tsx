@@ -1,20 +1,16 @@
 import { Input } from '@nextui-org/react';
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
-interface ControlledInputProps<T> {
-  name: string;
-  control: any;
-  rules?: any;
+interface ControlledInputProps<T extends FieldValues> extends UseControllerProps<T> {
   label: string;
   placeholder: string;
-  variant?: "underlined" | "flat" | "faded" | "bordered" | undefined;
+  variant?: 'underlined' | 'flat';
   description?: string;
-  errorMessage?: string;
-  setValue: (name: keyof T, value: any) => void;
+  errorMessage: string;
 }
 
-const ControlledInput = <T,>({
+const ControlledInput = <T extends FieldValues>({
   name,
   control,
   rules,
@@ -23,7 +19,6 @@ const ControlledInput = <T,>({
   variant = 'underlined',
   description,
   errorMessage,
-  setValue,
 }: ControlledInputProps<T>) => (
   <Controller
     name={name}
@@ -38,9 +33,9 @@ const ControlledInput = <T,>({
         onBlur={onBlur}
         onChange={onChange}
         description={description}
-        onClear={() => setValue(name as keyof T, '')}
         errorMessage={errors[name] && errorMessage}
         isInvalid={!!errors[name]}
+        onClear={() => onChange('')}
       />
     )}
   />
