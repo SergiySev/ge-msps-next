@@ -1,4 +1,4 @@
-import { Input } from '@nextui-org/react';
+import { Input, InputProps } from '@nextui-org/react';
 import React from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
@@ -7,7 +7,6 @@ interface ControlledInputProps<T extends FieldValues> extends UseControllerProps
   placeholder: string;
   variant?: 'underlined' | 'flat';
   description?: string;
-  errorMessage: string;
 }
 
 const ControlledInput = <T extends FieldValues>({
@@ -15,27 +14,23 @@ const ControlledInput = <T extends FieldValues>({
   control,
   rules,
   label,
-  placeholder,
-  variant = 'underlined',
-  description,
-  errorMessage,
-}: ControlledInputProps<T>) => (
+  ...props
+}: ControlledInputProps<T> & InputProps) => (
   <Controller
     name={name}
     control={control}
     rules={rules}
     render={({ field: { onChange, onBlur, value }, formState: { errors } }) => (
       <Input
+        variant="underlined"
         label={label}
-        placeholder={placeholder}
-        variant={variant}
         value={value}
         onBlur={onBlur}
         onChange={onChange}
-        description={description}
-        errorMessage={errors[name] && errorMessage}
-        isInvalid={!!errors[name]}
+        errorMessage={errors?.[name]?.message?.toString()}
+        isInvalid={!!errors?.[name]?.message}
         onClear={() => onChange('')}
+        {...props}
       />
     )}
   />
