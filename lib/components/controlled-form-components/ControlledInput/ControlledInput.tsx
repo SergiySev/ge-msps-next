@@ -23,6 +23,7 @@ const ControlledInput = <T extends FieldValues>({
     render={({ field: { onChange, onBlur, value }, formState: { errors } }) => (
       <Input
         variant="underlined"
+        autoComplete="off"
         label={label}
         value={value}
         onBlur={onBlur}
