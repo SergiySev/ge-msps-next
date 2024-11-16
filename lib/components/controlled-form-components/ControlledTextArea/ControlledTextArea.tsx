@@ -1,38 +1,35 @@
-import { Input, InputProps } from '@nextui-org/react';
-import React from 'react';
+import { Textarea, TextAreaProps } from '@nextui-org/react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
-interface ControlledInputProps<T extends FieldValues> extends UseControllerProps<T> {
+interface ControlledTextAreaProps<T extends FieldValues> extends UseControllerProps<T> {
   label: string;
 }
 
-const ControlledInput = <T extends FieldValues>({
+const ControlledTextArea = <T extends FieldValues>({
   name,
   control,
   rules,
   label,
   variant = 'underlined',
   ...props
-}: ControlledInputProps<T> & InputProps) => (
+}: ControlledTextAreaProps<T> & TextAreaProps) => (
   <Controller
     name={name}
     control={control}
     rules={rules}
     render={({ field: { onChange, onBlur, value }, formState: { errors } }) => (
-      <Input
+      <Textarea
         variant={variant}
-        autoComplete="off"
         label={label}
         value={value}
         onBlur={onBlur}
         onChange={onChange}
         errorMessage={errors?.[name]?.message?.toString()}
         isInvalid={!!errors?.[name]?.message}
-        onClear={() => onChange('')}
         {...props}
       />
     )}
   />
 );
 
-export default ControlledInput;
+export default ControlledTextArea;
