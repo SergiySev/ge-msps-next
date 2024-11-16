@@ -28,9 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="container mx-auto max-w-4xl px-4 pt-2">
           <Providers>
             <Suspense fallback={<Loading />}>{children}</Suspense>
