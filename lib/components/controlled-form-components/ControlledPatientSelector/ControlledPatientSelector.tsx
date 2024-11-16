@@ -44,7 +44,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
       if (response.ok) {
         const patient = await response.json();
         setSelectedPatient(patient);
-        setSearchTerm(`${patient.first_name} ${patient.last_name} (${patient.personal_id})`);
+        setSearchTerm(`${patient.last_name} ${patient.first_name} (${patient.personal_id})`);
       }
     } catch (error) {
       console.error('Error fetching patient:', error);
@@ -122,7 +122,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
 
   const handleSelection = useCallback((patient: Patient, onChange: (value: number) => void) => {
     setSelectedPatient(patient);
-    setSearchTerm(`${patient.first_name} ${patient.last_name} (${patient.personal_id})`);
+    setSearchTerm(`${patient.last_name} ${patient.first_name} (${patient.personal_id})`);
     onChange(patient.id);
     setIsOpen(false);
   }, []);
@@ -181,7 +181,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
                       className="py-2 px-3 hover:bg-default-100 cursor-pointer"
                       onClick={() => handleSelection(patient, onChange)}
                     >
-                      {`${patient.first_name} ${patient.last_name} (${patient.personal_id})`}
+                      {`${patient.last_name} ${patient.first_name} (${patient.personal_id})`}
                     </ListboxItem>
                   )}
                 </Listbox>

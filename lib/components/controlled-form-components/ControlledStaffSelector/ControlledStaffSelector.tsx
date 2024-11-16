@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
+import { Controller, FieldValues, UseControllerProps, useWatch } from 'react-hook-form';
 import { Input, Button } from '@nextui-org/react';
 import { Listbox, ListboxItem } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
@@ -34,18 +34,31 @@ const ControlledStaffSelector = <T extends FieldValues>({
   const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
+  // Watch the field value
+  const fieldValue = useWatch({
+    control,
+    name,
+  });
+
   const fetchStaffById = useCallback(async (id: number) => {
     try {
       const response = await fetch(`/api/staff/${id}`);
       if (response.ok) {
         const staff = await response.json();
         setSelectedStaff(staff);
-        setSearchTerm(`${staff.first_name} ${staff.last_name}`);
+        setSearchTerm(`${staff.last_name} ${staff.first_name}`);
       }
     } catch (error) {
       console.error('Error fetching staff member:', error);
     }
   }, []);
+
+  // Use useEffect with useWatch value
+  useEffect(() => {
+    if (fieldValue && !selectedStaff) {
+      fetchStaffById(fieldValue);
+    }
+  }, [fieldValue, selectedStaff, fetchStaffById]);
 
   const searchStaffBase = useCallback(
     async (query: string) => {
@@ -108,7 +121,7 @@ const ControlledStaffSelector = <T extends FieldValues>({
 
   const handleSelection = useCallback((staff: Staff, onChange: (value: number) => void) => {
     setSelectedStaff(staff);
-    setSearchTerm(`${staff.first_name} ${staff.last_name}`);
+    setSearchTerm(`${staff.last_name} ${staff.first_name}`);
     onChange(staff.id);
     setIsOpen(false);
   }, []);
@@ -124,79 +137,73 @@ const ControlledStaffSelector = <T extends FieldValues>({
       name={name}
       control={control}
       rules={rules}
-      render={({ field: { onChange, value }, formState: { errors } }) => {
-        if (value && !selectedStaff) {
-          fetchStaffById(value);
-        }
-
-        return (
-          <div className="relative flex gap-2 items-start">
-            <div className="flex-1 relative">
-              <Input
-                variant={variant}
-                label={label}
-                value={searchTerm}
-                isDisabled={!!selectedStaff}
-                onFocus={() => {
-                  setIsOpen(true);
-                  if (!searchTerm) searchStaff('');
-                }}
-                onBlur={() => {
-                  setTimeout(() => setIsOpen(false), 200);
-                }}
-                onChange={e => handleInputChange(e.target.value, onChange)}
-                errorMessage={errors?.[name]?.message?.toString()}
-                isInvalid={!!errors?.[name]}
-                endContent={isLoading ? <Spinner size="sm" /> : null}
-              />
-              {isOpen && !selectedStaff && (
-                <div className="relative">
-                  <Listbox
-                    className="absolute w-full mt-1 border border-default-200 rounded-lg shadow-lg bg-content1 z-50"
-                    items={suggestions}
-                    aria-label="Staff suggestions"
-                    emptyContent={
-                      <div className="p-2 text-center text-default-400">
-                        {isLoading ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <Spinner size="sm" />
-                            <span>Loading...</span>
-                          </div>
-                        ) : suggestions.length === 0 ? (
-                          'No staff members found'
-                        ) : null}
-                      </div>
-                    }
-                  >
-                    {staff => (
-                      <ListboxItem
-                        key={staff.id}
-                        className="py-2 px-3 hover:bg-default-100 cursor-pointer"
-                        onClick={() => handleSelection(staff, onChange)}
-                      >
-                        {`${staff.first_name} ${staff.last_name}`}
-                      </ListboxItem>
-                    )}
-                  </Listbox>
-                </div>
-              )}
-            </div>
-            {value && (
-              <Button
-                isIconOnly
-                size="sm"
-                radius="full"
-                variant="light"
-                aria-label="Clear selection"
-                className="mt-4"
-                onClick={() => handleClear(onChange)}
-              >
-                <XCircleIcon className="h-4 w-4" />
-              </Button>
+      render={({ field: { onChange, value }, formState: { errors } }) => (
+        <div className="relative flex gap-2 items-start">
+          <div className="flex-1 relative">
+            <Input
+              variant={variant}
+              label={label}
+              value={searchTerm}
+              isDisabled={!!selectedStaff}
+              onFocus={() => {
+                setIsOpen(true);
+                if (!searchTerm) searchStaff('');
+              }}
+              onBlur={() => {
+                setTimeout(() => setIsOpen(false), 200);
+              }}
+              onChange={e => handleInputChange(e.target.value, onChange)}
+              errorMessage={errors?.[name]?.message?.toString()}
+              isInvalid={!!errors?.[name]}
+              endContent={isLoading ? <Spinner size="sm" /> : null}
+            />
+            {isOpen && !selectedStaff && (
+              <div className="relative">
+                <Listbox
+                  className="absolute w-full mt-1 border border-default-200 rounded-lg shadow-lg bg-content1 z-50"
+                  items={suggestions}
+                  aria-label="Staff suggestions"
+                  emptyContent={
+                    <div className="p-2 text-center text-default-400">
+                      {isLoading ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <Spinner size="sm" />
+                          <span>Loading...</span>
+                        </div>
+                      ) : suggestions.length === 0 ? (
+                        'No staff members found'
+                      ) : null}
+                    </div>
+                  }
+                >
+                  {staff => (
+                    <ListboxItem
+                      key={staff.id}
+                      className="py-2 px-3 hover:bg-default-100 cursor-pointer"
+                      onClick={() => handleSelection(staff, onChange)}
+                    >
+                      {`${staff.last_name} ${staff.first_name}`}
+                    </ListboxItem>
+                  )}
+                </Listbox>
+              </div>
             )}
           </div>
-        );
-      }}
+          {value && (
+            <Button
+              isIconOnly
+              size="sm"
+              radius="full"
+              variant="light"
+              aria-label="Clear selection"
+              className="mt-4"
+              onClick={() => handleClear(onChange)}
+            >
+              <XCircleIcon className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      )}
     />
   );
 };
