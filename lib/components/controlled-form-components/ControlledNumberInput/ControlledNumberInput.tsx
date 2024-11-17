@@ -14,6 +14,7 @@ const ControlledNumberInput = <T extends FieldValues>({
   label,
   mode = 'number',
   variant = 'underlined',
+  placeholder,
   ...props
 }: ControlledNumberInputProps<T> & InputProps) => {
   const formatValue = (value: string) => {
@@ -53,6 +54,7 @@ const ControlledNumberInput = <T extends FieldValues>({
           variant={variant}
           autoComplete="off"
           label={label}
+          placeholder={placeholder || label}
           value={value === 0 ? '0' : value || ''}
           onBlur={onBlur}
           onChange={e => {
@@ -60,7 +62,7 @@ const ControlledNumberInput = <T extends FieldValues>({
             onChange(formattedValue ? Number(formattedValue) : '');
           }}
           errorMessage={errors?.[name]?.message?.toString()}
-          isInvalid={!!errors?.[name]?.message}
+          isInvalid={!!errors?.[name]}
           onClear={() => onChange('')}
           {...props}
         />

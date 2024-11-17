@@ -20,7 +20,8 @@ const ControlledRadioGroup = <T extends FieldValues>({
   rules,
   label,
   items,
-  orientation = 'vertical',
+  size = 'sm',
+  orientation = 'horizontal',
   ...props
 }: ControlledRadioGroupProps<T> & Omit<RadioGroupProps, 'value' | 'onChange' | 'onBlur'>) => (
   <Controller
@@ -36,10 +37,12 @@ const ControlledRadioGroup = <T extends FieldValues>({
         onChange={onChange}
         isInvalid={!!errors?.[name]}
         errorMessage={errors?.[name]?.message?.toString()}
+        color="default"
+        size={size}
         {...props}
       >
         {items.map(item => (
-          <Radio key={item.value} value={item.value} description={item.description}>
+          <Radio key={item.value} value={item.value} description={item.description} className="mr-2">
             {item.label}
           </Radio>
         ))}

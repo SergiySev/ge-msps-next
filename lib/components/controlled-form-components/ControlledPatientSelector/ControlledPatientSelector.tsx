@@ -5,6 +5,7 @@ import { Listbox, ListboxItem } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
 import debounce from 'lodash/debounce';
 import { XCircleIcon, UserIcon } from '@heroicons/react/16/solid';
+import { p } from 'framer-motion/client';
 
 interface Patient {
   id: number;
@@ -15,6 +16,7 @@ interface Patient {
 
 interface PatientSelectorProps<T extends FieldValues> extends UseControllerProps<T> {
   label: string;
+  placeholder?: string;
   variant?: 'flat' | 'bordered' | 'faded' | 'underlined';
 }
 
@@ -23,6 +25,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
   control,
   rules,
   label,
+  placeholder,
   variant = 'underlined',
 }: PatientSelectorProps<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -151,6 +154,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
             <Input
               variant={variant}
               label={label}
+              placeholder={placeholder || label}
               value={searchTerm}
               isDisabled={!!selectedPatient || isEditMode}
               onChange={e => handleInputChange(e.target.value, onChange)}

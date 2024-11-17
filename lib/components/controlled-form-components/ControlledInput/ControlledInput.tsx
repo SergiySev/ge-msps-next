@@ -12,6 +12,7 @@ const ControlledInput = <T extends FieldValues>({
   rules,
   label,
   variant = 'underlined',
+  placeholder,
   ...props
 }: ControlledInputProps<T> & InputProps) => (
   <Controller
@@ -23,11 +24,12 @@ const ControlledInput = <T extends FieldValues>({
         variant={variant}
         autoComplete="off"
         label={label}
+        placeholder={placeholder || label}
         value={value}
         onBlur={onBlur}
         onChange={onChange}
         errorMessage={errors?.[name]?.message?.toString()}
-        isInvalid={!!errors?.[name]?.message}
+        isInvalid={!!errors?.[name]}
         onClear={() => onChange('')}
         {...props}
       />

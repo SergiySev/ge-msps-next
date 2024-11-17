@@ -19,13 +19,7 @@ const ControlledCheckbox = <T extends FieldValues>({
     control={control}
     rules={rules}
     render={({ field: { onChange, onBlur, value }, formState: { errors } }) => (
-      <Checkbox
-        {...props}
-        value={value}
-        onBlur={onBlur}
-        onChange={onChange}
-        isInvalid={!!errors?.[name]?.message}
-      >
+      <Checkbox {...props} value={value} onBlur={onBlur} onChange={onChange} isInvalid={!!errors?.[name]}>
         {label}
       </Checkbox>
     )}

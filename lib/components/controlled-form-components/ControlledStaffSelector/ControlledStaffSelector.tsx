@@ -17,6 +17,7 @@ interface Staff {
 interface StaffSelectorProps<T extends FieldValues> extends UseControllerProps<T> {
   role: 'doctor' | 'nurse';
   label: string;
+  placeholder?: string;
   variant?: 'flat' | 'bordered' | 'faded' | 'underlined';
 }
 
@@ -26,6 +27,7 @@ const ControlledStaffSelector = <T extends FieldValues>({
   rules,
   role,
   label,
+  placeholder,
   variant = 'underlined',
 }: StaffSelectorProps<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -143,6 +145,7 @@ const ControlledStaffSelector = <T extends FieldValues>({
             <Input
               variant={variant}
               label={label}
+              placeholder={placeholder || label}
               value={searchTerm}
               isDisabled={!!selectedStaff}
               onFocus={() => {

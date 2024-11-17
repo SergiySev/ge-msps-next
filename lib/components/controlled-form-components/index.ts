@@ -6,6 +6,8 @@ import ControlledSelect from './ControlledSelect/ControlledSelect';
 import ControlledTextArea from './ControlledTextArea/ControlledTextArea';
 import ControlledStaffSelector from './ControlledStaffSelector/ControlledStaffSelector';
 import ControlledPatientSelector from './ControlledPatientSelector/ControlledPatientSelector';
+import SubmitButton from './SubmitButton/SubmitButton';
+import ControlledRadioGroup from './ControlledRadioGroup/ControlledRadioGroup';
 
 export {
   ControlledInput,
@@ -16,4 +18,6 @@ export {
   ControlledSelect,
   ControlledTextArea,
   ControlledPatientSelector,
+  ControlledRadioGroup,
+  SubmitButton,
 };

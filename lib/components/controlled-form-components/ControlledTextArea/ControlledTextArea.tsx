@@ -21,11 +21,12 @@ const ControlledTextArea = <T extends FieldValues>({
       <Textarea
         variant={variant}
         label={label}
-        value={value}
+        // Convert null to empty string, keep undefined as is
+        value={value === null ? '' : value}
         onBlur={onBlur}
         onChange={onChange}
         errorMessage={errors?.[name]?.message?.toString()}
-        isInvalid={!!errors?.[name]?.message}
+        isInvalid={!!errors?.[name]}
         {...props}
       />
     )}
