@@ -17,12 +17,7 @@ import { Divider } from '@nextui-org/react';
 import clsx from 'clsx';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  CreatePatientInput,
-  updatePatientSchema,
-  UpdatePatientInput,
-  createPatientSchema,
-} from 'msps/lib/validation/patient';
+import { updatePatientSchema, createPatientSchema } from 'msps/lib/validation/patient';
 import toast from 'react-hot-toast';
 
 interface PatientFormProps {
