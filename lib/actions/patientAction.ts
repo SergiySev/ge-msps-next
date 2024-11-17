@@ -1,12 +1,12 @@
 'use server';
 
 import { actionClient } from '../safe-action';
-import { createPatientSchema, updatePatientSchema } from '../validation/patient';
+import { createPatientServerSchema, updatePatientServerSchema } from '../validation/patient';
 import prisma from '../prisma';
 import { patient as Patient } from '@prisma/client';
 
-export const createPatient = actionClient.schema(createPatientSchema).action(async ({ parsedInput }) => {
-  console.log('Actin: ', parsedInput);
+export const createPatient = actionClient.schema(createPatientServerSchema).action(async ({ parsedInput }) => {
+  console.log('Create: ', parsedInput);
 
   try {
     const patient = await prisma.patient.create({
@@ -23,8 +23,8 @@ export const createPatient = actionClient.schema(createPatientSchema).action(asy
   }
 });
 
-export const updatePatient = actionClient.schema(updatePatientSchema).action(async ({ parsedInput }) => {
-  console.log('Actin: ', parsedInput);
+export const updatePatient = actionClient.schema(updatePatientServerSchema).action(async ({ parsedInput }) => {
+  console.log('Update: ', parsedInput);
 
   try {
     const patient = await prisma.patient.update({

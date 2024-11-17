@@ -11,9 +11,7 @@ import {
 } from './helpers/translations';
 import { dateRegex, inBetweenDatesValidation, minDate, strictStringFn } from './helpers//validators';
 import prisma from '../prisma';
-import { patient_sex, patient_mors_reason } from '@prisma/client';
-import { address } from 'framer-motion/client';
-import { create } from 'domain';
+import { patient_sex, patient_mors_reason, patient } from '@prisma/client';
 
 export const morsReasonEnums = ['mors_heart', 'mors_infection', 'mors_other'] as const;
 export const sexEnums = ['male', 'female'] as const;
@@ -30,14 +28,15 @@ const patientBaseSchema = z.object({
 
   department_id: z.number().int().positive(requiredText),
   region_id: z.number().int().positive(requiredText),
-  birth_date: z
+  birth_date: z.coerce
     .date()
     .refine(minDate(), {
       message: minDateWarning,
     })
-    .refine(dateString => new Date(dateString) <= new Date(), {
+    .refine(dateString => dateString <= new Date(), {
       message: maxDateWarning,
     }),
+
   personal_id: z.string().length(11, requiredSymbols(11)).regex(/^\d+$/, onlyNumbers),
 
   phone: z.string().regex(/^\d+$/).optional().nullable(),
@@ -75,7 +74,7 @@ const patientBaseSchema = z.object({
 
   mors: z.boolean().optional().nullable(),
   mors_reason: z.enum(morsReasonEnums).optional().nullable(),
-  mors_date: z.date().optional().nullable(),
+  mors_date: z.coerce.date().optional().nullable(),
   mors_comment: z.string().optional().nullable(),
 });
 
@@ -86,3 +85,38 @@ export const updatePatientSchema = patientBaseSchema.partial().extend({
 
 export type CreatePatientInput = z.infer<typeof createPatientSchema>;
 export type UpdatePatientInput = z.infer<typeof updatePatientSchema>;
+
+const checkPersonalId = async (data: CreatePatientInput | UpdatePatientInput, ctx: z.RefinementCtx) => {
+  const { id, personal_id } = data as { id?: number | null; personal_id: string };
+  const existedPatient = await prisma.patient.findFirst({
+    where: {
+      personal_id: personal_id,
+    },
+  });
+  if (existedPatient && existedPatient.id !== id) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'სხვა პაციენტი ამ პირადი ნომრით უკვე არსებობს',
+      path: ['personal_id'],
+    });
+  }
+};
+const checkDates = (data: CreatePatientInput | UpdatePatientInput, ctx: z.RefinementCtx) => {
+  const birthDate = data.birth_date;
+
+  if (data.mors_date && data.mors_date <= birthDate!) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: wrongDateBeforeBirth,
+      path: ['mors_date'],
+    });
+  }
+
+  inBetweenDatesValidation(ctx, 'transplantation_date', data.transplantation_date, data.birth_date, data.mors_date);
+
+  inBetweenDatesValidation(ctx, 'pd_transit_date', data.pd_transit_date, data.birth_date, data.mors_date);
+};
+
+export const createPatientServerSchema = createPatientSchema.superRefine(checkPersonalId).superRefine(checkDates);
+export const updatePatientServerSchema = updatePatientSchema.superRefine(checkPersonalId).superRefine(checkDates);
+

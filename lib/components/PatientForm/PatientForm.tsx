@@ -76,7 +76,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
 
   return (
     <form onSubmit={handleSubmitWithAction} className={clsx(className)}>
-      <SubmitButton className="mb-8" isEdit={isEdit} />
+      <SubmitButton className="mb-8" isEdit={isEdit} isLoading={isSubmitting} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <ControlledInput
