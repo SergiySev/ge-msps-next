@@ -21,6 +21,7 @@ const ControlledRadioGroup = <T extends FieldValues>({
   label,
   items,
   size = 'sm',
+  color = 'default',
   orientation = 'horizontal',
   ...props
 }: ControlledRadioGroupProps<T> & Omit<RadioGroupProps, 'value' | 'onChange' | 'onBlur'>) => (
@@ -37,7 +38,7 @@ const ControlledRadioGroup = <T extends FieldValues>({
         onChange={onChange}
         isInvalid={!!errors?.[name]}
         errorMessage={errors?.[name]?.message?.toString()}
-        color="default"
+        color={color}
         size={size}
         {...props}
       >

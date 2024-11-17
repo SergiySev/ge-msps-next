@@ -18,6 +18,7 @@ interface PatientSelectorProps<T extends FieldValues> extends UseControllerProps
   label: string;
   placeholder?: string;
   variant?: 'flat' | 'bordered' | 'faded' | 'underlined';
+  onPatientSelect?: (patientId: number) => void;
 }
 
 const ControlledPatientSelector = <T extends FieldValues>({
@@ -27,6 +28,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
   label,
   placeholder,
   variant = 'underlined',
+  onPatientSelect,
 }: PatientSelectorProps<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState<Patient[]>([]);
@@ -123,12 +125,16 @@ const ControlledPatientSelector = <T extends FieldValues>({
     [debouncedSearch]
   );
 
-  const handleSelection = useCallback((patient: Patient, onChange: (value: number) => void) => {
-    setSelectedPatient(patient);
-    setSearchTerm(`${patient.last_name} ${patient.first_name} (${patient.personal_id})`);
-    onChange(patient.id);
-    setIsOpen(false);
-  }, []);
+  const handleSelection = useCallback(
+    (patient: Patient, onChange: (value: number) => void) => {
+      setSelectedPatient(patient);
+      setSearchTerm(`${patient.last_name} ${patient.first_name} (${patient.personal_id})`);
+      onChange(patient.id);
+      setIsOpen(false);
+      onPatientSelect?.(patient.id);
+    },
+    [onPatientSelect]
+  );
 
   const handleClear = useCallback((onChange: (value: null) => void) => {
     setSelectedPatient(null);
@@ -149,7 +155,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
       control={control}
       rules={rules}
       render={({ field: { onChange, value }, formState: { errors } }) => (
-        <div className="relative flex gap-2 items-start">
+        <div className="w-full relative flex gap-2 items-start">
           <div className="flex-1 relative">
             <Input
               variant={variant}

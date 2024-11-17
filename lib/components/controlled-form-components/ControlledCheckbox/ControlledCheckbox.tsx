@@ -12,14 +12,29 @@ const ControlledCheckbox = <T extends FieldValues>({
   control,
   rules,
   label,
+  size = 'sm',
+  color = 'default',
+  onValueChange,
   ...props
-}: ControlledCheckboxProps<T> & CheckboxProps) => (
+}: ControlledCheckboxProps<T> &
+  Omit<CheckboxProps, 'onChange' | 'onBlur' | 'checked' | 'defaultChecked' | 'value' | 'isSelected'>) => (
   <Controller
     name={name}
     control={control}
     rules={rules}
-    render={({ field: { onChange, onBlur, value }, formState: { errors } }) => (
-      <Checkbox {...props} value={value} onBlur={onBlur} onChange={onChange} isInvalid={!!errors?.[name]}>
+    render={({ field: { value, onChange, ref }, formState: { errors } }) => (
+      <Checkbox
+        {...props}
+        size={size}
+        color={color}
+        defaultSelected={value}
+        onValueChange={isSelected => {
+          onValueChange?.(isSelected);
+          onChange(isSelected);
+        }}
+        ref={ref}
+        isInvalid={!!errors?.[name]}
+      >
         {label}
       </Checkbox>
     )}
