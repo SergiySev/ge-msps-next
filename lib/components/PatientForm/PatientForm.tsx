@@ -40,7 +40,6 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
       formState: { isSubmitting },
     },
     handleSubmitWithAction,
-    resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
       const action = isEdit ? updatePatient : createPatient;
@@ -56,9 +55,9 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
           console.log('Success: ', `${input.last_name} ${input.first_name}`);
           toast.success(`${input.last_name} ${input.first_name} შენახულია!`);
         },
-        onError: ({ error: { serverError } }) => {
-          console.log('Error: ', serverError);
-          toast.error(`შეცდომა: ${serverError || ''}`);
+        onError: ({ error }) => {
+          console.log('Error: ', error);
+          toast.error(`შეცდომა: ${error.serverError || ''}`);
         },
       },
     }

@@ -1,7 +1,6 @@
 import { patient as Patient } from '@prisma/client';
 import PatientForm from 'msps/lib/components/PatientForm/PatientForm';
 import prisma from 'msps/lib/prisma';
-import { CreatePatientInput } from 'msps/lib/validation/patient';
 
 const emptyPatient: Partial<Patient> = {
   sex: 'male',
