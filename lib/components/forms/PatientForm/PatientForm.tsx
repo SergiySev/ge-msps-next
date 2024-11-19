@@ -27,9 +27,9 @@ interface PatientFormProps {
 }
 
 const PatientForm = ({ patient, regions, departments, className }: PatientFormProps) => {
-  const isEdit = patient.hasOwnProperty('id');
+  const isEditPage = patient.hasOwnProperty('id');
 
-  const schema = isEdit ? updatePatientClientSchema : createPatientClientSchema;
+  const schema = isEditPage ? updatePatientClientSchema : createPatientClientSchema;
 
   const {
     form: {
@@ -42,7 +42,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
     resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
-      const action = isEdit ? updatePatient : createPatient;
+      const action = isEditPage ? updatePatient : createPatient;
       return action(formValues);
     },
     zodResolver(schema),
@@ -54,7 +54,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
         onSuccess: ({ input }) => {
           console.log('Success: ', `${input.last_name} ${input.first_name}`);
           toast.success(`${input.last_name} ${input.first_name} შენახულია!`);
-          if (!isEdit) resetFormAndAction();
+          if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
           console.log('Error: ', error);
@@ -76,7 +76,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
 
   return (
     <form onSubmit={handleSubmitWithAction} className={clsx(className)}>
-      <SubmitButton className="mb-8" isEdit={isEdit} isLoading={isSubmitting} />
+      <SubmitButton className="mb-8" isEdit={isEditPage} isLoading={isSubmitting} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <ControlledInput name="last_name" control={control} rules={{ required: true }} label="გვარი" />
@@ -161,7 +161,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
         )}
       </div>
 
-      <SubmitButton className="mt-8" isEdit={isEdit} isLoading={isSubmitting} />
+      <SubmitButton className="mt-8" isEdit={isEditPage} isLoading={isSubmitting} />
     </form>
   );
 };

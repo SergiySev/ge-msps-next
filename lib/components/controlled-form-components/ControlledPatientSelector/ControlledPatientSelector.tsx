@@ -18,6 +18,7 @@ interface PatientSelectorProps<T extends FieldValues> extends UseControllerProps
   placeholder?: string;
   variant?: 'flat' | 'bordered' | 'faded' | 'underlined';
   onPatientSelect?: (patientId: number) => void;
+  editable?: boolean;
 }
 
 const ControlledPatientSelector = <T extends FieldValues>({
@@ -28,19 +29,29 @@ const ControlledPatientSelector = <T extends FieldValues>({
   placeholder,
   variant = 'underlined',
   onPatientSelect,
+  editable = true,
 }: PatientSelectorProps<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
 
   // Get the current value using useWatch
   const currentValue = useWatch({
     control,
     name,
   });
+
+  // Reset internal state when form value is null or undefined
+  useEffect(() => {
+    if (currentValue === null || currentValue === undefined) {
+      setSearchTerm('');
+      setSelectedPatient(null);
+      setSuggestions([]);
+      setIsOpen(false);
+    }
+  }, [currentValue]);
 
   const fetchPatientById = useCallback(async (id: number) => {
     try {
@@ -96,12 +107,11 @@ const ControlledPatientSelector = <T extends FieldValues>({
   // Handle value changes from the form
   const handleValueChange = useCallback(
     (value: number | null) => {
-      if (value && !isEditMode) {
-        setIsEditMode(true);
+      if (value) {
         fetchPatientById(value);
       }
     },
-    [isEditMode, fetchPatientById]
+    [fetchPatientById]
   );
 
   // Effect to handle value changes
@@ -141,7 +151,6 @@ const ControlledPatientSelector = <T extends FieldValues>({
     onChange(null);
     setSuggestions([]);
     setIsOpen(false);
-    setIsEditMode(false); // Add this to reset edit mode when clearing
   }, []);
 
   const handleViewProfile = useCallback((patientId: number) => {
@@ -161,13 +170,13 @@ const ControlledPatientSelector = <T extends FieldValues>({
               label={label}
               placeholder={placeholder || label}
               value={searchTerm}
-              isDisabled={!!selectedPatient || isEditMode}
+              isDisabled={!!selectedPatient || !editable}
               onChange={e => handleInputChange(e.target.value, onChange)}
               errorMessage={errors?.[name]?.message?.toString()}
               isInvalid={!!errors?.[name]}
               endContent={isLoading ? <Spinner size="sm" /> : null}
             />
-            {isOpen && !selectedPatient && !isEditMode && suggestions.length > 0 && (
+            {isOpen && !selectedPatient && editable && suggestions.length > 0 && (
               <div className="relative">
                 <Listbox
                   className="absolute w-full mt-1 border border-default-200 rounded-lg shadow-lg bg-content1 z-50"
@@ -197,32 +206,32 @@ const ControlledPatientSelector = <T extends FieldValues>({
               </div>
             )}
           </div>
-          {value && !isEditMode && (
-            <Button
-              isIconOnly
-              size="sm"
-              radius="full"
-              variant="light"
-              aria-label="Clear selection"
-              className="mt-4"
-              onClick={() => handleClear(onChange)}
-            >
-              <XCircleIcon className="h-4 w-4" />
-            </Button>
-          )}
-          {value && isEditMode && (
-            <Button
-              isIconOnly
-              size="sm"
-              radius="full"
-              variant="light"
-              aria-label="View patient profile"
-              className="mt-4"
-              onClick={() => handleViewProfile(value)}
-            >
-              <UserIcon className="h-4 w-4" />
-            </Button>
-          )}
+          <div className="flex gap-2 mt-4">
+            {value && editable && (
+              <Button
+                isIconOnly
+                size="sm"
+                radius="full"
+                variant="light"
+                aria-label="Clear selection"
+                onClick={() => handleClear(onChange)}
+              >
+                <XCircleIcon className="h-4 w-4" />
+              </Button>
+            )}
+            {value && (
+              <Button
+                isIconOnly
+                size="sm"
+                radius="full"
+                variant="light"
+                aria-label="View patient profile"
+                onClick={() => handleViewProfile(value)}
+              >
+                <UserIcon className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
       )}
     />

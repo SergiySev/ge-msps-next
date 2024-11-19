@@ -26,8 +26,8 @@ interface KidneyAssessmentFormProps {
 }
 
 const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentFormProps) => {
-  const isEdit = kidneyAssessment.hasOwnProperty('id');
-  const schema = isEdit ? updateKidneyAssessmentClientSchema : createKidneyAssessmentClientSchema;
+  const isEditPage = kidneyAssessment.hasOwnProperty('id');
+  const schema = isEditPage ? updateKidneyAssessmentClientSchema : createKidneyAssessmentClientSchema;
 
   const {
     form: {
@@ -38,7 +38,7 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
     resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
-      const action = isEdit ? updateKidneyAssessment : createKidneyAssessment;
+      const action = isEditPage ? updateKidneyAssessment : createKidneyAssessment;
       console.log('KidneyAssessmentForm: ', formValues);
       return action(formValues);
     },
@@ -53,7 +53,7 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
         onSuccess: ({ input }) => {
           console.log('Success: ', input);
           toast.success('შეფასება შენახულია!');
-          if (!isEdit) resetFormAndAction();
+          if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
           toast.error(`შეცდომა: ${error.serverError || ''}`);
@@ -65,7 +65,13 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
   return (
     <form onSubmit={handleSubmitWithAction} className={clsx(className)}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ControlledPatientSelector name="patient_id" label="პაციენტი" control={control} rules={{ required: true }} />
+        <ControlledPatientSelector
+          name="patient_id"
+          editable={!isEditPage}
+          label="პაციენტი"
+          control={control}
+          rules={{ required: true }}
+        />
 
         <ControlledDateInput name="check_date" label="თარიღის თარიღი" control={control} rules={{ required: true }} />
 
@@ -88,7 +94,7 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
         <ControlledTextArea name="ka_comment" control={control} label="კომენტარი" className="md:col-span-2" />
       </div>
 
-      <SubmitButton className="mt-8" isEdit={isEdit} isLoading={isSubmitting} />
+      <SubmitButton className="mt-8" isEdit={isEditPage} isLoading={isSubmitting} />
     </form>
   );
 };

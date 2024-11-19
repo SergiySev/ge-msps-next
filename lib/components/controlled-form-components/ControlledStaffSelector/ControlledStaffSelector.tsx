@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Controller, FieldValues, UseControllerProps, useWatch } from 'react-hook-form';
 import { Input, Button } from '@nextui-org/react';
 import { Listbox, ListboxItem } from '@nextui-org/react';
@@ -36,11 +36,21 @@ const ControlledStaffSelector = <T extends FieldValues>({
   const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Watch the field value
-  const fieldValue = useWatch({
+  // Get the current value using useWatch
+  const currentValue = useWatch({
     control,
     name,
   });
+
+  // Reset internal state when form value is null or undefined
+  useEffect(() => {
+    if (currentValue === null || currentValue === undefined) {
+      setSearchTerm('');
+      setSelectedStaff(null);
+      setSuggestions([]);
+      setIsOpen(false);
+    }
+  }, [currentValue]);
 
   const fetchStaffById = useCallback(async (id: number) => {
     try {
@@ -55,15 +65,27 @@ const ControlledStaffSelector = <T extends FieldValues>({
     }
   }, []);
 
-  // Use useEffect with useWatch value
+  // Handle value changes from the form
+  const handleValueChange = useCallback(
+    (value: number | null) => {
+      if (value) {
+        fetchStaffById(value);
+      }
+    },
+    [fetchStaffById]
+  );
+
+  // Effect to handle value changes
   useEffect(() => {
-    if (fieldValue && !selectedStaff) {
-      fetchStaffById(fieldValue);
-    }
-  }, [fieldValue, selectedStaff, fetchStaffById]);
+    handleValueChange(currentValue);
+  }, [currentValue, handleValueChange]);
 
   const searchStaffBase = useCallback(
     async (query: string) => {
+      if (query.length < 3 && query.length > 0) {
+        return;
+      }
+
       setIsLoading(true);
       try {
         const params = new URLSearchParams();
@@ -132,6 +154,8 @@ const ControlledStaffSelector = <T extends FieldValues>({
     setSelectedStaff(null);
     setSearchTerm('');
     onChange(null);
+    setSuggestions([]);
+    setIsOpen(false);
   }, []);
 
   return (
