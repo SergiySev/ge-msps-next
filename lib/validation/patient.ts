@@ -8,41 +8,38 @@ import {
   requiredText,
   wrongDateBeforeBirth,
 } from './helpers/translations';
-import { inBetweenDatesValidation, minDate, strictStringFn } from './helpers//validators';
+import { requiredDateValidation, inBetweenDatesValidation, minDate, strictStringFn } from './helpers//validators';
+import { patient_sex, patient_mors_reason } from '@prisma/client';
 import prisma from '../prisma';
-import { patient_mors_reason, patient_sex } from '@prisma/client';
-import { ConvertedPrismaEnum } from './helpers/prisma-types';
-
-export const sexEnums = Object.values(patient_sex) as ConvertedPrismaEnum;
-export const morsReasonEnums = Object.values(patient_mors_reason) as ConvertedPrismaEnum;
 
 const patientBaseSchema = z.object({
   first_name: strictStringFn().min(2, requiredText).max(50).trim(),
   last_name: strictStringFn().min(2, requiredText).max(50).trim(),
-  sex: z.enum(sexEnums),
+  sex: z.nativeEnum(patient_sex),
 
   department_id: z.number().int().positive(requiredText),
   region_id: z.number().int().positive(requiredText),
-  birth_date: z.coerce
-    .date()
-    .refine(minDate(), {
-      message: minDateWarning,
-    })
-    .refine(dateString => dateString <= new Date(), {
-      message: maxDateWarning,
-    }),
+  birth_date: requiredDateValidation(),
 
   personal_id: z.string().length(11, requiredSymbols(11)).regex(/^\d+$/, onlyNumbers),
 
   phone: z.string().regex(/^\d+$/).optional().nullable(),
-  bmi: z.number({ message: requiredText }).refine(
-    val => {
-      return val >= 8 && val <= 220;
-    },
-    {
-      message: possibleBMI,
-    }
-  ),
+  bmi: z.coerce
+    .number({ message: requiredText })
+    .refine(
+      n => {
+        return n.toString().split('.')[1].length <= 2;
+      },
+      { message: 'მაქსიმალური სიზუსტე არის 2 ათობითი ნიშანი' }
+    )
+    .refine(
+      val => {
+        return val >= 8 && val <= 220;
+      },
+      {
+        message: possibleBMI,
+      }
+    ),
   address: z.string().optional().nullable(),
   doctor_id: z.number().int().positive(requiredText),
 
@@ -68,7 +65,7 @@ const patientBaseSchema = z.object({
     .optional(),
 
   mors: z.boolean().optional().nullable(),
-  mors_reason: z.enum(morsReasonEnums).optional().nullable(),
+  mors_reason: z.nativeEnum(patient_mors_reason).optional().nullable(),
   mors_date: z.coerce.date().optional().nullable(),
   mors_comment: z.string().optional().nullable(),
 });

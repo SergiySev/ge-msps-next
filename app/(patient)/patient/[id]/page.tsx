@@ -1,4 +1,4 @@
-import PatientForm from 'msps/lib/components/PatientForm/PatientForm';
+import PatientForm from 'msps/lib/components/forms/PatientForm/PatientForm';
 import prisma from 'msps/lib/prisma';
 import { notFound } from 'next/navigation';
 

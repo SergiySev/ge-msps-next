@@ -75,6 +75,11 @@ export default function Menu({ className }: { className?: string }) {
             პდ
           </Link>
         </NavbarItem>
+        <NavbarItem isActive={isActive('/assessment')}>
+          <Link color="foreground" href="/assessment">
+            შეფასება
+          </Link>
+        </NavbarItem>
       </NavbarContent>
     </Navbar>
   );

@@ -4,14 +4,13 @@ import { type patient as Patient, type department as Department, type region as 
 import {
   ControlledCheckbox,
   ControlledInput,
-  ControlledNumberInput,
   ControlledDateInput,
   ControlledStaffSelector,
   ControlledSelect,
   SubmitButton,
   ControlledRadioGroup,
   ControlledTextArea,
-} from '../controlled-form-components';
+} from '../../controlled-form-components';
 import { createPatient, updatePatient } from 'msps/lib/actions/patientAction';
 import { Divider } from '@nextui-org/react';
 import clsx from 'clsx';
@@ -40,6 +39,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
       formState: { isSubmitting },
     },
     handleSubmitWithAction,
+    resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
       const action = isEdit ? updatePatient : createPatient;
@@ -54,6 +54,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
         onSuccess: ({ input }) => {
           console.log('Success: ', `${input.last_name} ${input.first_name}`);
           toast.success(`${input.last_name} ${input.first_name} შენახულია!`);
+          if (!isEdit) resetFormAndAction();
         },
         onError: ({ error }) => {
           console.log('Error: ', error);
@@ -99,7 +100,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
           ]}
           name="sex"
         />
-        <ControlledNumberInput name="bmi" control={control} label="BMI" mode="decimal" />
+        <ControlledInput name="bmi" control={control} label="BMI" />
         <ControlledInput name="phone" control={control} label="ტელეფონის ნომერი" />
         <ControlledSelect
           name="region_id"
@@ -141,8 +142,9 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
               control={control}
               label="MORS მიზეზი"
               placeholder=" "
+              clearable={true}
+              clearableText="-- აირჩიეთ --"
               items={[
-                { id: '', name: '-' },
                 { id: 'mors_heart', name: 'გულ-სისხლძარღვთა სისტემა' },
                 { id: 'mors_infection', name: 'ინფექცია' },
                 { id: 'mors_other', name: 'სხვა' },

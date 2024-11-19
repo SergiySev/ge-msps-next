@@ -1,5 +1,4 @@
 import { Input, InputProps } from '@nextui-org/react';
-import React from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 interface ControlledInputProps<T extends FieldValues> extends UseControllerProps<T> {
@@ -25,9 +24,11 @@ const ControlledInput = <T extends FieldValues>({
         autoComplete="off"
         label={label}
         placeholder={placeholder || label}
-        value={value}
+        // Handle null/undefined values by converting them to empty string
+        value={value ?? ''}
         onBlur={onBlur}
-        onChange={onChange}
+        // Ensure onChange always passes a string
+        onChange={e => onChange(e?.target?.value ?? '')}
         errorMessage={errors?.[name]?.message?.toString()}
         isInvalid={!!errors?.[name]}
         onClear={() => onChange('')}

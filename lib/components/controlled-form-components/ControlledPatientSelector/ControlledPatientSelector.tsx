@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Controller, FieldValues, UseControllerProps, useWatch } from 'react-hook-form';
 import { Input, Button } from '@nextui-org/react';
 import { Listbox, ListboxItem } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
 import debounce from 'lodash/debounce';
 import { XCircleIcon, UserIcon } from '@heroicons/react/16/solid';
-import { p } from 'framer-motion/client';
 
 interface Patient {
   id: number;
