@@ -7,19 +7,14 @@ import {
   requiredSymbols,
   requiredText,
   wrongDateBeforeBirth,
-  wrongFormat,
 } from './helpers/translations';
-import { dateRegex, inBetweenDatesValidation, minDate, strictStringFn } from './helpers//validators';
+import { inBetweenDatesValidation, minDate, strictStringFn } from './helpers//validators';
 import prisma from '../prisma';
-import { patient_sex, patient_mors_reason, patient } from '@prisma/client';
+import { patient_mors_reason, patient_sex } from '@prisma/client';
+import { ConvertedPrismaEnum } from './helpers/prisma-types';
 
-export const morsReasonEnums = ['mors_heart', 'mors_infection', 'mors_other'] as const;
-export const sexEnums = ['male', 'female'] as const;
-
-type ConvertedEnum = [string, ...string[]];
-
-// export const sexEnums = Object.values(patient_sex) as ConvertedEnum;
-// export const morsReasonEnums = Object.values(patient_mors_reason) as ConvertedEnum;
+export const sexEnums = Object.values(patient_sex) as ConvertedPrismaEnum;
+export const morsReasonEnums = Object.values(patient_mors_reason) as ConvertedPrismaEnum;
 
 const patientBaseSchema = z.object({
   first_name: strictStringFn().min(2, requiredText).max(50).trim(),
@@ -78,15 +73,15 @@ const patientBaseSchema = z.object({
   mors_comment: z.string().optional().nullable(),
 });
 
-export const createPatientSchema = patientBaseSchema.extend({});
-export const updatePatientSchema = patientBaseSchema.partial().extend({
+export const createPatientClientSchema = patientBaseSchema;
+export const updatePatientClientSchema = patientBaseSchema.partial().extend({
   id: z.number().int().positive(requiredText),
 });
 
-export type CreatePatientInput = z.infer<typeof createPatientSchema>;
-export type UpdatePatientInput = z.infer<typeof updatePatientSchema>;
+export type CreatePatientClientTypes = z.infer<typeof createPatientClientSchema>;
+export type UpdatePatientClientTypes = z.infer<typeof updatePatientClientSchema>;
 
-const checkPersonalId = async (data: CreatePatientInput | UpdatePatientInput, ctx: z.RefinementCtx) => {
+const checkPersonalId = async (data: CreatePatientClientTypes | UpdatePatientClientTypes, ctx: z.RefinementCtx) => {
   const { id, personal_id } = data as { id?: number | null; personal_id: string };
   const existedPatient = await prisma.patient.findFirst({
     where: {
@@ -101,7 +96,7 @@ const checkPersonalId = async (data: CreatePatientInput | UpdatePatientInput, ct
     });
   }
 };
-const checkDates = (data: CreatePatientInput | UpdatePatientInput, ctx: z.RefinementCtx) => {
+const checkDates = (data: CreatePatientClientTypes | UpdatePatientClientTypes, ctx: z.RefinementCtx) => {
   const birthDate = data.birth_date;
 
   if (data.mors_date && data.mors_date <= birthDate!) {
@@ -117,6 +112,5 @@ const checkDates = (data: CreatePatientInput | UpdatePatientInput, ctx: z.Refine
   inBetweenDatesValidation(ctx, 'pd_transit_date', data.pd_transit_date, data.birth_date, data.mors_date);
 };
 
-export const createPatientServerSchema = createPatientSchema.superRefine(checkPersonalId).superRefine(checkDates);
-export const updatePatientServerSchema = updatePatientSchema.superRefine(checkPersonalId).superRefine(checkDates);
-
+export const createPatientServerSchema = createPatientClientSchema.superRefine(checkPersonalId).superRefine(checkDates);
+export const updatePatientServerSchema = updatePatientClientSchema.superRefine(checkPersonalId).superRefine(checkDates);

@@ -17,7 +17,7 @@ import { Divider } from '@nextui-org/react';
 import clsx from 'clsx';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { updatePatientSchema, createPatientSchema } from 'msps/lib/validation/patient';
+import { updatePatientClientSchema, createPatientClientSchema } from 'msps/lib/validation/patient';
 import toast from 'react-hot-toast';
 
 interface PatientFormProps {
@@ -30,7 +30,7 @@ interface PatientFormProps {
 const PatientForm = ({ patient, regions, departments, className }: PatientFormProps) => {
   const isEdit = patient.hasOwnProperty('id');
 
-  const schema = isEdit ? updatePatientSchema : createPatientSchema;
+  const schema = isEdit ? updatePatientClientSchema : createPatientClientSchema;
 
   const {
     form: {
@@ -78,26 +78,13 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
       <SubmitButton className="mb-8" isEdit={isEdit} isLoading={isSubmitting} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ControlledInput
-          name="last_name"
-          control={control}
-          rules={{ required: true }}
-          label="გვარი"
-          placeholder="გვარი"
-        />
-        <ControlledInput
-          name="first_name"
-          control={control}
-          rules={{ required: true }}
-          label="სახელი"
-          placeholder="სახელი"
-        />
+        <ControlledInput name="last_name" control={control} rules={{ required: true }} label="გვარი" />
+        <ControlledInput name="first_name" control={control} rules={{ required: true }} label="სახელი" />
         <ControlledInput
           name="personal_id"
           control={control}
           rules={{ required: true }}
           label="პირადი ნომერი"
-          placeholder="პირადი ნომერი"
           max={11}
           min={11}
         />
@@ -112,7 +99,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
           ]}
           name="sex"
         />
-        <ControlledNumberInput name="bmi" control={control} label="BMI" placeholder="BMI" mode="decimal" />
+        <ControlledNumberInput name="bmi" control={control} label="BMI" mode="decimal" />
         <ControlledInput name="phone" control={control} label="ტელეფონის ნომერი" />
         <ControlledSelect
           name="region_id"
