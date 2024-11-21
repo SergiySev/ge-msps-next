@@ -24,7 +24,5 @@ export default async function PatientSection({ id }: { id: number }) {
     },
   });
 
-  console.log(patient);
-
   return <PatientView patient={patient} />;
 }

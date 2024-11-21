@@ -6,8 +6,6 @@ import prisma from '../prisma';
 import { patient as Patient } from '@prisma/client';
 
 export const createPatient = actionClient.schema(createPatientServerSchema).action(async ({ parsedInput }) => {
-  console.log('Create: ', parsedInput);
-
   try {
     const patient = await prisma.patient.create({
       data: {
@@ -24,8 +22,6 @@ export const createPatient = actionClient.schema(createPatientServerSchema).acti
 });
 
 export const updatePatient = actionClient.schema(updatePatientServerSchema).action(async ({ parsedInput }) => {
-  console.log('Update: ', parsedInput);
-
   try {
     const patient = await prisma.patient.update({
       where: { id: parsedInput.id },

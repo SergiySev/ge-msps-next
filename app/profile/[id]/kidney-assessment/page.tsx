@@ -17,7 +17,6 @@ export default async function KidneyAssessmentPage({
   const id = +(await params).id;
 
   const { page, sorting, itemsPerPage } = await searchParamsCache.parse(searchParams);
-  console.log('params: ', page, sorting, itemsPerPage);
 
   const orderBy: Prisma.kidney_assessmentOrderByWithRelationInput[] = sorting
     ? [{ created_at: Prisma.SortOrder.desc }, { updated_at: Prisma.SortOrder.desc }]

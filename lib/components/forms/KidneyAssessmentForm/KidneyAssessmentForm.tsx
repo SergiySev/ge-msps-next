@@ -39,7 +39,6 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
   } = useHookFormAction(
     async formValues => {
       const action = isEditPage ? updateKidneyAssessment : createKidneyAssessment;
-      console.log('KidneyAssessmentForm: ', formValues);
       return action(formValues);
     },
     zodResolver(schema),

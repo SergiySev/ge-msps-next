@@ -10,8 +10,6 @@ import {
 export const createKidneyAssessment = actionClient
   .schema(createKidneyAssessmentServerSchema)
   .action(async ({ parsedInput }) => {
-    console.log('Create: ', parsedInput);
-
     try {
       const data = await prisma.kidney_assessment.create({
         data: {
@@ -30,8 +28,6 @@ export const createKidneyAssessment = actionClient
 export const updateKidneyAssessment = actionClient
   .schema(updateKidneyAssessmentServerSchema)
   .action(async ({ parsedInput }) => {
-    console.log('Update: ', parsedInput);
-
     try {
       const data = await prisma.kidney_assessment.update({
         where: { id: parsedInput.id },
