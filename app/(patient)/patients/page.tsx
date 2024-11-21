@@ -29,7 +29,6 @@ export default async function PatientsPage() {
 
   const formattedPatients = latestPatients.map(patient => ({
     ...patient,
-    birth_date: patient.birth_date.toLocaleDateString('en-GB'),
   }));
 
   return (

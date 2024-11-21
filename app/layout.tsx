@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Providers } from "./provider";
+import { Providers } from "./providers";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { Toaster } from 'react-hot-toast';

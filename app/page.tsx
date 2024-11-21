@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ControlledPatientSelector } from '../lib/components/controlled-form-components';
 import { Button } from '@nextui-org/react';
@@ -12,7 +11,7 @@ export default function Index() {
   const router = useRouter();
 
   const handlePatientSelect = (patientId: number) => {
-    router.push(`/patient/${patientId}`);
+    router.push(`/profile/${patientId}`);
   };
 
   return (

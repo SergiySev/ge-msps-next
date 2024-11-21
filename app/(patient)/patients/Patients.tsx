@@ -1,15 +1,25 @@
 'use client';
 
 import { PencilSquareIcon } from '@heroicons/react/16/solid';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from '@nextui-org/react';
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  getKeyValue,
+  Button,
+} from '@nextui-org/react';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { d } from 'msps/lib/validation/helpers/date';
 
 interface Patient {
   id: number;
   first_name: string;
   last_name: string;
-  birth_date: string;
+  birth_date: Date;
   staff_patient_doctor_idTostaff: {
     first_name: string;
     last_name: string;
@@ -32,24 +42,24 @@ const Patients = ({ patients, className }: PatientsProps) => {
   const rows = patients.map(patient => ({
     key: patient.id,
     patient_name: `${patient.last_name} ${patient.first_name}`,
-    birth_date: patient.birth_date,
+    birth_date: d(patient.birth_date),
     doctor: `${patient.staff_patient_doctor_idTostaff.last_name} ${patient.staff_patient_doctor_idTostaff.first_name}`,
     actions: (
-      <Link legacyBehavior href={`/patient/${patient.id}`}>
-        <a className="text-blue-500 text-center">
-          <PencilSquareIcon className="w-6 h-6" />
-        </a>
-      </Link>
+      <Button href={`/patient/${patient.id}`} as={Link} color="default" isIconOnly variant="light" size="sm">
+        <PencilSquareIcon className="h-4 w-4" />
+      </Button>
     ),
   }));
   return (
-    <Table aria-label="Patients Table" className={clsx('min-w-full', className)} isStriped isHeaderSticky>
+    <Table aria-label="Patients Table" className={clsx('min-w-full', className)} removeWrapper>
       <TableHeader columns={columns}>
         {column => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
-      <TableBody items={rows} emptyContent={''}>
+      <TableBody items={rows} emptyContent={'ჩანაწერები ვერ მოიძებნა'}>
         {(item: { key: number }) => (
-          <TableRow key={item.key}>{columnKey => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}</TableRow>
+          <TableRow key={item.key} className="even:bg-gray-50 odd:bg-white">
+            {columnKey => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+          </TableRow>
         )}
       </TableBody>
     </Table>
