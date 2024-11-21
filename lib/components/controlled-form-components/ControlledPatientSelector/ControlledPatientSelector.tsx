@@ -37,13 +37,11 @@ const ControlledPatientSelector = <T extends FieldValues>({
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Get the current value using useWatch
   const currentValue = useWatch({
     control,
     name,
   });
 
-  // Reset internal state when form value is null or undefined
   useEffect(() => {
     if (currentValue === null || currentValue === undefined) {
       setSearchTerm('');
@@ -92,19 +90,23 @@ const ControlledPatientSelector = <T extends FieldValues>({
   const debouncedSearch = useMemo(
     () =>
       debounce((value: string) => {
-        searchPatients(value);
+        if (value.length >= 3) {
+          searchPatients(value);
+        }
       }, 300),
     [searchPatients]
   );
 
-  // Cleanup debounced search on unmount
   useEffect(() => {
     return () => {
       debouncedSearch.cancel();
     };
   }, [debouncedSearch]);
 
-  // Handle value changes from the form
+  useEffect(() => {
+    handleValueChange(currentValue);
+  }, [currentValue]);
+
   const handleValueChange = useCallback(
     (value: number | null) => {
       if (value) {
@@ -114,24 +116,28 @@ const ControlledPatientSelector = <T extends FieldValues>({
     [fetchPatientById]
   );
 
-  // Effect to handle value changes
-  useEffect(() => {
-    handleValueChange(currentValue);
-  }, [currentValue, handleValueChange]);
-
   const handleInputChange = useCallback(
     (value: string, onChange: (value: number | null) => void) => {
+      // Immediately update the search term
       setSearchTerm(value);
-      setSelectedPatient(null);
-      onChange(null);
-      if (value) {
-        debouncedSearch(value);
-      } else {
+
+      // Clear selection only if we're actually changing the input
+      if (selectedPatient) {
+        setSelectedPatient(null);
+        onChange(null);
+      }
+
+      // Handle empty input
+      if (!value.trim()) {
         setSuggestions([]);
         setIsOpen(false);
+        return;
       }
+
+      // Debounce the search only, not the input update
+      debouncedSearch(value);
     },
-    [debouncedSearch]
+    [debouncedSearch, selectedPatient]
   );
 
   const handleSelection = useCallback(
@@ -170,7 +176,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
               label={label}
               placeholder={placeholder || label}
               value={searchTerm}
-              isDisabled={!!selectedPatient || !editable}
+              isDisabled={!editable}
               onChange={e => handleInputChange(e.target.value, onChange)}
               errorMessage={errors?.[name]?.message?.toString()}
               isInvalid={!!errors?.[name]}

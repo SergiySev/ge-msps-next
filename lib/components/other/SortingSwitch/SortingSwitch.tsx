@@ -15,7 +15,7 @@ const SortingSwitch = (props: SwitchProps) => {
         <VisuallyHidden>
           <input {...getInputProps()} />
         </VisuallyHidden>
-        <Tooltip content={isSelected ? lastEdited : lastAdded}>
+        <Tooltip content={isSelected ? lastAdded : lastEdited}>
           <div className="flex flex-row items-center gap-1">
             <div
               {...getWrapperProps()}

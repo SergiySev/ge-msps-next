@@ -36,13 +36,11 @@ const ControlledStaffSelector = <T extends FieldValues>({
   const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Get the current value using useWatch
   const currentValue = useWatch({
     control,
     name,
   });
 
-  // Reset internal state when form value is null or undefined
   useEffect(() => {
     if (currentValue === null || currentValue === undefined) {
       setSearchTerm('');
@@ -65,7 +63,6 @@ const ControlledStaffSelector = <T extends FieldValues>({
     }
   }, []);
 
-  // Handle value changes from the form
   const handleValueChange = useCallback(
     (value: number | null) => {
       if (value) {
@@ -75,7 +72,6 @@ const ControlledStaffSelector = <T extends FieldValues>({
     [fetchStaffById]
   );
 
-  // Effect to handle value changes
   useEffect(() => {
     handleValueChange(currentValue);
   }, [currentValue, handleValueChange]);
@@ -131,16 +127,27 @@ const ControlledStaffSelector = <T extends FieldValues>({
 
   const handleInputChange = useCallback(
     (value: string, onChange: (value: number | null) => void) => {
+      // Immediately update the search term
       setSearchTerm(value);
-      setSelectedStaff(null);
-      onChange(null);
-      if (value) {
-        debouncedSearch(value);
-      } else {
-        searchStaff('');
+
+      // Only clear selection if we actually have a selected staff
+      if (selectedStaff) {
+        setSelectedStaff(null);
+        onChange(null);
       }
+
+      // Handle empty input
+      if (!value.trim()) {
+        setSuggestions([]);
+        setIsOpen(false);
+        searchStaff('');
+        return;
+      }
+
+      // Debounce the search only
+      debouncedSearch(value);
     },
-    [debouncedSearch, searchStaff]
+    [debouncedSearch, searchStaff, selectedStaff]
   );
 
   const handleSelection = useCallback((staff: Staff, onChange: (value: number) => void) => {
@@ -171,7 +178,7 @@ const ControlledStaffSelector = <T extends FieldValues>({
               label={label}
               placeholder={placeholder || label}
               value={searchTerm}
-              isDisabled={!!selectedStaff}
+              isDisabled={false}
               onFocus={() => {
                 setIsOpen(true);
                 if (!searchTerm) searchStaff('');
