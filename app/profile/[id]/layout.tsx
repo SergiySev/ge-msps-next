@@ -4,6 +4,7 @@ import ProfileHeader from './components/ProfileHeader';
 import PatientSection from './components/PatientSection';
 import { ReactNode } from 'react';
 import { Divider } from '@nextui-org/react';
+import ProfileNavigation from './components/ProfileNavigation';
 
 export default async function ProfileLayout({
   params,
@@ -23,6 +24,8 @@ export default async function ProfileLayout({
     <div>
       <ProfileHeader patient={patient} />
       <PatientSection id={id} />
+      <Divider />
+      <ProfileNavigation />
       <Divider />
       {children}
     </div>

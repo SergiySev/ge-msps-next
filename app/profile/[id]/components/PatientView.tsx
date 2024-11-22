@@ -10,7 +10,7 @@ export default function PatientView({ patient }: { patient: Patient }) {
 
   return (
     <div className="space-y-2">
-      <Table removeWrapper aria-label="aaa">
+      <Table removeWrapper aria-label="პაციენტი">
         <TableHeader>
           <TableColumn>გვარი სახელი</TableColumn>
           <TableColumn>დაბადების თარიღი</TableColumn>

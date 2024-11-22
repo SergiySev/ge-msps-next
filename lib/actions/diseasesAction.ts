@@ -1,0 +1,23 @@
+'use server';
+
+import { actionClient } from '../safe-action';
+import prisma from '../prisma';
+import { patient as Patient } from '@prisma/client';
+import { updateDiseasesServerSchema } from '../validation/diseases';
+
+export const updateDiseases = actionClient.schema(updateDiseasesServerSchema).action(async ({ parsedInput }) => {
+  try {
+    const patient = await prisma.patient.update({
+      where: { id: parsedInput.id },
+      data: {
+        ...parsedInput,
+        updated_at: new Date(),
+        updated_by: 1, // FIXME: get from session
+      },
+    });
+    return { data: patient as Patient };
+  } catch (error) {
+    console.log('Error: ', error);
+    return { error };
+  }
+});
