@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { ControlledPatientSelector } from '../lib/components/controlled-form-components';
+import { ControlledPatientSelector } from '../../lib/components/controlled-form-components';
 import { Button } from '@nextui-org/react';
 import { UserPlusIcon } from '@heroicons/react/16/solid';
 

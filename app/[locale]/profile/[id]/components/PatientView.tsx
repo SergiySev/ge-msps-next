@@ -4,9 +4,12 @@ import { CheckIcon } from '@heroicons/react/16/solid';
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react';
 import { patient as Patient } from '@prisma/client';
 import { d } from 'msps/lib/validation/helpers/date';
+import { useTranslations } from 'next-intl';
 
 export default function PatientView({ patient }: { patient: Patient }) {
   const data = patient;
+
+  const t = useTranslations();
 
   return (
     <div className="space-y-2">
@@ -88,7 +91,7 @@ export default function PatientView({ patient }: { patient: Patient }) {
             <TableRow>
               <TableCell>{data.mors ? <CheckIcon className="w-6 h-6" /> : null}</TableCell>
               <TableCell>{d(data.mors_date)}</TableCell>
-              <TableCell>{data.mors_reason}</TableCell>
+              <TableCell>{t(data.mors_reason)}</TableCell>
               <TableCell>{data.mors_comment}</TableCell>
             </TableRow>
           </TableBody>

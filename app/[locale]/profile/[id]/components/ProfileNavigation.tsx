@@ -21,6 +21,10 @@ export default function ProfileNavigation() {
         დაავადებები
       </Button>
 
+      <Button href={`pd`} as={Link} color={activePath === 'pd' ? 'primary' : 'default'} variant="light" size="sm">
+        პდ
+      </Button>
+
       <Button
         href={`kidney-assessment`}
         as={Link}

@@ -1,6 +1,6 @@
 'use client';
 
-import { PencilSquareIcon, PlusIcon } from '@heroicons/react/16/solid';
+import { CheckIcon, PencilSquareIcon, PlusIcon } from '@heroicons/react/16/solid';
 import {
   Button,
   getKeyValue,
@@ -94,6 +94,10 @@ export default function DataTableView<T extends { id: number }>({
                     >
                       <PencilSquareIcon className="h-4 w-4" />
                     </Button>
+                  </TableCell>
+                ) : typeof getKeyValue(item, columnKey) === 'boolean' && getKeyValue(item, columnKey) ? (
+                  <TableCell>
+                    <CheckIcon className="h-4 w-4" />
                   </TableCell>
                 ) : (
                   <TableCell>{getKeyValue(item, columnKey)}</TableCell>
