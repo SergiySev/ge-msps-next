@@ -13,7 +13,7 @@ const kidneyAssessmentBaseSchema = z.object({
 
 export const createKidneyAssessmentClientSchema = kidneyAssessmentBaseSchema;
 export const updateKidneyAssessmentClientSchema = kidneyAssessmentBaseSchema.partial().extend({
-  id: z.number().int().positive(requiredText),
+  id: z.number().int(requiredText).positive(requiredText),
 });
 
 export type CreateKidneyAssessmentClientSchema = z.infer<typeof createKidneyAssessmentClientSchema>;

@@ -17,6 +17,7 @@ import { IPagination } from 'msps/lib/types';
 import { searchParamsParsers } from 'msps/lib/params/searchParams';
 import { useQueryStates } from 'nuqs';
 import SortingSwitch from 'msps/lib/components/other/SortingSwitch/SortingSwitch';
+import WhoMadeIt from '../WhoMadeIt/WhoMadeIt';
 
 interface DataTableViewProps<T extends { id: number }> {
   linkValue: string;
@@ -94,6 +95,10 @@ export default function DataTableView<T extends { id: number }>({
                     >
                       <PencilSquareIcon className="h-4 w-4" />
                     </Button>
+                  </TableCell>
+                ) : columnKey === 'log' ? (
+                  <TableCell>
+                    <WhoMadeIt {...(item as any)} />
                   </TableCell>
                 ) : typeof getKeyValue(item, columnKey) === 'boolean' && getKeyValue(item, columnKey) ? (
                   <TableCell>

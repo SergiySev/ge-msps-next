@@ -1,5 +1,4 @@
 import { Radio, RadioGroup, RadioGroupProps } from '@nextui-org/react';
-import React from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 interface RadioItem {
@@ -40,11 +39,12 @@ const ControlledRadioGroup = <T extends FieldValues>({
         errorMessage={errors?.[name]?.message?.toString()}
         color={color}
         size={size}
+        className="text-sm"
         {...props}
       >
         {items.map(item => (
-          <Radio key={item.value} value={item.value} description={item.description} className="mr-2">
-            {item.label}
+          <Radio key={item.value} value={item.value} description={item.description}>
+            <span className="ml-2">{item.label}</span>
           </Radio>
         ))}
       </RadioGroup>

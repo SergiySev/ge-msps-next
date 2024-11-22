@@ -41,6 +41,12 @@ export default async function KidneyAssessmentPage({
             last_name: true,
           },
         },
+        staff_kidney_assessment_updated_byTostaff: {
+          select: {
+            first_name: true,
+            last_name: true,
+          },
+        },
       },
     }),
     prisma.kidney_assessment.count({
@@ -48,27 +54,54 @@ export default async function KidneyAssessmentPage({
     }),
   ]);
 
-  const data = kidneyAssessments.map(ka => {
+  kidneyAssessments.forEach(item => {
+    if (item.id === 240) {
+      console.log(item);
+      console.log(item.created_at);
+      console.log(d(item.created_at));
+    }
+  });
+  const data = kidneyAssessments.map(item => {
     return {
-      id: ka.id,
-      patient_id: ka.patient_id,
-      patient: ka.patient.last_name + ' ' + ka.patient.first_name,
+      id: item.id,
+      patient_id: item.patient_id,
+      patient: item.patient.last_name + ' ' + item.patient.first_name,
       doctor:
-        ka.staff_kidney_assessment_created_byTostaff.last_name +
+        item.staff_kidney_assessment_created_byTostaff.last_name +
         ' ' +
-        ka.staff_kidney_assessment_created_byTostaff.first_name,
-      gfr: ka.gfr,
-      pet: ka.pet,
-      ktv: ka.ktv,
-      date: d(ka.check_date),
-      comment: ka.ka_comment,
+        item.staff_kidney_assessment_created_byTostaff.first_name,
+      gfr: item.gfr,
+      pet: item.pet,
+      ktv: item.ktv,
+      date: d(item.check_date),
+      comment: item.ka_comment,
+      creator: item.staff_kidney_assessment_created_byTostaff
+        ? item.staff_kidney_assessment_created_byTostaff.last_name +
+          ' ' +
+          item.staff_kidney_assessment_created_byTostaff.first_name
+        : '',
+      updater: item.staff_kidney_assessment_updated_byTostaff
+        ? item.staff_kidney_assessment_updated_byTostaff.last_name +
+          ' ' +
+          item.staff_kidney_assessment_updated_byTostaff.first_name
+        : '',
+      createdAt: d(item.created_at),
+      updatedAt: d(item.updated_at),
     };
+  });
+
+  data.forEach(item => {
+    if (item.id === 240) {
+      console.log(item.creator);
+      console.log(item.createdAt);
+    }
   });
 
   const linkValue = 'kidney-assessment';
   const title = 'შეფასებები';
 
   const columns = [
+    { key: 'log', value: ' ' },
     { key: 'doctor', value: 'ექიმი' },
     { key: 'gfr', value: 'GFR' },
     { key: 'ktv', value: 'Kt/V' },

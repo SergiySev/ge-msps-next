@@ -42,9 +42,15 @@ export default async function PdPage({
             last_name: true,
           },
         },
+        staff_pd_updated_byTostaff: {
+          select: {
+            first_name: true,
+            last_name: true,
+          },
+        },
       },
     }),
-    prisma.kidney_assessment.count({
+    prisma.pd.count({
       where: { patient_id: id },
     }),
   ]);
@@ -64,13 +70,22 @@ export default async function PdPage({
       pd_ch_solution_386: item.pd_ch_solution_386,
       icodextrin: item.icodextrin,
       date: d(item.date),
+      creator: item.staff_pd_created_byTostaff
+        ? item.staff_pd_created_byTostaff.last_name + ' ' + item.staff_pd_created_byTostaff.first_name
+        : '',
+      updater: item.staff_pd_updated_byTostaff
+        ? item.staff_pd_updated_byTostaff.last_name + ' ' + item.staff_pd_updated_byTostaff.first_name
+        : '',
+      createdAt: d(item.created_at),
+      updatedAt: d(item.updated_at),
     };
   });
 
-  const linkValue = 'kidney-assessment';
-  const title = 'შეფასებები';
+  const linkValue = 'pd';
+  const title = 'პერიტონეული დიალიზი';
 
   const columns = [
+    { key: 'log', value: ' ' },
     { key: 'doctor', value: 'ექიმი' },
     { key: 'date', value: 'თარიღი' },
     { key: 'pd_modality', value: 'PD მოდალობა' },
@@ -79,8 +94,10 @@ export default async function PdPage({
     { key: 'pd_ch_solution_227', value: '2.27%' },
     { key: 'pd_ch_solution_386', value: '3.86%' },
     { key: 'icodextrin', value: 'აიკოდექსტრინი' },
+    { key: 'edit', value: ' ' },
   ];
 
+  console.log('totalCount', totalCount);
   const pagination = {
     currentPage: page,
     totalPages: Math.ceil(totalCount / itemsPerPage),

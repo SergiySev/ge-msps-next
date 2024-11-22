@@ -72,7 +72,7 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
           rules={{ required: true }}
         />
 
-        <ControlledDateInput name="check_date" label="თარიღის თარიღი" control={control} rules={{ required: true }} />
+        <ControlledDateInput name="check_date" label="ჩატარების თარიღი" control={control} rules={{ required: true }} />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:col-span-2">
           <ControlledInput name="gfr" label="GFR" control={control} />

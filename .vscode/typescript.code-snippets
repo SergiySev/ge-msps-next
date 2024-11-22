@@ -10,7 +10,7 @@
       "",
       "export const create${1/(.*)/${1:/capitalize}/}ClientSchema = ${1}BaseSchema;",
       "export const update${1/(.*)/${1:/capitalize}/}ClientSchema = ${1}BaseSchema.partial().extend({",
-      "  id: z.number().int().positive(requiredText),",
+      "  id: z.number().int(requiredText).positive(requiredText),",
       "});",
       "",
       "export type Create${1/(.*)/${1:/capitalize}/}ClientSchema = z.infer<typeof create${1/(.*)/${1:/capitalize}/}ClientSchema>;",
