@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev-sentry": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,6 +16,7 @@
     "@next/env": "^15.0.3",
     "@nextui-org/react": "^2.4.8",
     "@prisma/client": "^5.22.0",
+    "@sentry/nextjs": "^8.40.0",
     "eslint-config-prettier": "^9.1.0",
     "framer-motion": "^11.11.17",
     "i18next": "^24.0.0",
