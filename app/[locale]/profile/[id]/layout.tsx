@@ -24,9 +24,9 @@ export default async function ProfileLayout({
     <div>
       <ProfileHeader patient={patient} />
       <PatientSection id={id} />
-      <Divider />
+      <Divider className="md:col-span-2 border-dashed my-4" />
       <ProfileNavigation />
-      <Divider />
+      <Divider className="md:col-span-2 border-dashed my-4" />
       {children}
     </div>
   );

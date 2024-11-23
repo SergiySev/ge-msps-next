@@ -4,19 +4,20 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { ControlledPatientSelector } from '../../lib/components/controlled-form-components';
 import { Button } from '@nextui-org/react';
-import { UserPlusIcon } from '@heroicons/react/16/solid';
+import { UserPlusIcon, UsersIcon } from '@heroicons/react/16/solid';
+import XLSXButton from 'msps/lib/components/other/XLSXButton/XLSXButton';
 
 export default function Index() {
   const { control } = useForm();
   const router = useRouter();
 
   const handlePatientSelect = (patientId: number) => {
-    router.push(`/profile/${patientId}`);
+    router.push(`/profile/${patientId}/diseases`);
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 max-w-6xl mx-auto p-4">
-      <div className="flex items-center justify-center w-full md:w-1/2 p-6 border rounded-lg">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="flex items-center justify-center w-full p-6 border rounded-lg">
         <ControlledPatientSelector
           name="patient"
           control={control}
@@ -25,7 +26,7 @@ export default function Index() {
         />
       </div>
 
-      <div className="flex items-center justify-center w-full md:w-1/2 p-6 border rounded-lg">
+      <div className="flex items-center justify-center w-full p-6 border rounded-lg">
         <Button
           color="primary"
           onClick={() => router.push('/patient/')}
@@ -33,6 +34,21 @@ export default function Index() {
         >
           ახალი პაციენტის დამატება
         </Button>
+      </div>
+
+      <div className="flex items-center justify-center w-full p-6 border rounded-lg">
+        <Button
+          color="default"
+          variant="bordered"
+          onClick={() => router.push('/patients/')}
+          startContent={<UsersIcon className="min-w-6 min-h-6" />}
+        >
+          ბოლო დამატებული პაციენტები
+        </Button>
+      </div>
+
+      <div className="flex items-center justify-center w-full p-6 border rounded-lg">
+        <XLSXButton />
       </div>
     </div>
   );

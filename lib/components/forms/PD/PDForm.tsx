@@ -74,7 +74,7 @@ const PDForm = ({ pd, className }: PDFormProps) => {
 
         <ControlledDateInput name="date" label="თარიღი" control={control} rules={{ required: true }} />
 
-        <Divider className="md:col-span-2 border-dashed" />
+        <Divider className="md:col-span-2 border-dashed my-4" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:col-span-2">
           <ControlledRadioGroup

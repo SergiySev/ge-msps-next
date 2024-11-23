@@ -110,7 +110,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
           items={regions}
         />
         <ControlledInput name="address" control={control} label="მისამართი" className="md:col-span-2" />
-        <Divider className="md:col-span-2 border-dashed" />
+        <Divider className="md:col-span-2 border-dashed my-4" />
         <ControlledSelect
           name="department_id"
           control={control}
@@ -125,10 +125,10 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
           rules={{ required: true }}
           label="Doctor"
         />
-        <Divider className="md:col-span-2 border-dashed" />
+        <Divider className="md:col-span-2 border-dashed my-4" />
         <ControlledDateInput name="pd_transit_date" control={control} label="ჰემოდიალიზზე გადასვლის თარიღი" />
         <ControlledDateInput name="transplantation_date" control={control} label="ტრანსპლანტაციის თარიღი" />
-        <Divider className="md:col-span-2 border-dashed" />
+        <Divider className="md:col-span-2 border-dashed my-4" />
 
         <div className="md:col-span-2">
           <ControlledCheckbox name="mors" control={control} label="MORS" onValueChange={handleMorsChange} />

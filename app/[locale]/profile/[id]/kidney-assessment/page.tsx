@@ -54,13 +54,6 @@ export default async function KidneyAssessmentPage({
     }),
   ]);
 
-  kidneyAssessments.forEach(item => {
-    if (item.id === 240) {
-      console.log(item);
-      console.log(item.created_at);
-      console.log(d(item.created_at));
-    }
-  });
   const data = kidneyAssessments.map(item => {
     return {
       id: item.id,
@@ -88,13 +81,6 @@ export default async function KidneyAssessmentPage({
       createdAt: d(item.created_at),
       updatedAt: d(item.updated_at),
     };
-  });
-
-  data.forEach(item => {
-    if (item.id === 240) {
-      console.log(item.creator);
-      console.log(item.createdAt);
-    }
   });
 
   const linkValue = 'kidney-assessment';

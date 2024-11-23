@@ -83,7 +83,7 @@ const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
           />
         </div>
 
-        <Divider className="md:col-span-2 border-dashed" />
+        <Divider className="md:col-span-2 border-dashed my-4" />
 
         <h4 className="text-md font-semibold">ძირითადი დაავადებები</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -108,7 +108,7 @@ const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
           />
         </div>
 
-        <Divider className="md:col-span-2 border-dashed" />
+        <Divider className="md:col-span-2 border-dashed my-4" />
 
         <h4 className="text-md font-semibold">კომორბიდული დაავადებები</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -132,7 +132,7 @@ const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
           />
         </div>
 
-        <Divider className="md:col-span-2 border-dashed" />
+        <Divider className="md:col-span-2 border-dashed my-4" />
       </div>
 
       <SubmitButton className="mt-8" isEdit={isEditPage} isLoading={isSubmitting} />

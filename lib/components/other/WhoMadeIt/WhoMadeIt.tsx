@@ -9,7 +9,6 @@ interface WhoMadeItProps {
 }
 
 export default function WhoMadeIt({ creator, createdAt, updater, updatedAt }: WhoMadeItProps) {
-  console.log('x: ', { creator, createdAt, updater, updatedAt });
   return (
     <Tooltip
       content={

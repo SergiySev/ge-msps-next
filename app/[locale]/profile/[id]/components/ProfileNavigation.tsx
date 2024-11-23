@@ -3,37 +3,32 @@
 import { Button, Link } from '@nextui-org/react';
 import { usePathname } from 'next/navigation';
 
+const navItems = [
+  { href: 'diseases', label: 'დაავადებები' },
+  { href: 'pd', label: 'პდ' },
+  { href: 'kidney-assessment', label: 'შეფასებები' },
+  { href: 'infectious', label: 'ინფექციური' },
+  { href: 'noninfectious', label: 'არაინფექციური' },
+];
+
+function NavButton({ href, label, activePath }) {
+  return (
+    <Button href={href} as={Link} color={activePath === href ? 'primary' : 'default'} variant="light" size="sm">
+      {label}
+    </Button>
+  );
+}
+
 export default function ProfileNavigation() {
   const currentPath = usePathname();
-
   const parts = currentPath.split('/').filter(Boolean);
   const activePath = parts[parts.length - 1];
 
   return (
     <div className="p-4 flex flex-row gap-4">
-      <Button
-        href={`diseases`}
-        as={Link}
-        color={activePath === 'diseases' ? 'primary' : 'default'}
-        variant="light"
-        size="sm"
-      >
-        დაავადებები
-      </Button>
-
-      <Button href={`pd`} as={Link} color={activePath === 'pd' ? 'primary' : 'default'} variant="light" size="sm">
-        პდ
-      </Button>
-
-      <Button
-        href={`kidney-assessment`}
-        as={Link}
-        color={activePath === 'kidney-assessment' ? 'primary' : 'default'}
-        variant="light"
-        size="sm"
-      >
-        შეფასებები
-      </Button>
+      {navItems.map(item => (
+        <NavButton key={item.href} href={item.href} label={item.label} activePath={activePath} />
+      ))}
     </div>
   );
 }
