@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import { requiredText } from './helpers/translations';
 import { kidney_assessment_pet } from '@prisma/client';
-import { optionalNumber, requiredDateValidation, validatePatientDate } from './helpers/validators';
+import { inBetweenDatesValidation, optionalNumber, requiredDateValidation } from './helpers/validators';
+import { getPatientById } from './queries/getPatientById';
 
 const kidneyAssessmentBaseSchema = z.object({
   patient_id: z.number().int(requiredText).positive(requiredText),
@@ -40,11 +41,17 @@ const checkDate = async (
   data: CreateKidneyAssessmentClientSchema | UpdateKidneyAssessmentClientSchema,
   ctx: z.RefinementCtx
 ) => {
-  await validatePatientDate(ctx, {
-    patient_id: data.patient_id!,
-    date: data.check_date!,
-    dateField: 'check_date',
-  });
+  const patient = await getPatientById(data.patient_id!);
+  if (!patient) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Patient not found',
+      path: ['patient_id'],
+    });
+    return;
+  }
+
+  inBetweenDatesValidation(ctx, 'check_date', data.check_date, patient.birth_date, patient.mors_date);
 };
 
 export const createKidneyAssessmentServerSchema = createKidneyAssessmentClientSchema

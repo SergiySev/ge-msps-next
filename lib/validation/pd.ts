@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import { requiredText } from './helpers/translations';
-import { requiredDateValidation, validatePatientDate } from './helpers/validators';
+import { inBetweenDatesValidation, requiredDateValidation } from './helpers/validators';
 import { pd_pd_modality, pd_solution_per_input } from '@prisma/client';
+import { getPatientById } from './queries/getPatientById';
 
 const PDBaseSchema = z.object({
   patient_id: z.number().int(requiredText).positive(requiredText),
@@ -23,11 +24,17 @@ export type CreatePDClientSchema = z.infer<typeof createPDClientSchema>;
 export type UpdatePDClientSchema = z.infer<typeof updatePDClientSchema>;
 
 const checkDate = async (data: CreatePDClientSchema | UpdatePDClientSchema, ctx: z.RefinementCtx) => {
-  await validatePatientDate(ctx, {
-    patient_id: data.patient_id!,
-    date: data.date!,
-    dateField: 'date',
-  });
+  const patient = await getPatientById(data.patient_id!);
+  if (!patient) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Patient not found',
+      path: ['patient_id'],
+    });
+    return;
+  }
+
+  inBetweenDatesValidation(ctx, 'date', data.date, patient.birth_date, patient.mors_date);
 };
 
 export const createPDServerSchema = createPDClientSchema.superRefine(checkDate);
