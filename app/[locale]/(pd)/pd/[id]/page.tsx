@@ -16,7 +16,7 @@ export default async function PDEditPage({ params }: { params: Promise<{ id: str
     <>
       <ProfileLink href={`/profile/${pd.patient_id}/pd/`} />
       <h4 className="text-xl font-semibold">შეფასების რედაქტირება</h4>
-      <PDForm className="mt-8" pd={pd} />
+      <PDForm className="mt-8" data={pd} />
     </>
   );
 }

@@ -14,20 +14,23 @@ import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hoo
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createPDClientSchema, updatePDClientSchema } from 'msps/lib/validation/pd';
 import toast from 'react-hot-toast';
-import { createPD, updatePD } from 'msps/lib/actions/pdAction';
+import { createPD, deletePD, updatePD } from 'msps/lib/actions/pdAction';
 import { useTranslations } from 'next-intl';
 import { Divider } from '@nextui-org/react';
+import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
+import { useRouter } from 'next/navigation';
 
 interface PDFormProps {
-  pd: PD | Partial<PD>;
+  data: PD | Partial<PD>;
   className?: string;
 }
 
-const PDForm = ({ pd, className }: PDFormProps) => {
-  const isEditPage = pd.hasOwnProperty('id');
+const PDForm = ({ data, className }: PDFormProps) => {
+  const isEditPage = data.hasOwnProperty('id');
   const schema = isEditPage ? updatePDClientSchema : createPDClientSchema;
 
   const t = useTranslations();
+  const router = useRouter();
 
   const {
     form: {
@@ -45,7 +48,7 @@ const PDForm = ({ pd, className }: PDFormProps) => {
     {
       formProps: {
         defaultValues: {
-          ...pd,
+          ...data,
         },
       },
       actionProps: {
@@ -114,6 +117,14 @@ const PDForm = ({ pd, className }: PDFormProps) => {
       </div>
 
       <SubmitButton className="mt-8" isEdit={isEditPage} isLoading={isSubmitting} />
+      {isEditPage && data.id && (
+        <DeleteButton
+          className="mt-8"
+          deleteAction={deletePD}
+          id={data.id}
+          onDelete={() => router.push(`/profile/${data.patient_id}/pd`)}
+        />
+      )}
     </form>
   );
 };

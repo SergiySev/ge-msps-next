@@ -16,7 +16,7 @@ export default async function AssessmentEditPage({ params }: { params: Promise<{
     <>
       <ProfileLink href={`/profile/${assessment.patient_id}/kidney-assessment/`} />
       <h4 className="text-xl font-semibold">შეფასების რედაქტირება</h4>
-      <KidneyAssessmentForm className="mt-8" kidneyAssessment={assessment} />
+      <KidneyAssessmentForm className="mt-8" data={assessment} />
     </>
   );
 }

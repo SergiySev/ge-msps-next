@@ -6,6 +6,7 @@ import {
   createKidneyAssessmentServerSchema,
   updateKidneyAssessmentServerSchema,
 } from '../validation/kidney_assessment';
+import { deleteActionSchema } from '../validation/DeleteActionSchema';
 
 export const createKidneyAssessment = actionClient
   .schema(createKidneyAssessmentServerSchema)
@@ -43,3 +44,15 @@ export const updateKidneyAssessment = actionClient
       return { error };
     }
   });
+
+export const deleteKidneyAssessment = actionClient.schema(deleteActionSchema).action(async ({ parsedInput }) => {
+  try {
+    const data = await prisma.kidney_assessment.delete({
+      where: { id: parsedInput.id },
+    });
+    return { data };
+  } catch (error) {
+    console.log('Error: ', error);
+    return { error };
+  }
+});

@@ -14,10 +14,12 @@ import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hoo
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createNoninfectiousClientSchema, updateNoninfectiousClientSchema } from 'msps/lib/validation/noninfectious';
 import toast from 'react-hot-toast';
-import { createNoninfectious, updateNoninfectious } from 'msps/lib/actions/noninfectiousAction';
+import { createNoninfectious, updateNoninfectious, deleteNoninfectious } from 'msps/lib/actions/noninfectiousAction';
 import { useTranslations } from 'next-intl';
 import { Divider } from '@nextui-org/react';
 import { useEffect } from 'react';
+import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
+import { useRouter } from 'next/navigation';
 
 interface NoninfectiousFormProps {
   data: Noninfectious | Partial<Noninfectious>;
@@ -29,6 +31,7 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
   const schema = isEditPage ? updateNoninfectiousClientSchema : createNoninfectiousClientSchema;
 
   const t = useTranslations();
+  const router = useRouter();
 
   const {
     form: {
@@ -124,6 +127,14 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
       </div>
 
       <SubmitButton className="mt-8" isEdit={isEditPage} isLoading={isSubmitting} />
+      {isEditPage && data.id && (
+        <DeleteButton
+          className="mt-8"
+          deleteAction={deleteNoninfectious}
+          id={data.id}
+          onDelete={() => router.push(`/profile/${data.patient_id}/noninfectious`)}
+        />
+      )}
     </form>
   );
 };

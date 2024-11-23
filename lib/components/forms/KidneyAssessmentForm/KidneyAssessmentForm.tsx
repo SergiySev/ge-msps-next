@@ -18,16 +18,24 @@ import {
   updateKidneyAssessmentClientSchema,
 } from 'msps/lib/validation/kidney_assessment';
 import toast from 'react-hot-toast';
-import { createKidneyAssessment, updateKidneyAssessment } from 'msps/lib/actions/kidneyAssessmentAction';
+import {
+  createKidneyAssessment,
+  updateKidneyAssessment,
+  deleteKidneyAssessment,
+} from 'msps/lib/actions/kidneyAssessmentAction';
+import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
+import { useRouter } from 'next/navigation';
 
 interface KidneyAssessmentFormProps {
-  kidneyAssessment: KidneyAssessment | Partial<KidneyAssessment>;
+  data: KidneyAssessment | Partial<KidneyAssessment>;
   className?: string;
 }
 
-const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentFormProps) => {
-  const isEditPage = kidneyAssessment.hasOwnProperty('id');
+const KidneyAssessmentForm = ({ data, className }: KidneyAssessmentFormProps) => {
+  const isEditPage = data.hasOwnProperty('id');
   const schema = isEditPage ? updateKidneyAssessmentClientSchema : createKidneyAssessmentClientSchema;
+
+  const router = useRouter();
 
   const {
     form: {
@@ -45,7 +53,7 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
     {
       formProps: {
         defaultValues: {
-          ...kidneyAssessment,
+          ...data,
         },
       },
       actionProps: {
@@ -94,6 +102,14 @@ const KidneyAssessmentForm = ({ kidneyAssessment, className }: KidneyAssessmentF
       </div>
 
       <SubmitButton className="mt-8" isEdit={isEditPage} isLoading={isSubmitting} />
+      {isEditPage && data.id && (
+        <DeleteButton
+          className="mt-8"
+          deleteAction={deleteKidneyAssessment}
+          id={data.id}
+          onDelete={() => router.push(`/profile/${data.patient_id}/noninfectious`)}
+        />
+      )}
     </form>
   );
 };

@@ -7,7 +7,7 @@ export default async function PdAddPage() {
       <h4 className="text-xl font-semibold">შეფასების დამატება</h4>
       <PDForm
         className="mt-8"
-        pd={{
+        data={{
           pd_modality: pd_pd_modality.CAPD,
           solution_per_input: pd_solution_per_input.lt_8,
         }}

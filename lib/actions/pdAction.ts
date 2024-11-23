@@ -3,6 +3,7 @@
 import { actionClient } from '../safe-action';
 import prisma from '../prisma';
 import { createPDServerSchema, updatePDServerSchema } from '../validation/pd';
+import { deleteActionSchema } from '../validation/DeleteActionSchema';
 
 export const createPD = actionClient.schema(createPDServerSchema).action(async ({ parsedInput }) => {
   try {
@@ -37,4 +38,13 @@ export const updatePD = actionClient.schema(updatePDServerSchema).action(async (
   }
 });
 
-// FIXME: add deletePD action
+export const deletePD = actionClient.schema(deleteActionSchema).action(async ({ parsedInput }) => {
+  try {
+    const data = await prisma.pd.delete({
+      where: { id: parsedInput.id },
+    });
+    return { data };
+  } catch (error) {
+    return { error };
+  }
+});

@@ -3,6 +3,7 @@
 import { actionClient } from '../safe-action';
 import prisma from '../prisma';
 import { createNoninfectiousServerSchema, updateNoninfectiousServerSchema } from '../validation/noninfectious';
+import { deleteActionSchema } from '../validation/DeleteActionSchema';
 
 export const createNoninfectious = actionClient
   .schema(createNoninfectiousServerSchema)
@@ -40,3 +41,15 @@ export const updateNoninfectious = actionClient
       return { error };
     }
   });
+
+export const deleteNoninfectious = actionClient.schema(deleteActionSchema).action(async ({ parsedInput }) => {
+  try {
+    const data = await prisma.noninfectious.delete({
+      where: { id: parsedInput.id },
+    });
+    return { data };
+  } catch (error) {
+    console.log('Error: ', error);
+    return { error };
+  }
+});
