@@ -12,15 +12,21 @@ interface DeleteButtonProps<T extends DeleteActionFn> {
   className?: string;
   onDelete?: () => void;
   deleteAction: T;
+  customMessage?: string;
 }
 
-const DeleteButton = <T extends DeleteActionFn>({ className, onDelete, deleteAction, id }: DeleteButtonProps<T>) => {
+const DeleteButton = <T extends DeleteActionFn>({
+  className,
+  onDelete,
+  deleteAction,
+  id,
+  customMessage = 'ჩანაწერი წაიშლება სამუდამოდ.',
+}: DeleteButtonProps<T>) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { execute, result, isExecuting } = useAction(deleteAction);
   useEffect(() => {
     console.log('Result: ', result as InferSafeActionFnResult<T>);
-    // console.log('result: ', result);
     if (result.data) {
       onClose();
       onDelete?.();
@@ -36,6 +42,7 @@ const DeleteButton = <T extends DeleteActionFn>({ className, onDelete, deleteAct
   return (
     <>
       <div className={clsx('mx-auto md:flex-none w-full', className)}>
+        id: {id}
         <div className="flex justify-end mt-2">
           <Button color="danger" variant="bordered" type="button" isIconOnly onPress={onOpen}>
             <XMarkIcon className="w-4 h-4" />
@@ -53,7 +60,7 @@ const DeleteButton = <T extends DeleteActionFn>({ className, onDelete, deleteAct
           {onClose => (
             <>
               <ModalHeader className="flex flex-col gap-1">დარწმუნებული ხართ?</ModalHeader>
-              <ModalBody>ჩანაწერი წაიშლება სამუდამოდ.</ModalBody>
+              <ModalBody>{customMessage}</ModalBody>
               <ModalFooter>
                 <Button color="default" variant="light" onPress={onClose} isDisabled={isExecuting}>
                   დახურვა

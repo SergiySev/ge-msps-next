@@ -1,4 +1,5 @@
 import PatientForm from 'msps/lib/components/forms/PatientForm/PatientForm';
+import { ProfileLink } from 'msps/lib/components/other';
 import prisma from 'msps/lib/prisma';
 import { notFound } from 'next/navigation';
 
@@ -25,6 +26,7 @@ export default async function PatientEditPage({ params }: { params: Promise<{ id
 
   return (
     <>
+      <ProfileLink href={`/profile/${patient.id}/diseases/`} />
       <h4 className="text-xl font-semibold">პაციენტის რედაქტირება</h4>
       <PatientForm className="mt-8" patient={patient} departments={departments} regions={regions} />
     </>

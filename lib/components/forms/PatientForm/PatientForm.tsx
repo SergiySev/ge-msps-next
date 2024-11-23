@@ -11,13 +11,15 @@ import {
   ControlledRadioGroup,
   ControlledTextArea,
 } from '../../controlled-form-components';
-import { createPatient, updatePatient } from 'msps/lib/actions/patientAction';
+import { createPatient, deletePatient, updatePatient } from 'msps/lib/actions/patientAction';
 import { Divider } from '@nextui-org/react';
 import clsx from 'clsx';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updatePatientClientSchema, createPatientClientSchema } from 'msps/lib/validation/patient';
 import toast from 'react-hot-toast';
+import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
+import { useRouter } from 'next/navigation';
 
 interface PatientFormProps {
   patient: Patient | Partial<Patient>;
@@ -30,6 +32,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
   const isEditPage = patient.hasOwnProperty('id');
 
   const schema = isEditPage ? updatePatientClientSchema : createPatientClientSchema;
+  const router = useRouter();
 
   const {
     form: {
@@ -162,6 +165,14 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
       </div>
 
       <SubmitButton className="mt-8" isEdit={isEditPage} isLoading={isSubmitting} />
+      {isEditPage && patient.id && (
+        <DeleteButton
+          id={patient.id}
+          deleteAction={deletePatient}
+          onDelete={() => router.push('/')}
+          customMessage="პაციენტის წასაშლელად, თქვენ ჯერ უნდა წაშალოთ პაციენტის ფროფილიდან დაკავშირებული ყველა ჩანაწერი (პდ, შეფასება...)"
+        />
+      )}
     </form>
   );
 };

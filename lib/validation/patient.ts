@@ -28,7 +28,8 @@ const patientBaseSchema = z.object({
     .number({ message: requiredText })
     .refine(
       n => {
-        return n.toString().split('.')[1].length <= 2;
+        const parts = n.toString().split('.');
+        return parts.length === 1 || parts[1].length <= 2;
       },
       { message: 'მაქსიმალური სიზუსტე არის 2 ათობითი ნიშანი' }
     )
