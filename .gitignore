@@ -41,8 +41,6 @@ next-env.d.ts
 
 # dev folders
 /.idea/
-# Sentry Config File
-.env.sentry-build-plugin
 
 # .gitignore
 .env*.local
