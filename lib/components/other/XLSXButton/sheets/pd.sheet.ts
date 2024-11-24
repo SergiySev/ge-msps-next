@@ -1,23 +1,23 @@
-import { getLabel } from './label';
+import { d } from 'msps/lib/validation/helpers/date';
 
-export const pdJson = data => ({
-  sheet: getLabel('pd'),
+export const pdJson = (data, t) => ({
+  sheet: t('pd'),
   columns: [
-    { label: getLabel('record'), value: 'id' },
-    { label: getLabel('patient'), value: 'patient_id' },
-    { label: getLabel('pd_date'), value: 'date' },
+    { label: t('record'), value: 'id' },
+    { label: t('patient'), value: 'patient_id' },
+    { label: t('pd_date'), value: row => d(row.date) },
     {
-      label: getLabel('pd_modality'),
-      value: row => getLabel(row.pd_modality),
+      label: t('pd_modality'),
+      value: row => t(row.pd_modality),
     },
     {
-      label: getLabel('solution_per_input'),
-      value: row => getLabel(row.solution_per_input),
+      label: t('solution_per_input'),
+      value: row => t(row.solution_per_input),
     },
-    { label: getLabel('pd_ch_solution_136'), value: 'pd_ch_solution_136' },
-    { label: getLabel('pd_ch_solution_227'), value: 'pd_ch_solution_227' },
-    { label: getLabel('pd_ch_solution_386'), value: 'pd_ch_solution_386' },
-    { label: getLabel('icodextrin'), value: 'icodextrin' },
+    { label: t('pd_ch_solution_136'), value: 'pd_ch_solution_136' },
+    { label: t('pd_ch_solution_227'), value: 'pd_ch_solution_227' },
+    { label: t('pd_ch_solution_386'), value: 'pd_ch_solution_386' },
+    { label: t('icodextrin'), value: 'icodextrin' },
   ],
   content: [...data],
 });

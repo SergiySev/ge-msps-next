@@ -1,15 +1,15 @@
-import { getLabel } from './label';
+import { d } from 'msps/lib/validation/helpers/date';
 
-export const assessmentJson = (data: never) => ({
-  sheet: getLabel('assessment'),
+export const assessmentJson = (data: unknown, t) => ({
+  sheet: t('assessment'),
   columns: [
-    { label: getLabel('record'), value: 'id' },
-    { label: getLabel('patient'), value: 'patient_id' },
-    { label: getLabel('date'), value: 'check_date' },
-    { label: getLabel('gfr'), value: 'gfr' },
-    { label: getLabel('ktv'), value: 'ktv' },
-    { label: getLabel('pet'), value: 'pet' },
-    { label: getLabel('ka_comment'), value: 'ka_comment' },
+    { label: t('record'), value: 'id' },
+    { label: t('patient'), value: 'patient_id' },
+    { label: t('date'), value: row => d(row.check_date) },
+    { label: t('gfr'), value: 'gfr' },
+    { label: t('ktv'), value: 'ktv' },
+    { label: t('pet'), value: 'pet' },
+    { label: t('ka_comment'), value: 'ka_comment' },
   ],
   content: [...data],
 });

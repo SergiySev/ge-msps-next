@@ -1,11 +1,21 @@
 import { PrismaClient } from '@prisma/client';
+import { getLocale, getTranslations } from 'next-intl/server';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-function removeFalseValuesAndConvertTrue(list) {
+interface InputObject {
+  [key: string]: string | number | boolean | null | undefined;
+}
+
+interface OutputObject {
+  [key: string]: number | string | object;
+}
+
+function removeFalseValuesAndConvertTrue<T extends InputObject>(list: T[]): OutputObject[] {
   return list.map(item => {
-    const newItem = {};
+    const newItem: OutputObject = {};
     for (const key in item) {
       if (item[key] === true) {
         newItem[key] = 1;
@@ -17,7 +27,10 @@ function removeFalseValuesAndConvertTrue(list) {
   });
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
+  const locale = getLocale();
+  const t = await getTranslations({ locale });
+
   const noninfectiousList = await prisma.noninfectious.findMany({
     select: {
       id: true,

@@ -84,7 +84,7 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
           rules={{ required: true }}
         />
 
-        <ControlledDateInput name="date" label="ჩატარების თარიღი" control={control} rules={{ required: true }} />
+        <ControlledDateInput name="date" label={t('check_date')} control={control} rules={{ required: true }} />
 
         <Divider className="md:col-span-2 border-dashed my-4" />
 

@@ -6,8 +6,12 @@ import { noninfectiousJson } from './sheets/noninfectious.sheet';
 import { assessmentJson } from './sheets/assessment.sheet';
 import xlsx from 'json-as-xlsx';
 import { TableCellsIcon } from '@heroicons/react/16/solid';
+import { useTranslations } from 'next-intl';
+import { d } from 'msps/lib/validation/helpers/date';
 
 export default function XLSXButton() {
+  const t = useTranslations();
+
   const settings = {
     // fileName: 'pd_data', // Name of the resulting spreadsheet
     extraLength: 4, // A bigger number means that columns will be wider
@@ -20,19 +24,17 @@ export default function XLSXButton() {
     const fetchData = await fetch('/api/xlsx');
     const response = await fetchData.json();
 
-    const x = <TableCellsIcon />;
-
     xlsx(
       [
-        patientsJson(response.patients),
-        pdJson(response.pds),
-        infectiousJson(response.infections),
-        noninfectiousJson(response.noninfections),
-        assessmentJson(response.assessments),
+        patientsJson(response.patients, t),
+        pdJson(response.pds, t),
+        infectiousJson(response.infections, t),
+        noninfectiousJson(response.noninfections, t),
+        assessmentJson(response.assessments, t),
       ],
       {
         ...settings,
-        fileName: `pd_data_${new Date().toISOString().replaceAll(':', '').replace('T', '-').slice(0, 17)}`,
+        fileName: `pd_data_${d(new Date())}`,
       }
     );
   };

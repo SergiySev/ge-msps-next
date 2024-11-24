@@ -25,6 +25,7 @@ import {
 } from 'msps/lib/actions/kidneyAssessmentAction';
 import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface KidneyAssessmentFormProps {
   data: KidneyAssessment | Partial<KidneyAssessment>;
@@ -34,6 +35,8 @@ interface KidneyAssessmentFormProps {
 const KidneyAssessmentForm = ({ data, className }: KidneyAssessmentFormProps) => {
   const isEditPage = data.hasOwnProperty('id');
   const schema = isEditPage ? updateKidneyAssessmentClientSchema : createKidneyAssessmentClientSchema;
+
+  const t = useTranslations();
 
   const router = useRouter();
 
@@ -80,7 +83,7 @@ const KidneyAssessmentForm = ({ data, className }: KidneyAssessmentFormProps) =>
           rules={{ required: true }}
         />
 
-        <ControlledDateInput name="check_date" label="ჩატარების თარიღი" control={control} rules={{ required: true }} />
+        <ControlledDateInput name="check_date" label={t('check_date')} control={control} rules={{ required: true }} />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:col-span-2">
           <ControlledInput name="gfr" label="GFR" control={control} />

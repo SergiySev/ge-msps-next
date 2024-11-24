@@ -1,6 +1,12 @@
 'use client';
 
-import { type patient as Patient, type department as Department, type region as Region } from '@prisma/client';
+import {
+  type patient as Patient,
+  type department as Department,
+  type region as Region,
+  patient_sex,
+  patient_mors_reason,
+} from '@prisma/client';
 import {
   ControlledCheckbox,
   ControlledInput,
@@ -20,6 +26,7 @@ import { updatePatientClientSchema, createPatientClientSchema } from 'msps/lib/v
 import toast from 'react-hot-toast';
 import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface PatientFormProps {
   patient: Patient | Partial<Patient>;
@@ -30,6 +37,7 @@ interface PatientFormProps {
 
 const PatientForm = ({ patient, regions, departments, className }: PatientFormProps) => {
   const isEditPage = patient.hasOwnProperty('id');
+  const t = useTranslations();
 
   const schema = isEditPage ? updatePatientClientSchema : createPatientClientSchema;
   const router = useRouter();
@@ -98,8 +106,8 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
           rules={{ required: true }}
           label="სქესი"
           items={[
-            { value: 'male', label: 'მამრობითი' },
-            { value: 'female', label: 'მდედრობითი' },
+            { value: patient_sex.male, label: t(patient_sex.male) },
+            { value: patient_sex.female, label: toast(patient_sex.female) },
           ]}
           name="sex"
         />
@@ -148,9 +156,9 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
               clearable={true}
               clearableText="-- აირჩიეთ --"
               items={[
-                { id: 'mors_heart', name: 'გულ-სისხლძარღვთა სისტემა' },
-                { id: 'mors_infection', name: 'ინფექცია' },
-                { id: 'mors_other', name: 'სხვა' },
+                { id: patient_mors_reason.mors_heart, name: t(patient_mors_reason.mors_heart) },
+                { id: patient_mors_reason.mors_infection, name: t(patient_mors_reason.mors_infection) },
+                { id: patient_mors_reason.mors_other, name: t(patient_mors_reason.mors_other) },
               ]}
             />
 
