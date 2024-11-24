@@ -9,6 +9,7 @@ export default async function InfectiousAddPage() {
         className="mt-8"
         data={{
           infection_type: infectious_infection_type.peritonitis,
+          other_comment: '',
         }}
       />
     </>

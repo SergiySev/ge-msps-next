@@ -16,10 +16,6 @@ import {
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 
-const tagAStyles =
-  'relative inline-flex items-center tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 text-medium text-foreground no-underline hover:opacity-80 active:opacity-disabled transition-opacity';
-const tagLiStyles = 'text-medium whitespace-nowrap box-border list-none data-[active=true]:font-semibold';
-
 export default function Menu({ className }: { className?: string }) {
   const currentPath = usePathname();
 
@@ -78,10 +74,10 @@ export default function Menu({ className }: { className?: string }) {
           </NavbarItem>
           <DropdownMenu aria-label="ახალი...">
             {dropdownMenuItems.map(({ key, href, label, icon: Icon }) => (
-              <DropdownItem key={key} startContent={<Icon className="w-4 h-4" />} textValue={key}>
-                <Link href={href} className="text-sm text-black">
-                  {label}
-                </Link>
+              <DropdownItem key={key} textValue={key} className="m-0 p-0">
+                <Button href={href} as={Link} color="default" variant="light" size="md">
+                  <Icon className="w-4 h-4" /> {label}
+                </Button>
               </DropdownItem>
             ))}
           </DropdownMenu>
