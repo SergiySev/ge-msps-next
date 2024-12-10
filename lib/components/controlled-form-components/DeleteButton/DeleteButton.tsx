@@ -3,7 +3,6 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDi
 import clsx from 'clsx';
 import { useAction } from 'next-safe-action/hooks';
 import { useEffect } from 'react';
-import type { InferSafeActionFnResult } from 'next-safe-action';
 import { DeleteActionFn } from 'msps/lib/validation/DeleteActionSchema';
 import toast from 'react-hot-toast';
 
@@ -26,7 +25,6 @@ const DeleteButton = <T extends DeleteActionFn>({
 
   const { execute, result, isExecuting } = useAction(deleteAction);
   useEffect(() => {
-    console.log('Result: ', result as InferSafeActionFnResult<T>);
     if (result.data) {
       onClose();
       onDelete?.();
@@ -42,7 +40,6 @@ const DeleteButton = <T extends DeleteActionFn>({
   return (
     <>
       <div className={clsx('mx-auto md:flex-none w-full', className)}>
-        id: {id}
         <div className="flex justify-end mt-2">
           <Button color="danger" variant="bordered" type="button" isIconOnly onPress={onOpen}>
             <XMarkIcon className="w-4 h-4" />

@@ -107,7 +107,7 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
           label="სქესი"
           items={[
             { value: patient_sex.male, label: t(patient_sex.male) },
-            { value: patient_sex.female, label: toast(patient_sex.female) },
+            { value: patient_sex.female, label: t(patient_sex.female) },
           ]}
           name="sex"
         />
