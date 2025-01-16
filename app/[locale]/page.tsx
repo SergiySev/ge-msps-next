@@ -29,7 +29,7 @@ export default function Index() {
       <div className="flex items-center justify-center w-full p-6 border rounded-lg">
         <Button
           color="primary"
-          onClick={() => router.push('/patient/')}
+          onPress={() => router.push('/patient/')}
           startContent={<UserPlusIcon className="min-w-6 min-h-6" />}
         >
           ახალი პაციენტის დამატება
@@ -40,7 +40,7 @@ export default function Index() {
         <Button
           color="default"
           variant="bordered"
-          onClick={() => router.push('/patients/')}
+          onPress={() => router.push('/patients/')}
           startContent={<UsersIcon className="min-w-6 min-h-6" />}
         >
           ბოლო დამატებული პაციენტები

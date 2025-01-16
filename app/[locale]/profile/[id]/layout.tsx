@@ -21,7 +21,7 @@ export default async function ProfileLayout({
   if (!patient) notFound();
 
   return (
-    <div>
+    <div className="mb-8">
       <ProfileHeader patient={patient} />
       <PatientSection id={id} />
       <Divider className="md:col-span-2 border-dashed my-4" />

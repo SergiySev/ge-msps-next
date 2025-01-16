@@ -203,7 +203,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
                     <ListboxItem
                       key={patient.id}
                       className="py-2 px-3 hover:bg-default-100 cursor-pointer"
-                      onClick={() => handleSelection(patient, onChange)}
+                      onPress={() => handleSelection(patient, onChange)}
                     >
                       {`${patient.last_name} ${patient.first_name} (${patient.personal_id})`}
                     </ListboxItem>
@@ -220,7 +220,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
                 radius="full"
                 variant="light"
                 aria-label="Clear selection"
-                onClick={() => handleClear(onChange)}
+                onPress={() => handleClear(onChange)}
               >
                 <XCircleIcon className="h-4 w-4" />
               </Button>
@@ -232,7 +232,7 @@ const ControlledPatientSelector = <T extends FieldValues>({
                 radius="full"
                 variant="light"
                 aria-label="View patient profile"
-                onClick={() => handleViewProfile(value)}
+                onPress={() => handleViewProfile(value)}
               >
                 <UserIcon className="h-4 w-4" />
               </Button>

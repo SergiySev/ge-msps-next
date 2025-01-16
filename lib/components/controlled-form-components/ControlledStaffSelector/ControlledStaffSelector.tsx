@@ -214,7 +214,7 @@ const ControlledStaffSelector = <T extends FieldValues>({
                     <ListboxItem
                       key={staff.id}
                       className="py-2 px-3 hover:bg-default-100 cursor-pointer"
-                      onClick={() => handleSelection(staff, onChange)}
+                      onPress={() => handleSelection(staff, onChange)}
                     >
                       {`${staff.last_name} ${staff.first_name}`}
                     </ListboxItem>
@@ -231,7 +231,7 @@ const ControlledStaffSelector = <T extends FieldValues>({
               variant="light"
               aria-label="Clear selection"
               className="mt-4"
-              onClick={() => handleClear(onChange)}
+              onPress={() => handleClear(onChange)}
             >
               <XCircleIcon className="h-4 w-4" />
             </Button>
