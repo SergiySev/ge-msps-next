@@ -45,8 +45,10 @@ async function middleware(request: NextRequest) {
 
   // For protected paths, check authentication
   if (!session) {
-    // Get the current locale from the pathname
-    const locale = pathname.match(/^\/([a-z]{2})/)?.[1] || 'ka';
+    // Get the locale from the response URL instead of manually parsing the pathname
+    const responseUrl = response.headers.get('x-middleware-rewrite') || request.url;
+    const locale = new URL(responseUrl).pathname.match(/^\/([a-z]{2})/)?.[1] || routing.defaultLocale;
+
     // Redirect to login while preserving the locale
     const loginUrl = new URL(`/${locale}/login`, request.url);
     return NextResponse.redirect(loginUrl);

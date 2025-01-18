@@ -26,7 +26,7 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
     formState: { isSubmitting, isValid },
   } = useForm({
     resolver: zodResolver(loginSchema),
-    mode: 'all',
+    mode: 'onSubmit',
     defaultValues: {
       ...data,
       username: '',
