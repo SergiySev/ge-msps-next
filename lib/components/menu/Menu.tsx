@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Navbar,
   NavbarContent,
@@ -13,17 +13,19 @@ import {
   DropdownItem,
   NavbarBrand,
 } from '@nextui-org/react';
-import { ChevronDownIcon, HomeIcon, PlusIcon, UserIcon } from '@heroicons/react/16/solid';
+import { ChevronDownIcon, HomeIcon, PlusIcon, UserIcon, GlobeAltIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
 import { signOut, useSession } from 'next-auth/react';
+import { useLocale } from 'next-intl';
 
 export default function Menu({ className }: { className?: string }) {
   const { data: session, status } = useSession();
-
   const currentPath = usePathname();
   const t = useTranslations();
+  const router = useRouter();
+  const locale = useLocale();
 
   if (status === 'loading' || status === 'unauthenticated') {
     return null;
@@ -69,6 +71,22 @@ export default function Menu({ className }: { className?: string }) {
       const errorMessage = error instanceof Error ? error.message : '';
       toast.error(`${t('logoutError')}${errorMessage ? `: ${errorMessage}` : ''}`);
     }
+  };
+
+  const languages = [
+    { key: 'ka', label: 'ქართული' },
+    { key: 'en', label: 'English' },
+  ];
+
+  const handleLanguageChange = (key: string) => {
+    // Get the path segments after the locale
+    const pathSegments = currentPath.split('/').slice(2);
+    // Create new path with selected locale
+    const newPath = `/${key}/${pathSegments.join('/')}`;
+    console.log('Current path:', currentPath);
+    console.log('New path:', newPath);
+    // Use replace instead of push to avoid adding to history stack
+    window.location.href = newPath; // Use window.location instead of router
   };
 
   return (
@@ -118,6 +136,32 @@ export default function Menu({ className }: { className?: string }) {
             </Link>
           )}
         </NavbarItem>
+        {/* <NavbarItem>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                variant="light"
+                startContent={<GlobeAltIcon className="w-4 h-4" />}
+                endContent={<ChevronDownIcon className="w-4 h-4" />}
+              >
+                {languages.find(lang => lang.key === locale)?.label}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Language selection"
+              selectionMode="single"
+              selectedKeys={new Set([locale])}
+              onSelectionChange={keys => {
+                const selected = Array.from(keys)[0] as string;
+                handleLanguageChange(selected);
+              }}
+            >
+              {languages.map(({ key, label }) => (
+                <DropdownItem key={key}>{label}</DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarItem> */}
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem isActive={isActive('/exit')}>

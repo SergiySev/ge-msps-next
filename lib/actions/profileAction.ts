@@ -7,23 +7,22 @@ import { hash, compare } from 'bcryptjs';
 import { revalidatePath } from 'next/cache';
 import { getAuthenticatedUserId } from '../auth/authenticated';
 
-type ProfileActionResult = { data?: string; error?: string };
-
 export const updateProfile = actionClient.schema(updateProfileSchema).action(async ({ parsedInput }) => {
   try {
     const userId = await getAuthenticatedUserId();
+
     const user = await prisma.staff.findUnique({
       where: { id: userId },
     });
 
     if (!user) {
-      return { data: null, error: 'User not found' };
+      return { error: 'User not found' };
     }
 
     // Verify current password
     const isValidPassword = await compare(parsedInput.currentPassword, user.password);
     if (!isValidPassword) {
-      return { data: null, error: 'Current password is incorrect' };
+      return { error: 'Current password is incorrect' };
     }
 
     // Hash new password
@@ -40,9 +39,9 @@ export const updateProfile = actionClient.schema(updateProfileSchema).action(asy
     });
 
     revalidatePath('/profile');
-    return { data: 'Profile updated successfully' };
+    return { success: 'Profile updated successfully' };
   } catch (error) {
     console.log('Error: ', error);
-    return { data: null, error: 'Something went wrong' };
+    return { error: 'Something went wrong' };
   }
 });

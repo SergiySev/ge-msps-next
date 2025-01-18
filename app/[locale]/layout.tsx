@@ -5,8 +5,8 @@ import { Providers } from './providers';
 import { Suspense } from 'react';
 import Loading from './loading';
 import { Toaster } from 'react-hot-toast';
-import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
+import { notFound } from 'next/navigation';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -24,14 +24,19 @@ export const metadata: Metadata = {
   description: 'MSPS Project: PD, Vascular',
 };
 
-export default async function RootLayout({
+export default async function LocaleLayout({
   children,
-  locale,
-}: Readonly<{
+  params: { locale },
+}: {
   children: React.ReactNode;
-  locale: string;
-}>) {
-  const messages = await getMessages();
+  params: { locale: string };
+}) {
+  let messages;
+  try {
+    messages = (await import(`../../messages/${locale}.json`)).default;
+  } catch {
+    notFound();
+  }
 
   return (
     <html lang="en">

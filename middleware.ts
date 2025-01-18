@@ -4,31 +4,56 @@ import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
 // Create i18n middleware
-const intlMiddleware = createIntlMiddleware(routing);
+const intlMiddleware = createIntlMiddleware({
+  ...routing,
+  // Add locales configuration directly here
+  locales: ['ka', 'en'],
+  defaultLocale: 'ka',
+});
 
 // List of public paths that don't require authentication
 const PUBLIC_PATHS = ['/login'];
 
 async function middleware(request: NextRequest) {
-  const isPublicPath = PUBLIC_PATHS.some(path => request.nextUrl.pathname.startsWith(path));
+  const pathname = request.nextUrl.pathname;
+
+  // Skip middleware for static files and API routes
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_vercel') ||
+    pathname.includes('.')
+  ) {
+    return NextResponse.next();
+  }
+
+  // Handle i18n first to ensure proper locale paths
+  const response = await intlMiddleware(request);
+
+  // Extract the path without locale prefix for checking
+  const pathWithoutLocale = pathname.replace(/^\/(?:ka|en)/, '');
+
+  const isPublicPath = PUBLIC_PATHS.some(path => pathWithoutLocale.startsWith(path));
 
   // Get session token from cookie
   const session = request.cookies.get('next-auth.session-token');
 
-  // For public paths (like login), just handle i18n
+  // Allow access to public paths regardless of authentication
   if (isPublicPath) {
-    return intlMiddleware(request);
+    return response;
   }
 
   // For protected paths, check authentication
   if (!session) {
-    // Redirect to login if not authenticated
-    const loginUrl = new URL('/login', request.url);
+    // Get the current locale from the pathname
+    const locale = pathname.match(/^\/([a-z]{2})/)?.[1] || 'ka';
+    // Redirect to login while preserving the locale
+    const loginUrl = new URL(`/${locale}/login`, request.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  // If authenticated, handle i18n
-  return intlMiddleware(request);
+  // If authenticated, return the i18n response
+  return response;
 }
 
 export default middleware;
