@@ -1,11 +1,10 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
-import { NextAuthOptions } from 'next-auth';
 
 const prisma = new PrismaClient();
 
-export const authOptions: NextAuthOptions = {
+const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
@@ -46,31 +45,39 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id.toString(),
           username: user.username,
+          firstName: user.first_name,
+          lastName: user.last_name,
         };
       },
     }),
   ],
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.username = user.username;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && token.sub) {
+        session.user = {
+          ...session.user,
+          id: token.sub,
+          username: token.username as string,
+          firstName: token.firstName as string,
+          lastName: token.lastName as string,
+        };
+      }
+      return session;
+    },
     async redirect({ url, baseUrl }) {
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
-    session: async ({ session, user }) => {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: user.id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          // ... other user properties ...
-        },
-      };
-    },
   },
-};
-
-const handler = NextAuth(authOptions);
+});
 
 export { handler as GET, handler as POST };

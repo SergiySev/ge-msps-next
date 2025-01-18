@@ -13,20 +13,17 @@ import {
   DropdownItem,
   NavbarBrand,
 } from '@nextui-org/react';
-import { ChevronDownIcon, PlusIcon } from '@heroicons/react/16/solid';
+import { ChevronDownIcon, PlusIcon, UserIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
 import { signOut, useSession } from 'next-auth/react';
 
 export default function Menu({ className }: { className?: string }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
   const currentPath = usePathname();
   const t = useTranslations();
-
-  console.log({ session });
-
-  const { status } = session;
 
   if (status === 'loading' || status === 'unauthenticated') {
     return null;
@@ -110,19 +107,22 @@ export default function Menu({ className }: { className?: string }) {
         </Dropdown>
       </NavbarContent>
       <NavbarContent justify="end">
+        <NavbarItem>
+          {session?.user && (
+            <div className="flex items-center gap-2 mr-4">
+              <UserIcon className="min-w-4 min-h-4" />
+              <span className="text-sm font-medium text-gray-700 underline">
+                {session.user.lastName} {session.user.firstName}
+              </span>
+            </div>
+          )}
+        </NavbarItem>
         <NavbarItem isActive={isActive('/exit')}>
           <Button onPress={handleLogout} as={Link} color="default" variant="ghost">
             გამოსვლა
           </Button>
         </NavbarItem>
       </NavbarContent>
-      {session?.user && (
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700">
-            {session.user.first_name} {session.user.last_name}
-          </span>
-        </div>
-      )}
     </Navbar>
   );
 }
