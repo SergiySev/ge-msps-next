@@ -110,12 +110,12 @@ export default function Menu({ className }: { className?: string }) {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           {session?.user && (
-            <div className="flex items-center gap-2">
+            <Link href="/profile" className="flex items-center gap-2 hover:opacity-80">
               <UserIcon className="min-w-4 min-h-4" />
               <span className="text-sm font-medium text-gray-700 underline">
                 {session.user.lastName} {session.user.firstName}
               </span>
-            </div>
+            </Link>
           )}
         </NavbarItem>
       </NavbarContent>

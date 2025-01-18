@@ -21,7 +21,18 @@ const ControlledInput = <T extends FieldValues>({
     render={({ field: { onChange, onBlur, value }, formState: { errors } }) => (
       <Input
         variant={variant}
-        autoComplete="off"
+        // Multiple autocomplete attributes to handle different browsers
+        autoComplete="new-password"
+        // Additional attributes to prevent autofill
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
+        data-form-type="other"
+        // Add a random name attribute to further prevent autofill
+        inputProps={{
+          'data-lpignore': 'true',
+          'data-form-type': 'other',
+        }}
         label={label}
         placeholder={placeholder || label}
         // Handle null/undefined values by converting them to empty string

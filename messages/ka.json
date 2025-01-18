@@ -136,8 +136,12 @@
   "department": "დეპარტამენტი",
 
   "username": "მომხმარებელი",
-  "password": "პაროლი",
-  "login": "შესვლა",
+  "currentPassword": "მიმდინარე პაროლი",
+  "newPassword": "ახალი პაროლი",
+  "confirmPassword": "გაიმეორეთ პაროლი",
+  "updateProfile": "პროფილის განახლება",
+  "profileUpdateSuccess": "პროფილი წარმატებით განახლდა",
+  "somethingWentWrong": "დაფიქსირდა შეცდომა",
 
   "date": "თარიღი",
   "region": "რეგიონი",
@@ -150,5 +154,6 @@
   "userNotFound": "მომხმარებელი ვერ მოიძებნა",
   "incorrectPassword": "პაროლი არასწორია",
   "loginSuccess": "წარმატებით გაიარეთ ავტორიზაცია",
-  "generalError": "დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან"
+  "generalError": "დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან",
+  "profile": "ფროფილი"
 }
