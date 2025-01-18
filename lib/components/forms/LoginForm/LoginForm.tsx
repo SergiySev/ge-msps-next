@@ -2,14 +2,14 @@
 
 import { ControlledInput } from '../../controlled-form-components';
 import clsx from 'clsx';
-import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Button } from '@nextui-org/react';
 import { loginSchema, LoginSchema } from 'msps/lib/validation/login';
-import { loginAction } from 'msps/lib/actions/loginAction';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface LoginFormProps {
   data: LoginSchema;
@@ -17,52 +17,24 @@ interface LoginFormProps {
 }
 
 const LoginForm = ({ data, className }: LoginFormProps) => {
-  const schema = loginSchema;
-
   const t = useTranslations();
   const router = useRouter();
 
   const {
-    form: {
-      control,
-      formState: { isSubmitting, isValid },
-      getValues,
+    control,
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    mode: 'all',
+    defaultValues: {
+      ...data,
+      username: '',
+      password: '',
     },
-    handleSubmitWithAction,
-  } = useHookFormAction(
-    async formValues => {
-      return loginAction(formValues);
-    },
-    zodResolver(schema),
-    {
-      formProps: {
-        mode: 'all',
-        defaultValues: {
-          ...data,
-          username: 'testtest',
-          password: '123456',
-        },
-      },
-      actionProps: {
-        onSuccess: () => {
-          console.log('Success!');
-          // router.push('/');
-          // toast.success('შეფასება შენახულია!');
-        },
-        onError: ({ error }) => {
-          console.error('Error:', error);
-          // toast.error(`შეცდომა: ${error.serverError || ''}`);
-        },
-      },
-    }
-  );
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = getValues();
-    console.log('formData:', formData);
-
+  const onSubmit = async (formData: LoginSchema) => {
     try {
       const response = await signIn('credentials', {
         username: formData.username,
@@ -71,19 +43,32 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
       });
 
       if (response?.error) {
-      } else {
-        /* router.push("/dashboard");
-          router.refresh(); */
+        // Handle specific error messages
+        const errorMessage =
+          response.error === 'No user found with this username'
+            ? t('userNotFound')
+            : response.error === 'Incorrect password'
+              ? t('incorrectPassword')
+              : response.error;
+
+        toast.error(errorMessage);
+        return;
+      }
+
+      if (response?.ok) {
+        // Show success toast and redirect
+        toast.success(t('loginSuccess'));
+        router.push('/');
       }
     } catch (error) {
-      console.error('Error:', error);
+      const errorMessage = error instanceof Error ? error.message : '';
+      toast.error(`${t('generalError')}${errorMessage ? `: ${errorMessage}` : ''}`);
     }
   };
 
   return (
     <form
-      /* onSubmit={handleSubmitWithAction} */
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className={clsx('flex flex-col items-center justify-center min-h-[400px] w-full max-w-md mx-auto p-6', className)}
     >
       <div className="flex flex-col w-full gap-6 border rounded-lg p-10">

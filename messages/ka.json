@@ -145,5 +145,14 @@
   "infectious": "ინფექციური",
   "noninfectious": "არაინფექციური",
 
-  "record": "ჩანაწერი"
+  "record": "ჩანაწერი",
+
+  "userNotFound": "მომხმარებელი ვერ მოიძებნა",
+  "incorrectPassword": "პაროლი არასწორია",
+  "loginSuccess": "წარმატებით გაიარეთ ავტორიზაცია",
+  "generalError": "დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან",
+
+  "menu": {
+    "userGreeting": "მომხმარებელი:"
+  }
 }

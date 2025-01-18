@@ -15,9 +15,22 @@ import {
 } from '@nextui-org/react';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
+import { signOut, useSession } from 'next-auth/react';
 
 export default function Menu({ className }: { className?: string }) {
+  const { data: session } = useSession();
   const currentPath = usePathname();
+  const t = useTranslations();
+
+  console.log({ session });
+
+  const { status } = session;
+
+  if (status === 'loading' || status === 'unauthenticated') {
+    return null;
+  }
 
   const isActive = (path: string) => currentPath === path;
 
@@ -47,6 +60,19 @@ export default function Menu({ className }: { className?: string }) {
       icon: PlusIcon,
     },
   ];
+
+  const handleLogout = async () => {
+    try {
+      await signOut({
+        redirect: true,
+        callbackUrl: '/login', // Redirect to login page after logout
+      });
+      toast.success(t('logoutSuccess'));
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '';
+      toast.error(`${t('logoutError')}${errorMessage ? `: ${errorMessage}` : ''}`);
+    }
+  };
 
   return (
     <Navbar className={clsx('', className)} position="static">
@@ -85,11 +111,18 @@ export default function Menu({ className }: { className?: string }) {
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem isActive={isActive('/exit')}>
-          <Button href={`/exit`} as={Link} color="default" variant="ghost">
+          <Button onPress={handleLogout} as={Link} color="default" variant="ghost">
             გამოსვლა
           </Button>
         </NavbarItem>
       </NavbarContent>
+      {session?.user && (
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700">
+            {session.user.first_name} {session.user.last_name}
+          </span>
+        </div>
+      )}
     </Navbar>
   );
 }
