@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   Navbar,
   NavbarContent,
@@ -24,8 +24,9 @@ export default function Menu({ className }: { className?: string }) {
   const { data: session, status } = useSession();
   const currentPath = usePathname();
   const t = useTranslations();
-  const router = useRouter();
+
   const locale = useLocale();
+  const isLanguageSwithcherEnabled = false;
 
   if (status === 'loading' || status === 'unauthenticated') {
     return null;
@@ -136,32 +137,34 @@ export default function Menu({ className }: { className?: string }) {
             </Link>
           )}
         </NavbarItem>
-        {/* <NavbarItem>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button
-                variant="light"
-                startContent={<GlobeAltIcon className="w-4 h-4" />}
-                endContent={<ChevronDownIcon className="w-4 h-4" />}
+        {isLanguageSwithcherEnabled && (
+          <NavbarItem>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  variant="light"
+                  startContent={<GlobeAltIcon className="w-4 h-4" />}
+                  endContent={<ChevronDownIcon className="w-4 h-4" />}
+                >
+                  {languages.find(lang => lang.key === locale)?.label}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Language selection"
+                selectionMode="single"
+                selectedKeys={new Set([locale])}
+                onSelectionChange={keys => {
+                  const selected = Array.from(keys)[0] as string;
+                  handleLanguageChange(selected);
+                }}
               >
-                {languages.find(lang => lang.key === locale)?.label}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Language selection"
-              selectionMode="single"
-              selectedKeys={new Set([locale])}
-              onSelectionChange={keys => {
-                const selected = Array.from(keys)[0] as string;
-                handleLanguageChange(selected);
-              }}
-            >
-              {languages.map(({ key, label }) => (
-                <DropdownItem key={key}>{label}</DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarItem> */}
+                {languages.map(({ key, label }) => (
+                  <DropdownItem key={key}>{label}</DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </NavbarItem>
+        )}
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem isActive={isActive('/exit')}>
