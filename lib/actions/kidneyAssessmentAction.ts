@@ -7,16 +7,19 @@ import {
   updateKidneyAssessmentServerSchema,
 } from '../validation/kidney_assessment';
 import { deleteActionSchema } from '../validation/DeleteActionSchema';
+import { getAuthenticatedUserId } from '../auth/authenticated';
 
 export const createKidneyAssessment = actionClient
   .schema(createKidneyAssessmentServerSchema)
   .action(async ({ parsedInput }) => {
     try {
+      const userId = await getAuthenticatedUserId();
+
       const data = await prisma.kidney_assessment.create({
         data: {
           ...parsedInput,
           created_at: new Date(),
-          created_by: 1, // FIXME: get from session
+          created_by: userId,
         },
       });
       return { data /* : patient as KidneyAssessment  */ };
@@ -30,12 +33,14 @@ export const updateKidneyAssessment = actionClient
   .schema(updateKidneyAssessmentServerSchema)
   .action(async ({ parsedInput }) => {
     try {
+      const userId = await getAuthenticatedUserId();
+
       const data = await prisma.kidney_assessment.update({
         where: { id: parsedInput.id },
         data: {
           ...parsedInput,
           updated_at: new Date(),
-          updated_by: 1, // FIXME: get from session
+          updated_by: userId,
         },
       });
       return { data /* : patient as KidneyAssessment */ };
@@ -47,6 +52,9 @@ export const updateKidneyAssessment = actionClient
 
 export const deleteKidneyAssessment = actionClient.schema(deleteActionSchema).action(async ({ parsedInput }) => {
   try {
+    // Verify user is authenticated before delete
+    await getAuthenticatedUserId();
+
     const data = await prisma.kidney_assessment.delete({
       where: { id: parsedInput.id },
     });

@@ -1,10 +1,12 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
+import { NextAuthOptions } from 'next-auth';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
@@ -35,7 +37,7 @@ const handler = NextAuth({
           throw new Error('No user found with this username');
         }
 
-        //FIXME: const passwordMatch = await bcrypt.compare(credentials.password, user.password);
+        // const passwordMatch = await bcrypt.compare(credentials.password, user.password);
         const passwordMatch = credentials.password === user.password;
 
         if (!passwordMatch) {
@@ -78,6 +80,7 @@ const handler = NextAuth({
       return baseUrl;
     },
   },
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

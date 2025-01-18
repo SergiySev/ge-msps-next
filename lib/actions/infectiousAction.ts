@@ -4,14 +4,17 @@ import { actionClient } from '../safe-action';
 import prisma from '../prisma';
 import { createInfectiousServerSchema, updateInfectiousServerSchema } from '../validation/infectious';
 import { deleteActionSchema } from '../validation/DeleteActionSchema';
+import { getAuthenticatedUserId } from '../auth/authenticated';
 
 export const createInfectious = actionClient.schema(createInfectiousServerSchema).action(async ({ parsedInput }) => {
   try {
+    const userId = await getAuthenticatedUserId();
+
     const data = await prisma.infectious.create({
       data: {
         ...parsedInput,
         created_at: new Date(),
-        created_by: 1, // FIXME: get from session
+        created_by: userId,
       },
     });
     return { data /* : patient as Infectious  */ };
@@ -23,12 +26,14 @@ export const createInfectious = actionClient.schema(createInfectiousServerSchema
 
 export const updateInfectious = actionClient.schema(updateInfectiousServerSchema).action(async ({ parsedInput }) => {
   try {
+    const userId = await getAuthenticatedUserId();
+
     const data = await prisma.infectious.update({
       where: { id: parsedInput.id },
       data: {
         ...parsedInput,
         updated_at: new Date(),
-        updated_by: 1, // FIXME: get from session
+        updated_by: userId, // FIXME: get from session
       },
     });
     return { data /* : patient as Infectious */ };
@@ -40,6 +45,9 @@ export const updateInfectious = actionClient.schema(updateInfectiousServerSchema
 
 export const deleteInfectious = actionClient.schema(deleteActionSchema).action(async ({ parsedInput }) => {
   try {
+    // Verify user is authenticated before delete
+    await getAuthenticatedUserId();
+
     const data = await prisma.infectious.delete({
       where: { id: parsedInput.id },
     });
