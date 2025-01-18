@@ -137,6 +137,7 @@
 
   "username": "Username",
   "currentPassword": "Current Password",
+  "password": "Password",
   "newPassword": "New Password",
   "confirmPassword": "Confirm Password",
   "updateProfile": "Update Profile",
@@ -155,5 +156,6 @@
   "incorrectPassword": "Incorrect Password",
   "loginSuccess": "Successfully Logged In",
   "generalError": "An Error Occurred, Please Try Again",
-  "profile": "Profile"
+  "profile": "Profile",
+  "login": "Login"
 }

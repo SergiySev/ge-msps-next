@@ -136,6 +136,7 @@
   "department": "დეპარტამენტი",
 
   "username": "მომხმარებელი",
+  "password": "პაროლი",
   "currentPassword": "მიმდინარე პაროლი",
   "newPassword": "ახალი პაროლი",
   "confirmPassword": "გაიმეორეთ პაროლი",
@@ -155,5 +156,6 @@
   "incorrectPassword": "პაროლი არასწორია",
   "loginSuccess": "წარმატებით გაიარეთ ავტორიზაცია",
   "generalError": "დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან",
-  "profile": "ფროფილი"
+  "profile": "ფროფილი",
+  "login": "ავტორიზაცია"
 }

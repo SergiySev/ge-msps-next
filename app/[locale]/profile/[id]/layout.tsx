@@ -6,14 +6,8 @@ import { ReactNode } from 'react';
 import { Divider } from '@nextui-org/react';
 import ProfileNavigation from './components/ProfileNavigation';
 
-export default async function ProfileLayout({
-  params,
-  children,
-}: {
-  params: Promise<{ id: string }>;
-  children: ReactNode;
-}) {
-  const id = +(await params).id;
+export default async function ProfileLayout({ params, children }: { params: { id: string }; children: ReactNode }) {
+  const id = +params.id;
 
   const patient = await prisma.patient.findUnique({
     where: { id },
