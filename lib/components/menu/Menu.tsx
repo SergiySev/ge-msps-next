@@ -13,7 +13,7 @@ import {
   DropdownItem,
   NavbarBrand,
 } from '@nextui-org/react';
-import { ChevronDownIcon, PlusIcon, UserIcon } from '@heroicons/react/16/solid';
+import { ChevronDownIcon, HomeIcon, PlusIcon, UserIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
@@ -76,11 +76,12 @@ export default function Menu({ className }: { className?: string }) {
       <NavbarBrand>
         <NavbarItem isActive={isActive('/')}>
           <Link href="/" aria-current={isActive('/') ? 'page' : undefined}>
+            <HomeIcon className="w-4 h-4 mr-2" />
             მთავარი
           </Link>
         </NavbarItem>
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      <NavbarContent className="hidden sm:flex gap-4" justify="start">
         <Dropdown className="shadow-md border rounded-lg">
           <NavbarItem>
             <DropdownTrigger>
@@ -106,10 +107,10 @@ export default function Menu({ className }: { className?: string }) {
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
-      <NavbarContent justify="end">
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           {session?.user && (
-            <div className="flex items-center gap-2 mr-4">
+            <div className="flex items-center gap-2">
               <UserIcon className="min-w-4 min-h-4" />
               <span className="text-sm font-medium text-gray-700 underline">
                 {session.user.lastName} {session.user.firstName}
@@ -117,6 +118,8 @@ export default function Menu({ className }: { className?: string }) {
             </div>
           )}
         </NavbarItem>
+      </NavbarContent>
+      <NavbarContent justify="end">
         <NavbarItem isActive={isActive('/exit')}>
           <Button onPress={handleLogout} as={Link} color="default" variant="ghost">
             გამოსვლა

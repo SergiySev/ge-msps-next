@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { maxDateWarning, minDateWarning, wrongDateAfterDeath, wrongDateBeforeBirth } from './translations';
-import prisma from 'msps/lib/prisma';
 
 export const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 export const minPossibleDate = new Date('1920-01-01');

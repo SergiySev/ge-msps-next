@@ -33,7 +33,7 @@ export const updateInfectious = actionClient.schema(updateInfectiousServerSchema
       data: {
         ...parsedInput,
         updated_at: new Date(),
-        updated_by: userId, // FIXME: get from session
+        updated_by: userId,
       },
     });
     return { data /* : patient as Infectious */ };

@@ -37,8 +37,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error('No user found with this username');
         }
 
-        // const passwordMatch = await bcrypt.compare(credentials.password, user.password);
-        const passwordMatch = credentials.password === user.password;
+        const passwordMatch = await bcrypt.compare(credentials.password, user.password);
 
         if (!passwordMatch) {
           throw new Error('Incorrect password');
