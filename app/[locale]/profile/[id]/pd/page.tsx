@@ -1,5 +1,4 @@
 import prisma from 'msps/lib/prisma';
-import { ReactNode } from 'react';
 import { DataTableView } from 'msps/lib/components/other';
 import { IPagination } from 'msps/lib/types';
 import { d } from 'msps/lib/validation/helpers/date';
@@ -7,14 +6,12 @@ import { searchParamsCache } from 'msps/lib/params/searchParams';
 import { Prisma } from '@prisma/client';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-export default async function PdPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ id: string }>;
+type PageProps = {
+  params: Promise<{ id: string; locale: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  children: ReactNode;
-}) {
+};
+
+export default async function PDPage({ params, searchParams }: PageProps) {
   const id = +(await params).id;
 
   const { page, sorting, itemsPerPage } = await searchParamsCache.parse(searchParams);

@@ -11,7 +11,13 @@ const navItems = [
   { href: 'noninfectious', label: 'არაინფექციური' },
 ];
 
-function NavButton({ href, label, activePath }) {
+type NavButtonProps = {
+  href: string;
+  label: string;
+  activePath: string;
+};
+
+function NavButton({ href, label, activePath }: NavButtonProps) {
   return (
     <Button href={href} as={Link} color={activePath === href ? 'primary' : 'default'} variant="light" size="sm">
       {label}

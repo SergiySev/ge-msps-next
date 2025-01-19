@@ -26,10 +26,15 @@ export default function XLSXButton() {
 
     xlsx(
       [
+        // @ts-expect-error: Type mismatch due to dynamic data structure
         patientsJson(response.patients, t),
+        // @ts-expect-error: Type mismatch due to dynamic data structure
         pdJson(response.pds, t),
+        // @ts-expect-error: Type mismatch due to dynamic data structure
         infectiousJson(response.infections, t),
+        // @ts-expect-error: Type mismatch due to dynamic data structure
         noninfectiousJson(response.noninfections, t),
+        // @ts-expect-error: Type mismatch due to dynamic data structure
         assessmentJson(response.assessments, t),
       ],
       {

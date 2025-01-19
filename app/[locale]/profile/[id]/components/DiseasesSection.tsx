@@ -4,8 +4,29 @@ import { CheckIcon, PencilSquareIcon } from '@heroicons/react/16/solid';
 import { Button, Link, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react';
 import { patient as Patient } from '@prisma/client';
 
+type DiseaseKey = keyof Pick<
+  Patient,
+  | 'md_diabetes'
+  | 'md_hypertension'
+  | 'md_glomerulonephritis'
+  | 'md_adptd'
+  | 'md_lupus'
+  | 'md_vasculitis'
+  | 'md_amyloidosis'
+  | 'md_unknown'
+  | 'md_other'
+  | 'cd_heart'
+  | 'cd_cancer'
+  | 'cd_a_pressure'
+  | 'cd_p_pressure'
+  | 'cd_cirrhosis'
+  | 'cd_pqod'
+  | 'cd_demention'
+  | 'cd_other'
+>;
+
 export default function DiseasesView({ data }: { data: Patient }) {
-  const mainDiseases = [
+  const mainDiseases: Array<{ key: DiseaseKey; value: string }> = [
     { key: 'md_diabetes', value: 'დიაბეტი' },
     { key: 'md_hypertension', value: 'ჰიპერტენზია' },
     { key: 'md_glomerulonephritis', value: 'გლომერულონეფრიტი' },
@@ -17,7 +38,7 @@ export default function DiseasesView({ data }: { data: Patient }) {
     { key: 'md_other', value: 'სხვა (ძირითადი)' },
   ];
 
-  const comorbidDiseases = [
+  const comorbidDiseases: Array<{ key: DiseaseKey; value: string }> = [
     { key: 'cd_heart', value: 'გულის უკმარისობა' },
     { key: 'cd_cancer', value: 'სიმსივნე' },
     { key: 'cd_a_pressure', value: 'კორონარული არტერიების დაავადება' },
@@ -45,17 +66,16 @@ export default function DiseasesView({ data }: { data: Patient }) {
             <TableColumn> </TableColumn>
           </TableHeader>
           <TableBody>
-            {mainDiseases.map(
-              ({ key, value }) =>
-                data[key] && (
-                  <TableRow key={key}>
-                    <TableCell>{value}</TableCell>
-                    <TableCell>
-                      <CheckIcon className="w-6 h-6" />
-                    </TableCell>
-                  </TableRow>
-                )
-            )}
+            {mainDiseases
+              .filter(({ key }) => data[key])
+              .map(({ key, value }) => (
+                <TableRow key={key}>
+                  <TableCell>{value}</TableCell>
+                  <TableCell>
+                    <CheckIcon className="w-6 h-6" />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
 
@@ -65,17 +85,16 @@ export default function DiseasesView({ data }: { data: Patient }) {
             <TableColumn> </TableColumn>
           </TableHeader>
           <TableBody>
-            {comorbidDiseases.map(
-              ({ key, value }) =>
-                data[key] && (
-                  <TableRow key={key}>
-                    <TableCell>{value}</TableCell>
-                    <TableCell>
-                      <CheckIcon className="w-6 h-6" />
-                    </TableCell>
-                  </TableRow>
-                )
-            )}
+            {comorbidDiseases
+              .filter(({ key }) => data[key])
+              .map(({ key, value }) => (
+                <TableRow key={key}>
+                  <TableCell>{value}</TableCell>
+                  <TableCell>
+                    <CheckIcon className="w-6 h-6" />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </div>

@@ -1,11 +1,11 @@
 import { d } from 'msps/lib/validation/helpers/date';
 
-export const noninfectiousJson = (data: unknown, t) => ({
+export const noninfectiousJson = (data: unknown, t: (key: string) => string) => ({
   sheet: t('noninfectious'),
   columns: [
     { label: t('record'), value: 'id' },
     { label: t('patient'), value: 'patient_id' },
-    { label: t('check_date'), value: row => d(row.date) },
+    { label: t('check_date'), value: (row: { date: Date }) => d(row.date) },
     { label: t('hernia'), value: 'hernia' },
     { label: t('catheter_positioning'), value: 'catheter_positioning' },
     { label: t('catheter_malposition'), value: 'catheter_malposition' },
@@ -24,5 +24,5 @@ export const noninfectiousJson = (data: unknown, t) => ({
     { label: t('other'), value: 'other' },
     { label: t('other_comment'), value: 'other_comment' },
   ],
-  content: [...data],
+  content: [...(data as [])],
 });

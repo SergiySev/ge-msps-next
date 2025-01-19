@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { getLocale, getTranslations } from 'next-intl/server';
 
 import { NextResponse } from 'next/server';
 
@@ -17,7 +16,9 @@ function removeFalseValuesAndConvertTrue<T extends InputObject>(list: T[]): Outp
   return list.map(item => {
     const newItem: OutputObject = {};
     for (const key in item) {
-      if (item[key] === true) {
+      if (item[key] instanceof Date) {
+        newItem[key] = (item[key] as Date).toISOString();
+      } else if (item[key] === true) {
         newItem[key] = 1;
       } else if (item[key]) {
         newItem[key] = item[key];
@@ -28,9 +29,6 @@ function removeFalseValuesAndConvertTrue<T extends InputObject>(list: T[]): Outp
 }
 
 export async function GET() {
-  const locale = getLocale();
-  const t = await getTranslations({ locale });
-
   const noninfectiousList = await prisma.noninfectious.findMany({
     select: {
       id: true,
@@ -176,10 +174,15 @@ export async function GET() {
   });
 
   return NextResponse.json({
+    // @ts-expect-error: Date conversion handled in function
     patients: removeFalseValuesAndConvertTrue(patientList),
+    // @ts-expect-error: Date conversion handled in function
     assessments: removeFalseValuesAndConvertTrue(assessmentList),
+    // @ts-expect-error: Date conversion handled in function
     pds: removeFalseValuesAndConvertTrue(pdList),
+    // @ts-expect-error: Date conversion handled in function
     infections: removeFalseValuesAndConvertTrue(infectionsList),
+    // @ts-expect-error: Date conversion handled in function
     noninfections: removeFalseValuesAndConvertTrue(noninfectiousList),
   });
 }

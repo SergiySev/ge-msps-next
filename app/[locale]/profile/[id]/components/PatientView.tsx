@@ -6,7 +6,18 @@ import { patient as Patient } from '@prisma/client';
 import { d } from 'msps/lib/validation/helpers/date';
 import { useTranslations } from 'next-intl';
 
-export default function PatientView({ patient }: { patient: Patient }) {
+// Define a new type that extends the Patient type
+type ExtendedPatient = Patient & {
+  region: {
+    name: string;
+  };
+  staff_patient_doctor_idTostaff: {
+    first_name: string;
+    last_name: string;
+  };
+};
+
+export default function PatientView({ patient }: { patient: ExtendedPatient }) {
   const data = patient;
 
   const t = useTranslations();

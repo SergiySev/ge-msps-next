@@ -1,8 +1,8 @@
 import { ProfileForm } from 'msps/lib/components/profile/ProfileForm';
 import { getServerSession } from 'next-auth';
-import { authOptions } from 'msps/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { authOptions } from 'msps/app/api/auth/[...nextauth]/options';
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);

@@ -1,4 +1,4 @@
-import { authOptions } from 'msps/app/api/auth/[...nextauth]/route';
+import { authOptions } from 'msps/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 

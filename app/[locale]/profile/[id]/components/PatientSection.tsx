@@ -1,5 +1,6 @@
 import prisma from 'msps/lib/prisma';
 import PatientView from './PatientView';
+import { notFound } from 'next/navigation';
 
 export default async function PatientSection({ id }: { id: number }) {
   const patient = await prisma.patient.findUnique({
@@ -18,6 +19,8 @@ export default async function PatientSection({ id }: { id: number }) {
       },
     },
   });
+
+  if (!patient) notFound();
 
   return <PatientView patient={patient} />;
 }
