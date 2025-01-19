@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  type patient as Patient,
-  type department as Department,
-  type region as Region,
-  patient_sex,
-  patient_mors_reason,
-} from '@prisma/client';
+import { type patient as Patient, type region as Region, patient_sex, patient_mors_reason } from '@prisma/client';
 import {
   ControlledCheckbox,
   ControlledInput,
@@ -30,12 +24,11 @@ import { useTranslations } from 'next-intl';
 
 interface PatientFormProps {
   patient: Patient | Partial<Patient>;
-  departments: Department[];
   regions: Region[];
   className?: string;
 }
 
-const PatientForm = ({ patient, regions, departments, className }: PatientFormProps) => {
+const PatientForm = ({ patient, regions, className }: PatientFormProps) => {
   const isEditPage = patient.hasOwnProperty('id');
   const t = useTranslations();
 
@@ -122,19 +115,12 @@ const PatientForm = ({ patient, regions, departments, className }: PatientFormPr
         />
         <ControlledInput name="address" control={control} label="მისამართი" className="md:col-span-2" />
         <Divider className="md:col-span-2 border-dashed my-4" />
-        <ControlledSelect
-          name="department_id"
-          control={control}
-          rules={{ required: true }}
-          label="სადიალიზო ცენტრი"
-          items={departments}
-        />
         <ControlledStaffSelector
           role="doctor"
           name="doctor_id"
           control={control}
           rules={{ required: true }}
-          label="Doctor"
+          label="ექიმი"
         />
         <Divider className="md:col-span-2 border-dashed my-4" />
         <ControlledDateInput name="pd_transit_date" control={control} label="ჰემოდიალიზზე გადასვლის თარიღი" />

@@ -16,10 +16,6 @@ export const patientsJson = (data, t) => ({
         `${row.staff_patient_doctor_idTostaff?.first_name[0]}. ${row.staff_patient_doctor_idTostaff?.last_name}`,
     },
     {
-      label: t('department'),
-      value: row => `${row.department?.name}`,
-    },
-    {
       label: t('bmi'),
       value: 'bmi',
     },

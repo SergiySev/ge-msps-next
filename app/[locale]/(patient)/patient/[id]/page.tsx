@@ -6,14 +6,9 @@ import { notFound } from 'next/navigation';
 export default async function PatientEditPage({ params }: { params: Promise<{ id: string }> }) {
   const id = +(await params).id;
 
-  const [patient, departments, regions] = await Promise.all([
+  const [patient, regions] = await Promise.all([
     prisma.patient.findUnique({
       where: { id },
-    }),
-    prisma.department.findMany({
-      orderBy: {
-        weight: 'asc',
-      },
     }),
     prisma.region.findMany({
       orderBy: {
@@ -28,7 +23,7 @@ export default async function PatientEditPage({ params }: { params: Promise<{ id
     <>
       <ProfileLink href={`/profile/${patient.id}/diseases/`} />
       <h4 className="text-xl font-semibold">პაციენტის რედაქტირება</h4>
-      <PatientForm className="mt-8" patient={patient} departments={departments} regions={regions} />
+      <PatientForm className="mt-8" patient={patient} regions={regions} />
     </>
   );
 }

@@ -55,7 +55,7 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster position="top-right" reverseOrder={false} />
-        <div className="container mx-auto max-w-4xl px-4 pt-2">
+        <div className="container mx-auto max-w-4xl px-4 pt-2 mb-20">
           <NextIntlClientProvider locale={locale} messages={messages}>
             <Suspense fallback={<Loading />}>
               <Providers>{children}</Providers>

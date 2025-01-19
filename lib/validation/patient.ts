@@ -17,7 +17,6 @@ const patientBaseSchema = z.object({
   last_name: strictStringFn().min(2, requiredText).max(50).trim(),
   sex: z.nativeEnum(patient_sex),
 
-  department_id: z.number().int().positive(requiredText),
   region_id: z.number().int().positive(requiredText),
   birth_date: requiredDateValidation(),
 

@@ -25,7 +25,6 @@ model patient {
   address                         String?              @default("") @db.VarChar(255)
   bmi                             Float                @db.Float
   doctor_id                       Int
-  department_id                   Int
   region_id                       Int
   transplantation_date            DateTime?            @db.Date
   pd_transit_date                 DateTime?            @db.Date
@@ -60,14 +59,14 @@ model patient {
   kidney_assessment               kidney_assessment[]
   noninfectious                   noninfectious[]
   staff_patient_created_byTostaff staff                @relation("patient_created_byTostaff", fields: [created_by], references: [id], onUpdate: Restrict, map: "patient_created_by_staff_id_fk")
-  department                      department           @relation(fields: [department_id], references: [id], onUpdate: Restrict, map: "patient_department_id_department_id_fk")
   staff_patient_doctor_idTostaff  staff                @relation("patient_doctor_idTostaff", fields: [doctor_id], references: [id], onUpdate: Restrict, map: "patient_doctor_id_staff_id_fk")
   region                          region               @relation(fields: [region_id], references: [id], onUpdate: Restrict, map: "patient_region_id_region_id_fk")
   staff_patient_updated_byTostaff staff?               @relation("patient_updated_byTostaff", fields: [updated_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "patient_updated_by_staff_id_fk")
   pd                              pd[]
+  department                      department?          @relation(fields: [departmentId], references: [id])
+  departmentId                    Int?
 
   @@index([created_by], map: "patient_created_by_staff_id_fk")
-  @@index([department_id], map: "patient_department_id_department_id_fk")
   @@index([updated_by], map: "patient_updated_by_staff_id_fk")
   @@index([region_id], map: "region_id")
   @@index([doctor_id], map: "staff_id")

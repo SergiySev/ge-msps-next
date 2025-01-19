@@ -7,26 +7,18 @@ const emptyPatient: Partial<Patient> = {
 };
 
 export default async function PatientCreatePage() {
-  const [departments, regions] = await Promise.all([
-    prisma.department.findMany({
-      orderBy: {
-        weight: 'asc',
-      },
-    }),
-    prisma.region.findMany({
-      orderBy: {
-        weight: 'asc',
-      },
-    }),
-  ]);
+  const regions = await prisma.region.findMany({
+    orderBy: {
+      weight: 'asc',
+    },
+  });
 
-  emptyPatient.department_id = departments[0].id;
   emptyPatient.region_id = regions[0].id;
 
   return (
     <>
       <h4 className="text-xl font-semibold">პაციენტის დამატება</h4>
-      <PatientForm className="mt-8" patient={emptyPatient} departments={departments} regions={regions} />
+      <PatientForm className="mt-8" patient={emptyPatient} regions={regions} />
     </>
   );
 }

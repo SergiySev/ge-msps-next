@@ -53,12 +53,10 @@ export default function PatientView({ patient }: { patient: Patient }) {
 
       <Table removeWrapper aria-label="aaa">
         <TableHeader>
-          <TableColumn>სადიალიზო ცენტრი</TableColumn>
           <TableColumn>მკურნალი ექიმი</TableColumn>
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell>{data.department.name}</TableCell>
             <TableCell>
               {data.staff_patient_doctor_idTostaff.last_name} {data.staff_patient_doctor_idTostaff.first_name}
             </TableCell>

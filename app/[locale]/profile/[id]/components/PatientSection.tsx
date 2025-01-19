@@ -11,11 +11,6 @@ export default async function PatientSection({ id }: { id: number }) {
           last_name: true,
         },
       },
-      department: {
-        select: {
-          name: true,
-        },
-      },
       region: {
         select: {
           name: true,

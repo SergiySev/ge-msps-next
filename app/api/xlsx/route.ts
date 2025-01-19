@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
@@ -161,11 +161,6 @@ export async function GET() {
       mors_reason: true,
       mors_comment: true,
 
-      department: {
-        select: {
-          name: true,
-        },
-      },
       region: {
         select: {
           name: true,
