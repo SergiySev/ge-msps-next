@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@nextui-org/react';
 import { loginSchema, LoginSchema } from 'msps/lib/validation/login';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 interface LoginFormProps {
@@ -19,6 +19,8 @@ interface LoginFormProps {
 const LoginForm = ({ data, className }: LoginFormProps) => {
   const t = useTranslations();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl');
 
   const {
     control,
@@ -58,7 +60,9 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
       if (response?.ok) {
         // Show success toast and redirect
         toast.success(t('loginSuccess'));
-        router.push('/');
+        // Use the callbackUrl from the URL if available, otherwise redirect to home
+        router.push(callbackUrl || '/');
+        router.refresh();
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '';

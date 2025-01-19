@@ -2,69 +2,56 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
+import { i18nConfig, localePattern } from './i18n/config';
 
 // Create i18n middleware
 const intlMiddleware = createIntlMiddleware({
   ...routing,
-  // Add locales configuration directly here
-  locales: ['ka', 'en'],
-  defaultLocale: 'ka',
+  locales: i18nConfig.locales,
+  defaultLocale: i18nConfig.defaultLocale,
 });
 
 // List of public paths that don't require authentication
 const PUBLIC_PATHS = ['/login'];
+const SKIP_MIDDLEWARE_PATHS = ['/_next', '/api', '/_vercel'];
 
 async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Skip middleware for static files and API routes
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/api') ||
-    pathname.startsWith('/_vercel') ||
-    pathname.includes('.')
-  ) {
+  // Skip middleware for static files and system paths
+  if (SKIP_MIDDLEWARE_PATHS.some(path => pathname.startsWith(path)) || pathname.includes('.')) {
     return NextResponse.next();
   }
 
-  // Handle i18n first to ensure proper locale paths
+  // Handle i18n
   const response = await intlMiddleware(request);
 
-  // Extract the path without locale prefix for checking
-  const pathWithoutLocale = pathname.replace(/^\/(?:ka|en)/, '');
+  // Get path without locale prefix
+  const pathWithoutLocale = pathname.replace(new RegExp(`^\/(?:${localePattern})`), '');
 
-  const isPublicPath = PUBLIC_PATHS.some(path => pathWithoutLocale.startsWith(path));
-
-  // Get session token from cookie
-  const session = request.cookies.get('next-auth.session-token');
-
-  // Allow access to public paths regardless of authentication
-  if (isPublicPath) {
+  // Allow access to public paths
+  if (PUBLIC_PATHS.some(path => pathWithoutLocale.startsWith(path))) {
     return response;
   }
 
-  // For protected paths, check authentication
+  // Check authentication
+  const session = request.cookies.get('next-auth.session-token');
   if (!session) {
-    // Get the locale from the response URL instead of manually parsing the pathname
-    const responseUrl = response.headers.get('x-middleware-rewrite') || request.url;
-    const locale = new URL(responseUrl).pathname.match(/^\/([a-z]{2})/)?.[1] || routing.defaultLocale;
+    const locale =
+      pathname.match(new RegExp(`^\/(?:${localePattern})\/`))?.[0]?.replace(/\//g, '') ?? i18nConfig.defaultLocale;
 
-    // Redirect to login while preserving the locale
+    const returnTo = `/${locale}${pathWithoutLocale}${request.nextUrl.search}`;
     const loginUrl = new URL(`/${locale}/login`, request.url);
+    loginUrl.searchParams.set('callbackUrl', returnTo);
+
     return NextResponse.redirect(loginUrl);
   }
 
-  // If authenticated, return the i18n response
   return response;
 }
 
 export default middleware;
 
 export const config = {
-  matcher: [
-    // Match all pathnames except for
-    // - … if they start with `/api`, `/_next` or `/_vercel`
-    // - … the ones containing a dot (e.g. `favicon.ico`)
-    '/((?!api|_next|_vercel|.*\\..*).*)',
-  ],
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };

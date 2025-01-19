@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
 import { NextAuthOptions } from 'next-auth';
 import bcrypt from 'bcryptjs';
+import { i18nConfig, localePattern } from 'msps/i18n/config';
 
 const prisma = new PrismaClient();
 
@@ -74,8 +75,17 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      else if (new URL(url).origin === baseUrl) return url;
+      // If the URL is relative, use it as is (middleware will handle locale)
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      }
+
+      // If the URL is already absolute or has callbackUrl, use it directly
+      if (url.startsWith('http')) {
+        return url;
+      }
+
+      // Default fallback to base URL
       return baseUrl;
     },
   },
