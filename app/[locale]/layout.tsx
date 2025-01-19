@@ -57,9 +57,9 @@ export default async function LocaleLayout({
         <Toaster position="top-right" reverseOrder={false} />
         <div className="container mx-auto max-w-4xl px-4 pt-2">
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <Providers>
-              <Suspense fallback={<Loading />}>{children}</Suspense>
-            </Providers>
+            <Suspense fallback={<Loading />}>
+              <Providers>{children}</Providers>
+            </Suspense>
           </NextIntlClientProvider>
         </div>
       </body>

@@ -157,5 +157,6 @@
   "loginSuccess": "Successfully Logged In",
   "generalError": "An Error Occurred, Please Try Again",
   "profile": "Profile",
-  "login": "Login"
+  "login": "Login",
+  "logoutSuccess": "Logged out successfully"
 }
