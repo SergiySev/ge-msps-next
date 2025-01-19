@@ -8,10 +8,9 @@ datasource db {
 }
 
 model department {
-  id      Int       @id @unique(map: "id") @default(autoincrement())
-  name    String    @unique(map: "department_name") @db.VarChar(255)
-  weight  Int?      @default(0)
-  patient patient[]
+  id     Int    @id @unique(map: "id") @default(autoincrement())
+  name   String @unique(map: "department_name") @db.VarChar(255)
+  weight Int?   @default(0)
 }
 
 model patient {
@@ -23,7 +22,7 @@ model patient {
   sex                             patient_sex          @default(male)
   phone                           String?              @default("") @db.VarChar(255)
   address                         String?              @default("") @db.VarChar(255)
-  bmi                             Float                @db.Float
+  bmi                             Float?               @db.Float
   doctor_id                       Int
   region_id                       Int
   transplantation_date            DateTime?            @db.Date
@@ -63,8 +62,6 @@ model patient {
   region                          region               @relation(fields: [region_id], references: [id], onUpdate: Restrict, map: "patient_region_id_region_id_fk")
   staff_patient_updated_byTostaff staff?               @relation("patient_updated_byTostaff", fields: [updated_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "patient_updated_by_staff_id_fk")
   pd                              pd[]
-  department                      department?          @relation(fields: [departmentId], references: [id])
-  departmentId                    Int?
 
   @@index([created_by], map: "patient_created_by_staff_id_fk")
   @@index([updated_by], map: "patient_updated_by_staff_id_fk")
