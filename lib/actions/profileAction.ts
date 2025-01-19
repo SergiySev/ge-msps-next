@@ -19,6 +19,17 @@ export const updateProfile = actionClient.schema(updateProfileSchema).action(asy
       return { error: 'User not found' };
     }
 
+    // Check if username is already taken by another staff member
+    if (parsedInput.username !== user.username) {
+      const existingUser = await prisma.staff.findUnique({
+        where: { username: parsedInput.username },
+      });
+
+      if (existingUser) {
+        return { error: 'Username is already taken' };
+      }
+    }
+
     // Verify current password
     const isValidPassword = await compare(parsedInput.currentPassword, user.password);
     if (!isValidPassword) {
