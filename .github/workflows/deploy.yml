@@ -20,34 +20,28 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Install PM2
-        run: npm install pm2 -g
-
-      - name: Setup SSH and Debug
+      - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          # Start SSH agent
-          eval `ssh-agent -s`
-          ssh-add ~/.ssh/deploy_key
-          # Add host key with verbose output
-          ssh-keyscan -v -H -p ${{ secrets.PORT }} ${{ secrets.HOST }} >> ~/.ssh/known_hosts 2>&1
-          # Test SSH connection
-          ssh -v -i ~/.ssh/deploy_key -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo 'SSH connection successful'"
+          ssh-keyscan -H -p ${{ secrets.PORT }} ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to DigitalOcean
         run: |
-          rsync -avzh -e "ssh -v -i ~/.ssh/deploy_key -p ${{ secrets.PORT }}" \
+          rsync -avz -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.PORT }}" \
             --exclude='.git' \
             --exclude='node_modules' \
             ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/sev/www/ge-msps-next/
 
-      - name: Setup application
+      - name: Setup and start application
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "\
             cd /home/sev/www/ge-msps-next && \
+            export NVM_DIR=\$HOME/.nvm && \
+            [ -s \$NVM_DIR/nvm.sh ] && \. \$NVM_DIR/nvm.sh && \
             npm install && \
+            sudo npm install -g pm2 && \
             npm run build && \
             pm2 delete ge-msps-next || true && \
             pm2 start npm --name ge-msps-next -- start -- -p 3030 && \
