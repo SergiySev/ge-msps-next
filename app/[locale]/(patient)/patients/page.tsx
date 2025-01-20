@@ -1,7 +1,11 @@
 import prisma from 'msps/lib/prisma';
 import Patients from './Patients';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 export default async function PatientsPage() {
+  const locale = getLocale();
+  const t = await getTranslations({ locale });
+
   const latestPatients = await prisma.patient.findMany({
     take: 30,
     select: {
@@ -33,7 +37,7 @@ export default async function PatientsPage() {
 
   return (
     <>
-      <h4 className="text-xl font-semibold">პაციენტები (ბოლო 30)</h4>
+      <h4 className="text-xl font-semibold">{t('last_30_patients')}</h4>
       <Patients patients={formattedPatients} className="pt-8 pb-8" />
     </>
   );

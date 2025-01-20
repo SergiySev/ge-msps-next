@@ -79,19 +79,19 @@ export default async function PDPage({ params, searchParams }: PageProps) {
   });
 
   const linkValue = 'pd';
-  const title = 'პერიტონეული დიალიზი';
+  const title = t('tables.titles.pd');
 
   const columns = [
-    { key: 'log', value: ' ' },
-    { key: 'doctor', value: 'ექიმი' },
-    { key: 'date', value: 'თარიღი' },
-    { key: 'pd_modality', value: 'PD მოდალობა' },
-    { key: 'solution_per_input', value: 'ხსნარის დღის რაოდენობა' },
-    { key: 'pd_ch_solution_136', value: '1.36%' },
-    { key: 'pd_ch_solution_227', value: '2.27%' },
-    { key: 'pd_ch_solution_386', value: '3.86%' },
-    { key: 'icodextrin', value: 'აიკოდექსტრინი' },
-    { key: 'edit', value: ' ' },
+    { key: 'log', value: t('tables.columns.log') },
+    { key: 'doctor', value: t('tables.columns.doctor') },
+    { key: 'date', value: t('tables.columns.date') },
+    { key: 'pd_modality', value: t('pd_modality') },
+    { key: 'solution_per_input', value: t('solution_per_input') },
+    { key: 'pd_ch_solution_136', value: t('pd_ch_solution_136') },
+    { key: 'pd_ch_solution_227', value: t('pd_ch_solution_227') },
+    { key: 'pd_ch_solution_386', value: t('pd_ch_solution_386') },
+    { key: 'icodextrin', value: t('icodextrin') },
+    { key: 'edit', value: t('tables.columns.edit') },
   ];
 
   const pagination = {

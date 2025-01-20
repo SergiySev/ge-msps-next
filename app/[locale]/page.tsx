@@ -6,10 +6,12 @@ import { ControlledPatientSelector } from '../../lib/components/controlled-form-
 import { Button } from '@nextui-org/react';
 import { UserPlusIcon, UsersIcon } from '@heroicons/react/16/solid';
 import XLSXButton from 'msps/lib/components/other/XLSXButton/XLSXButton';
+import { useTranslations } from 'next-intl';
 
 export default function Index() {
   const { control } = useForm();
   const router = useRouter();
+  const t = useTranslations();
 
   const handlePatientSelect = (patientId: number) => {
     router.push(`/profile/${patientId}/diseases`);
@@ -21,7 +23,7 @@ export default function Index() {
         <ControlledPatientSelector
           name="patient"
           control={control}
-          label="პაციენტის არჩევა"
+          label={t('index.selectPatient')}
           onPatientSelect={handlePatientSelect}
         />
       </div>
@@ -32,7 +34,7 @@ export default function Index() {
           onPress={() => router.push('/patient/')}
           startContent={<UserPlusIcon className="min-w-6 min-h-6" />}
         >
-          ახალი პაციენტის დამატება
+          {t('index.addNewPatient')}
         </Button>
       </div>
 
@@ -43,7 +45,7 @@ export default function Index() {
           onPress={() => router.push('/patients/')}
           startContent={<UsersIcon className="min-w-6 min-h-6" />}
         >
-          ბოლო დამატებული პაციენტები
+          {t('index.recentPatients')}
         </Button>
       </div>
 

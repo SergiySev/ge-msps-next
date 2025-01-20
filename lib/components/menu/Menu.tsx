@@ -31,9 +31,7 @@ export default function Menu({ className }: { className?: string }) {
   const { data: session, status } = useSession();
   const currentPath = usePathname();
   const t = useTranslations();
-
   const locale = useLocale();
-  const isLanguageSwithcherEnabled = false;
 
   if (status === 'loading' || status === 'unauthenticated') {
     return null;
@@ -43,27 +41,33 @@ export default function Menu({ className }: { className?: string }) {
 
   const dropdownMenuItems = [
     {
+      key: 'patient',
+      href: '/patient',
+      label: t('menu.patient'),
+      icon: PlusIcon,
+    },
+    {
       key: 'pd',
       href: '/pd',
-      label: 'პდ',
+      label: t('menu.pd'),
       icon: PlusIcon,
     },
     {
       key: 'kidney-assessment',
       href: '/kidney-assessment',
-      label: 'შეფასება',
+      label: t('menu.assessment'),
       icon: PlusIcon,
     },
     {
       key: 'infectious',
       href: '/infectious',
-      label: 'ინფექციური',
+      label: t('menu.infectious'),
       icon: PlusIcon,
     },
     {
       key: 'noninfectious',
       href: '/noninfectious',
-      label: 'არაინფექციური',
+      label: t('menu.noninfectious'),
       icon: PlusIcon,
     },
   ];
@@ -102,24 +106,31 @@ export default function Menu({ className }: { className?: string }) {
     <Navbar className={clsx('', className)} position="static">
       <NavbarBrand>
         <NavbarItem isActive={isActive('/')}>
-          <Link href="/" aria-current={isActive('/') ? 'page' : undefined}>
+          <Link href="/" aria-current={isActive('/') ? 'page' : undefined} title={t('menu.home')}>
             <HomeIcon className="w-4 h-4 mr-2" />
-            მთავარი
+            {t('menu.home')}
           </Link>
         </NavbarItem>
+        <NavbarItem>
+          {session?.user && (
+            <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 ml-6">
+              <UserIcon className="min-w-4 min-h-4" />
+              <span className="text-sm font-medium text-gray-700 underline">{session.user.lastName}</span>
+            </Link>
+          )}
+        </NavbarItem>
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="start">
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <Dropdown className="shadow-md border rounded-lg">
           <NavbarItem>
             <DropdownTrigger>
               <Button
-                disableRipple
-                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                startContent={<PlusIcon className="w-4 h-4" />}
                 endContent={<ChevronDownIcon className="w-4 h-4" />}
                 radius="sm"
                 variant="light"
               >
-                ახალი...
+                {t('menu.new')}
               </Button>
             </DropdownTrigger>
           </NavbarItem>
@@ -134,56 +145,42 @@ export default function Menu({ className }: { className?: string }) {
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          {session?.user && (
-            <Link href="/profile" className="flex items-center gap-2 hover:opacity-80">
-              <UserIcon className="min-w-4 min-h-4" />
-              <span className="text-sm font-medium text-gray-700 underline">
-                {session.user.lastName} {session.user.firstName}
-              </span>
-            </Link>
-          )}
-        </NavbarItem>
-        {isLanguageSwithcherEnabled && (
-          <NavbarItem>
-            <Dropdown>
-              <DropdownTrigger>
-                <Button
-                  variant="light"
-                  startContent={<GlobeAltIcon className="w-4 h-4" />}
-                  endContent={<ChevronDownIcon className="w-4 h-4" />}
-                >
-                  {languages.find(lang => lang.key === locale)?.label}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Language selection"
-                selectionMode="single"
-                selectedKeys={new Set([locale])}
-                onSelectionChange={keys => {
-                  const selected = Array.from(keys)[0] as string;
-                  handleLanguageChange(selected);
-                }}
-              >
-                {languages.map(({ key, label }) => (
-                  <DropdownItem key={key}>{label}</DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </NavbarItem>
-        )}
-      </NavbarContent>
       <NavbarContent justify="end">
+        <NavbarItem>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                variant="light"
+                startContent={<GlobeAltIcon className="w-4 h-4" />}
+                endContent={<ChevronDownIcon className="w-4 h-4" />}
+              >
+                {languages.find(lang => lang.key === locale)?.label}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Language selection"
+              selectionMode="single"
+              selectedKeys={new Set([locale])}
+              onSelectionChange={keys => {
+                const selected = Array.from(keys)[0] as string;
+                handleLanguageChange(selected);
+              }}
+            >
+              {languages.map(({ key, label }) => (
+                <DropdownItem key={key}>{label}</DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarItem>
         <NavbarItem isActive={isActive('/exit')}>
           <Button
             onPress={handleLogout}
             as={Link}
             color="default"
             variant="ghost"
-            title="გამოსვლა"
+            title={t('menu.exit')}
             isIconOnly
-            startContent={<ArrowLeftStartOnRectangleIcon className="min-w-6 min-h-6" />}
+            startContent={<ArrowLeftStartOnRectangleIcon className="w-4 h-4" />}
           />
         </NavbarItem>
       </NavbarContent>

@@ -19,18 +19,17 @@ type ExtendedPatient = Patient & {
 
 export default function PatientView({ patient }: { patient: ExtendedPatient }) {
   const data = patient;
-
-  const t = useTranslations();
+  const t = useTranslations('patient_view.tables');
 
   return (
     <div className="space-y-2">
-      <Table removeWrapper aria-label="პაციენტი">
+      <Table removeWrapper aria-label={t('personal.title')}>
         <TableHeader>
-          <TableColumn>გვარი სახელი</TableColumn>
-          <TableColumn>დაბადების თარიღი</TableColumn>
-          <TableColumn>პირადი ნომერი</TableColumn>
-          <TableColumn>სქესი</TableColumn>
-          <TableColumn>BMI</TableColumn>
+          <TableColumn>{t('personal.columns.fullName')}</TableColumn>
+          <TableColumn>{t('personal.columns.birthDate')}</TableColumn>
+          <TableColumn>{t('personal.columns.personalId')}</TableColumn>
+          <TableColumn>{t('personal.columns.sex')}</TableColumn>
+          <TableColumn>{t('personal.columns.bmi')}</TableColumn>
         </TableHeader>
         <TableBody>
           <TableRow>
@@ -41,17 +40,17 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
             </TableCell>
             <TableCell>{d(data.birth_date)}</TableCell>
             <TableCell>{data.personal_id}</TableCell>
-            <TableCell>{data.sex === 'male' ? 'მამრობითი' : 'მდედრობითი'}</TableCell>
+            <TableCell>{data.sex === 'male' ? t('male') : t('female')}</TableCell>
             <TableCell>{data.bmi}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
 
-      <Table removeWrapper aria-label="aaa">
+      <Table removeWrapper aria-label={t('contact.title')}>
         <TableHeader>
-          <TableColumn>რეგიონი</TableColumn>
-          <TableColumn>მისამართი</TableColumn>
-          <TableColumn>ტელეფონის ნომერი</TableColumn>
+          <TableColumn>{t('contact.columns.region')}</TableColumn>
+          <TableColumn>{t('contact.columns.address')}</TableColumn>
+          <TableColumn>{t('contact.columns.phone')}</TableColumn>
         </TableHeader>
         <TableBody>
           <TableRow>
@@ -62,9 +61,9 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
         </TableBody>
       </Table>
 
-      <Table removeWrapper aria-label="aaa">
+      <Table removeWrapper aria-label={t('doctor.title')}>
         <TableHeader>
-          <TableColumn>მკურნალი ექიმი</TableColumn>
+          <TableColumn>{t('doctor.title')}</TableColumn>
         </TableHeader>
         <TableBody>
           <TableRow>
@@ -75,10 +74,10 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
         </TableBody>
       </Table>
 
-      <Table removeWrapper aria-label="aaa">
+      <Table removeWrapper aria-label={t('dates.title')}>
         <TableHeader>
-          <TableColumn>ჰემოდიალიზზე გადასვლის თარიღი</TableColumn>
-          <TableColumn>ტრანსპლანტაციის თარიღი</TableColumn>
+          <TableColumn>{t('dates.columns.pdTransit')}</TableColumn>
+          <TableColumn>{t('dates.columns.transplantation')}</TableColumn>
         </TableHeader>
         <TableBody>
           <TableRow>
@@ -89,12 +88,12 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
       </Table>
 
       {data.mors && (
-        <Table removeWrapper aria-label="aaa">
+        <Table removeWrapper aria-label={t('mors.title')}>
           <TableHeader>
-            <TableColumn>MORS</TableColumn>
-            <TableColumn>MORS თარიღი</TableColumn>
-            <TableColumn>MORS მიზეზი</TableColumn>
-            <TableColumn>MORS კომენტარი</TableColumn>
+            <TableColumn>{t('mors.columns.status')}</TableColumn>
+            <TableColumn>{t('mors.columns.date')}</TableColumn>
+            <TableColumn>{t('mors.columns.reason')}</TableColumn>
+            <TableColumn>{t('mors.columns.comment')}</TableColumn>
           </TableHeader>
           <TableBody>
             <TableRow>

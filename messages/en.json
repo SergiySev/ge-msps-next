@@ -76,7 +76,7 @@
   "gfr": "Glomerular Filtration Rate",
   "pet": "Peritoneal Equilibration Test",
   "ktv": "Dialysis Adequacy Test",
-  "check_date": "Test Date",
+  "check_date": "Check Date",
   "pd_date": "PD Start Date",
   "assessment": "Assessment",
   "ka_comment": "Comment",
@@ -158,5 +158,139 @@
   "generalError": "An Error Occurred, Please Try Again",
   "profile": "Profile",
   "login": "Login",
-  "logoutSuccess": "Logged out successfully"
+  "logoutSuccess": "Logged out successfully",
+
+  "patient_diseases": "Patient Diseases",
+  "patient_edit": "Edit Patient",
+  "patient_add": "Add Patient",
+  "last_30_patients": "Patients (Last 30)",
+  "infectious_add": "Add Infectious",
+  "infectious_edit": "Edit Infectious",
+  "kidney_assessment_add": "Add Assessment",
+  "kidney_assessment_edit": "Edit Assessment",
+  "noninfectious_add": "Add Non-infectious",
+  "noninfectious_edit": "Edit Non-infectious",
+  "pd_add": "Add PD",
+  "pd_edit": "Edit PD",
+
+  "patients_page": {
+    "table": {
+      "title": "Patients",
+      "columns": {
+        "patient": "Patient",
+        "birthDate": "Birth Date",
+        "doctor": "Treating Physician"
+      },
+      "noRecords": "No Records Found"
+    }
+  },
+
+  "diseases": {
+    "title": "Diseases",
+    "edit": "Edit",
+    "sections": {
+      "main": "Main Diseases",
+      "comorbid": "Comorbid Diseases"
+    }
+  },
+
+  "patient_view": {
+    "tables": {
+      "personal": {
+        "title": "Patient",
+        "columns": {
+          "fullName": "Full Name",
+          "birthDate": "Date of Birth",
+          "personalId": "Personal ID",
+          "sex": "Sex",
+          "bmi": "BMI"
+        }
+      },
+      "contact": {
+        "title": "Contact Information",
+        "columns": {
+          "region": "Region",
+          "address": "Address",
+          "phone": "Phone Number"
+        }
+      },
+      "doctor": {
+        "title": "Treating Physician"
+      },
+      "dates": {
+        "title": "Dates",
+        "columns": {
+          "pdTransit": "Hemodialysis Transition Date",
+          "transplantation": "Transplantation Date"
+        }
+      },
+      "mors": {
+        "title": "MORS",
+        "columns": {
+          "status": "MORS",
+          "date": "MORS Date",
+          "reason": "MORS Reason",
+          "comment": "MORS Comment"
+        }
+      }
+    }
+  },
+
+  "profile_navigation": {
+    "diseases": "Diseases",
+    "pd": "PD",
+    "kidney_assessment": "Assessments",
+    "infectious": "Infectious",
+    "noninfectious": "Non-infectious"
+  },
+
+  "tables": {
+    "columns": {
+      "log": " ",
+      "doctor": "Doctor",
+      "edit": " ",
+      "date": "Date",
+      "gfr": "GFR",
+      "ktv": "Kt/V",
+      "pet": "PET"
+    },
+    "titles": {
+      "assessments": "Assessments",
+      "pd": "Peritoneal Dialysis"
+    }
+  },
+
+  "not_found": {
+    "title": "Not Found",
+    "message": "The page or content you're looking for could not be found",
+    "home_link": "Home Page"
+  },
+
+  "index": {
+    "selectPatient": "Select Patient",
+    "addNewPatient": "Add New Patient",
+    "recentPatients": "Recently Added Patients"
+  },
+
+  "menu": {
+    "patient": "Patient",
+    "home": "Home",
+    "new": "New...",
+    "pd": "PD",
+    "assessment": "Assessment",
+    "infectious": "Infectious",
+    "noninfectious": "Non-infectious",
+    "exit": "Exit"
+  },
+
+  "actions": {
+    "add": "Add",
+    "edit": "Edit",
+    "downloadPdExcel": "Download PD Excel"
+  },
+
+  "form": {
+    "clearable_text": "-- Select --",
+    "delete_patient_warning": "To delete a patient, you must first delete all associated records (PD, Assessment...) from the patient's profile"
+  }
 }

@@ -4,6 +4,7 @@ import { IPagination } from 'msps/lib/types';
 import { d } from 'msps/lib/validation/helpers/date';
 import { searchParamsCache } from 'msps/lib/params/searchParams';
 import { Prisma } from '@prisma/client';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 type PageProps = {
   params: Promise<{ id: string; locale: string }>;
@@ -11,6 +12,9 @@ type PageProps = {
 };
 
 export default async function KidneyAssessmentPage({ params, searchParams }: PageProps) {
+  const locale = getLocale();
+  const t = await getTranslations({ locale });
+
   const id = +(await params).id;
 
   const { page, sorting, itemsPerPage } = await searchParamsCache.parse(searchParams);
@@ -81,15 +85,15 @@ export default async function KidneyAssessmentPage({ params, searchParams }: Pag
   });
 
   const linkValue = 'kidney-assessment';
-  const title = 'შეფასებები';
+  const title = t('tables.titles.assessments');
 
   const columns = [
-    { key: 'log', value: ' ' },
-    { key: 'doctor', value: 'ექიმი' },
-    { key: 'gfr', value: 'GFR' },
-    { key: 'ktv', value: 'Kt/V' },
-    { key: 'pet', value: 'PET' },
-    { key: 'edit', value: ' ' },
+    { key: 'log', value: t('tables.columns.log') },
+    { key: 'doctor', value: t('tables.columns.doctor') },
+    { key: 'gfr', value: t('tables.columns.gfr') },
+    { key: 'ktv', value: t('tables.columns.ktv') },
+    { key: 'pet', value: t('tables.columns.pet') },
+    { key: 'edit', value: t('tables.columns.edit') },
   ];
 
   const pagination = {

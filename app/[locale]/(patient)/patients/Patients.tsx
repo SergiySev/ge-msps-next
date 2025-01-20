@@ -14,6 +14,7 @@ import {
 import Link from 'next/link';
 import clsx from 'clsx';
 import { d } from 'msps/lib/validation/helpers/date';
+import { useTranslations } from 'next-intl';
 
 interface Patient {
   id: number;
@@ -32,10 +33,12 @@ interface PatientsProps {
 }
 
 const Patients = ({ patients, className }: PatientsProps) => {
+  const t = useTranslations('patients_page.table');
+
   const columns = [
-    { key: 'patient_name', label: 'პაციენტი' },
-    { key: 'birth_date', label: 'დაბ. თარიღი' },
-    { key: 'doctor', label: 'მკურნალი ექიმი' },
+    { key: 'patient_name', label: t('columns.patient') },
+    { key: 'birth_date', label: t('columns.birthDate') },
+    { key: 'doctor', label: t('columns.doctor') },
     { key: 'actions', label: '' },
   ];
 
@@ -51,11 +54,11 @@ const Patients = ({ patients, className }: PatientsProps) => {
     ),
   }));
   return (
-    <Table aria-label="Patients Table" className={clsx('min-w-full', className)} removeWrapper>
+    <Table aria-label={t('title')} className={clsx('min-w-full', className)} removeWrapper>
       <TableHeader columns={columns}>
         {column => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
-      <TableBody items={rows} emptyContent={'ჩანაწერები ვერ მოიძებნა'}>
+      <TableBody items={rows} emptyContent={t('noRecords')}>
         {(item: { key: number }) => (
           <TableRow key={item.key} className="even:bg-gray-50 odd:bg-white">
             {columnKey => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}

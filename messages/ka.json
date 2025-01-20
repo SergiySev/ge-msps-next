@@ -158,5 +158,139 @@
   "generalError": "დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან",
   "profile": "ფროფილი",
   "login": "ავტორიზაცია",
-  "logoutSuccess": "გასვლა წარმატებით განხორციელდა"
+  "logoutSuccess": "გასვლა წარმატებით განხორციელდა",
+
+  "patient_diseases": "პაციენტის დაავადებები",
+  "patient_edit": "პაციენტის რედაქტირება",
+  "patient_add": "პაციენტის დამატება",
+  "last_30_patients": "პაციენტები (ბოლო 30)",
+  "infectious_add": "ინფექციურის დამატება",
+  "infectious_edit": "ინფექციურის რედაქტირება",
+  "kidney_assessment_add": "შეფასების დამატება",
+  "kidney_assessment_edit": "შეფასების რედაქტირება",
+  "noninfectious_add": "არაინფექციურის დამატება",
+  "noninfectious_edit": "არაინფექციურის რედაქტირება",
+  "pd_add": "პდ დამატება",
+  "pd_edit": "პდ რედაქტირება",
+
+  "patients_page": {
+    "table": {
+      "title": "პაციენტები",
+      "columns": {
+        "patient": "პაციენტი",
+        "birthDate": "დაბ. თარიღი",
+        "doctor": "მკურნალი ექიმი"
+      },
+      "noRecords": "ჩანაწერები ვერ მოიძებნა"
+    }
+  },
+
+  "diseases": {
+    "title": "დაავადებები",
+    "edit": "რედაქტირება",
+    "sections": {
+      "main": "ძირითადი დაავადებები",
+      "comorbid": "კომორბიდული დაავადებები"
+    }
+  },
+
+  "patient_view": {
+    "tables": {
+      "personal": {
+        "title": "პაციენტი",
+        "columns": {
+          "fullName": "გვარი სახელი",
+          "birthDate": "დაბადების თარიღი",
+          "personalId": "პირადი ნომერი",
+          "sex": "სქესი",
+          "bmi": "BMI"
+        }
+      },
+      "contact": {
+        "title": "საკონტაქტო ინფორმაცია",
+        "columns": {
+          "region": "რეგიონი",
+          "address": "მისამართი",
+          "phone": "ტელეფონის ნომერი"
+        }
+      },
+      "doctor": {
+        "title": "მკურნალი ექიმი"
+      },
+      "dates": {
+        "title": "თარიღები",
+        "columns": {
+          "pdTransit": "ჰემოდიალიზზე გადასვლის თარიღი",
+          "transplantation": "ტრანსპლანტაციის თარიღი"
+        }
+      },
+      "mors": {
+        "title": "MORS",
+        "columns": {
+          "status": "MORS",
+          "date": "MORS თარიღი",
+          "reason": "MORS მიზეზი",
+          "comment": "MORS კომენტარი"
+        }
+      }
+    }
+  },
+
+  "profile_navigation": {
+    "diseases": "დაავადებები",
+    "pd": "პდ",
+    "kidney_assessment": "შეფასებები",
+    "infectious": "ინფექციური",
+    "noninfectious": "არაინფექციური"
+  },
+
+  "tables": {
+    "columns": {
+      "log": " ",
+      "doctor": "ექიმი",
+      "edit": " ",
+      "date": "თარიღი",
+      "gfr": "GFR",
+      "ktv": "Kt/V",
+      "pet": "PET"
+    },
+    "titles": {
+      "assessments": "შეფასებები",
+      "pd": "პერიტონეული დიალიზი"
+    }
+  },
+
+  "not_found": {
+    "title": "ვერ მოიძებნა",
+    "message": "ასეთი გვერდი ან მოცემი ვერ მოიძებნა",
+    "home_link": "მთავარი გვერდი"
+  },
+
+  "index": {
+    "selectPatient": "პაციენტის არჩევა",
+    "addNewPatient": "ახალი პაციენტის დამატება",
+    "recentPatients": "ბოლო დამატებული პაციენტები"
+  },
+
+  "menu": {
+    "patient": "პაციენტი",
+    "home": "მთავარი",
+    "new": "ახალი...",
+    "pd": "პდ",
+    "assessment": "შეფასება",
+    "infectious": "ინფექციური",
+    "noninfectious": "არაინფექციური",
+    "exit": "გამოსვლა"
+  },
+
+  "actions": {
+    "add": "დამატება",
+    "edit": "რედაქტირება",
+    "downloadPdExcel": "პდ - ექსელის გადმოწერა"
+  },
+
+  "form": {
+    "clearable_text": "-- აირჩიეთ --",
+    "delete_patient_warning": "პაციენტის წასაშლელად, თქვენ ჯერ უნდა წაშალოთ პაციენტის ფროფილიდან დაკავშირებული ყველა ჩანაწერი (პდ, შეფასება...)"
+  }
 }

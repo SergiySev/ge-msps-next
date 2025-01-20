@@ -83,75 +83,74 @@ const PatientForm = ({ patient, regions, className }: PatientFormProps) => {
       <SubmitButton className="mb-8" isEdit={isEditPage} isLoading={isSubmitting} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ControlledInput name="last_name" control={control} rules={{ required: true }} label="გვარი" />
-        <ControlledInput name="first_name" control={control} rules={{ required: true }} label="სახელი" />
+        <ControlledInput name="last_name" control={control} rules={{ required: true }} label={t('last_name')} />
+        <ControlledInput name="first_name" control={control} rules={{ required: true }} label={t('first_name')} />
         <ControlledInput
           name="personal_id"
           control={control}
           rules={{ required: true }}
-          label="პირადი ნომერი"
+          label={t('personal_id')}
           max={11}
           min={11}
         />
-        <ControlledDateInput name="birth_date" control={control} rules={{ required: true }} label="დაბადების თარიღი" />
+        <ControlledDateInput name="birth_date" control={control} rules={{ required: true }} label={t('birth_date')} />
         <ControlledRadioGroup
           control={control}
           rules={{ required: true }}
-          label="სქესი"
+          label={t('sex')}
           items={[
             { value: patient_sex.male, label: t(patient_sex.male) },
             { value: patient_sex.female, label: t(patient_sex.female) },
           ]}
           name="sex"
         />
-        <ControlledInput name="bmi" control={control} label="BMI" />
-        <ControlledInput name="phone" control={control} label="ტელეფონის ნომერი" />
+        <ControlledInput name="bmi" control={control} label={t('bmi')} />
+        <ControlledInput name="phone" control={control} label={t('phone')} />
         <ControlledSelect
           name="region_id"
           control={control}
           rules={{ required: true }}
-          label="რეგიონი"
+          label={t('region')}
           items={regions}
         />
-        <ControlledInput name="address" control={control} label="მისამართი" className="md:col-span-2" />
+        <ControlledInput name="address" control={control} label={t('address')} className="md:col-span-2" />
         <Divider className="md:col-span-2 border-dashed my-4" />
         <ControlledStaffSelector
           role="doctor"
           name="doctor_id"
           control={control}
           rules={{ required: true }}
-          label="ექიმი"
+          label={t('doctor')}
         />
         <Divider className="md:col-span-2 border-dashed my-4" />
-        <ControlledDateInput name="pd_transit_date" control={control} label="ჰემოდიალიზზე გადასვლის თარიღი" />
-        <ControlledDateInput name="transplantation_date" control={control} label="ტრანსპლანტაციის თარიღი" />
+        <ControlledDateInput name="pd_transit_date" control={control} label={t('pd_transit_date')} />
+        <ControlledDateInput name="transplantation_date" control={control} label={t('transplantation_date')} />
         <Divider className="md:col-span-2 border-dashed my-4" />
 
         <div className="md:col-span-2">
-          <ControlledCheckbox name="mors" control={control} label="MORS" onValueChange={handleMorsChange} />
+          <ControlledCheckbox name="mors" control={control} label={t('mors')} onValueChange={handleMorsChange} />
         </div>
 
         {morsCheckbox && (
           <>
-            <ControlledDateInput name="mors_date" control={control} label="MORS თარიღი" />
+            <ControlledDateInput name="mors_date" control={control} label={t('mors_date')} />
             <ControlledSelect
               name="mors_reason"
               control={control}
-              label="MORS მიზეზი"
+              label={t('mors_reason')}
               placeholder=" "
               clearable={true}
-              clearableText="-- აირჩიეთ --"
+              clearableText={t('form.clearable_text')}
               items={[
                 { id: patient_mors_reason.mors_heart, name: t(patient_mors_reason.mors_heart) },
                 { id: patient_mors_reason.mors_infection, name: t(patient_mors_reason.mors_infection) },
                 { id: patient_mors_reason.mors_other, name: t(patient_mors_reason.mors_other) },
               ]}
             />
-
             <ControlledTextArea
               name="mors_comment"
               control={control}
-              label="MORS კომენტარი"
+              label={t('mors_comment')}
               className="md:col-span-2"
             />
           </>
@@ -164,7 +163,7 @@ const PatientForm = ({ patient, regions, className }: PatientFormProps) => {
           id={patient.id}
           deleteAction={deletePatient}
           onDelete={() => router.push('/')}
-          customMessage="პაციენტის წასაშლელად, თქვენ ჯერ უნდა წაშალოთ პაციენტის ფროფილიდან დაკავშირებული ყველა ჩანაწერი (პდ, შეფასება...)"
+          customMessage={t('form.delete_patient_warning')}
         />
       )}
     </form>

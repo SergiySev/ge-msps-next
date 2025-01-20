@@ -46,7 +46,7 @@ export default function XLSXButton() {
 
   return (
     <Button color="secondary" onPress={() => download()} startContent={<TableCellsIcon className="min-w-6 min-h-6" />}>
-      პდ - ექსელის გადმოწერა
+      {t('actions.downloadPdExcel')}
     </Button>
   );
 }
