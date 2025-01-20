@@ -43,6 +43,7 @@ jobs:
             npm install && \
             sudo npm install -g pm2 && \
             npm run build && \
-            pm2 delete ge-msps-next || true && \
-            pm2 start npm --name ge-msps-next -- start -- -p 3030 && \
+            pm2 describe ge-msps-next > /dev/null && \
+            pm2 reload ecosystem.config.js || \
+            pm2 start ecosystem.config.js && \
             pm2 save"
