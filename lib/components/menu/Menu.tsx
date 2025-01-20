@@ -13,7 +13,14 @@ import {
   DropdownItem,
   NavbarBrand,
 } from '@nextui-org/react';
-import { ChevronDownIcon, HomeIcon, PlusIcon, UserIcon, GlobeAltIcon } from '@heroicons/react/16/solid';
+import {
+  ChevronDownIcon,
+  HomeIcon,
+  PlusIcon,
+  UserIcon,
+  GlobeAltIcon,
+  ArrowLeftStartOnRectangleIcon,
+} from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
@@ -63,9 +70,10 @@ export default function Menu({ className }: { className?: string }) {
 
   const handleLogout = async () => {
     try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
       await signOut({
         redirect: true,
-        callbackUrl: '/login', // Redirect to login page after logout
+        callbackUrl: `${baseUrl}/login`, // Use dynamic base URL
       });
       toast.success(t('logoutSuccess'));
     } catch (error) {
@@ -168,9 +176,15 @@ export default function Menu({ className }: { className?: string }) {
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem isActive={isActive('/exit')}>
-          <Button onPress={handleLogout} as={Link} color="default" variant="ghost">
-            გამოსვლა
-          </Button>
+          <Button
+            onPress={handleLogout}
+            as={Link}
+            color="default"
+            variant="ghost"
+            title="გამოსვლა"
+            isIconOnly
+            startContent={<ArrowLeftStartOnRectangleIcon className="min-w-6 min-h-6" />}
+          />
         </NavbarItem>
       </NavbarContent>
     </Navbar>

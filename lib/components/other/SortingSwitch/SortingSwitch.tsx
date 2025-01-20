@@ -27,7 +27,11 @@ const SortingSwitch = (props: SwitchProps) => {
                 ],
               })}
             >
-              {isSelected ? <BarsArrowDownIcon /> : <NumberedListIcon />}
+              {isSelected ? (
+                <BarsArrowDownIcon className="min-w-4 min-h-4" />
+              ) : (
+                <NumberedListIcon className="min-w-4 min-h-4" />
+              )}
             </div>
             <p className="inline-block text-default-500 select-none text-xs">სორტირება</p>
           </div>
