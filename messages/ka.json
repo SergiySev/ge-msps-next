@@ -149,7 +149,8 @@
 
   "infectious": "ინფექციური",
   "noninfectious": "არაინფექციური",
-
+  "no_data_found": "ჩანაწერები ვერ მოიძებნა",
+  "sorting": "სორტირება",
   "record": "ჩანაწერი",
 
   "userNotFound": "მომხმარებელი ვერ მოიძებნა",
@@ -196,6 +197,10 @@
 
   "patient_view": {
     "tables": {
+      "sex": {
+        "male": "მამრობითი",
+        "female": "მდედრობითი"
+      },
       "personal": {
         "title": "პაციენტი",
         "columns": {
@@ -231,7 +236,10 @@
           "date": "MORS თარიღი",
           "reason": "MORS მიზეზი",
           "comment": "MORS კომენტარი"
-        }
+        },
+        "mors_heart": "გულ-სისხლძარღვთა სისტემა",
+        "mors_infection": "ინფექცია",
+        "mors_other": "სხვა"
       }
     }
   },

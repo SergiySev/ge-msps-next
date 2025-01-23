@@ -2,12 +2,14 @@
 
 import { useSwitch, VisuallyHidden, SwitchProps, Tooltip } from '@nextui-org/react';
 import { BarsArrowDownIcon, NumberedListIcon } from '@heroicons/react/16/solid';
+import { useTranslations } from 'next-intl';
 
 const SortingSwitch = (props: SwitchProps) => {
   const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch(props);
 
   const lastEdited = 'ბოლო რედაქტირებული ჩანაწერები';
   const lastAdded = 'ბოლო დამატებული ჩანაწერები';
+  const t = useTranslations();
 
   return (
     <div className="flex flex-col gap-2">
@@ -33,7 +35,7 @@ const SortingSwitch = (props: SwitchProps) => {
                 <NumberedListIcon className="min-w-4 min-h-4" />
               )}
             </div>
-            <p className="inline-block text-default-500 select-none text-xs">სორტირება</p>
+            <p className="inline-block text-default-500 select-none text-xs">{t('sorting')}</p>
           </div>
         </Tooltip>
       </Component>

@@ -40,7 +40,7 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
             </TableCell>
             <TableCell>{d(data.birth_date)}</TableCell>
             <TableCell>{data.personal_id}</TableCell>
-            <TableCell>{data.sex === 'male' ? t('male') : t('female')}</TableCell>
+            <TableCell>{data.sex === 'male' ? t('sex.male') : t('sex.female')}</TableCell>
             <TableCell>{data.bmi}</TableCell>
           </TableRow>
         </TableBody>
@@ -99,7 +99,7 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
             <TableRow>
               <TableCell>{data.mors ? <CheckIcon className="w-6 h-6" /> : null}</TableCell>
               <TableCell>{d(data.mors_date)}</TableCell>
-              <TableCell>{t(data.mors_reason)}</TableCell>
+              <TableCell>{t('mors.' + data.mors_reason)}</TableCell>
               <TableCell>{data.mors_comment}</TableCell>
             </TableRow>
           </TableBody>

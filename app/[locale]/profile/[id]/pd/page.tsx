@@ -79,6 +79,7 @@ export default async function PDPage({ params, searchParams }: PageProps) {
   });
 
   const linkValue = 'pd';
+  const linkValueForNew = `${linkValue}?patientId=${id}`;
   const title = t('tables.titles.pd');
 
   const columns = [
@@ -101,5 +102,14 @@ export default async function PDPage({ params, searchParams }: PageProps) {
     itemsPerPage,
   } as IPagination;
 
-  return <DataTableView pagination={pagination} data={data} linkValue={linkValue} title={title} columns={columns} />;
+  return (
+    <DataTableView
+      pagination={pagination}
+      data={data}
+      linkValue={linkValue}
+      linkValueForNew={linkValueForNew}
+      title={title}
+      columns={columns}
+    />
+  );
 }

@@ -149,7 +149,8 @@
 
   "infectious": "Infectious",
   "noninfectious": "Non-infectious",
-
+  "no_data_found": "No Data Found",
+  "sorting": "Sorting",
   "record": "Record",
 
   "userNotFound": "User Not Found",
@@ -196,6 +197,10 @@
 
   "patient_view": {
     "tables": {
+      "sex": {
+        "male": "Male",
+        "female": "Female"
+      },
       "personal": {
         "title": "Patient",
         "columns": {
@@ -231,7 +236,10 @@
           "date": "MORS Date",
           "reason": "MORS Reason",
           "comment": "MORS Comment"
-        }
+        },
+        "mors_heart": "Cardiovascular System",
+        "mors_infection": "Infection",
+        "mors_other": "Other"
       }
     }
   },

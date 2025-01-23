@@ -18,9 +18,11 @@ import { searchParamsParsers } from 'msps/lib/params/searchParams';
 import { useQueryStates } from 'nuqs';
 import SortingSwitch from 'msps/lib/components/other/SortingSwitch/SortingSwitch';
 import WhoMadeIt from '../WhoMadeIt/WhoMadeIt';
+import { useTranslations } from 'next-intl';
 
 interface DataTableViewProps<T extends { id: number }> {
   linkValue: string;
+  linkValueForNew: string;
   title: string;
   columns: { key: string; value: string }[];
   pagination: IPagination;
@@ -32,9 +34,11 @@ export default function DataTableView<T extends { id: number }>({
   data,
   title,
   linkValue,
+  linkValueForNew,
   columns,
 }: DataTableViewProps<T>) {
   const [{ page, sorting }, setParams] = useQueryStates(searchParamsParsers);
+  const t = useTranslations();
 
   return (
     <div className="mt-4">
@@ -49,8 +53,8 @@ export default function DataTableView<T extends { id: number }>({
           />
         </div>
         <div className="w-1/4 text-right">
-          <Button href={`/${linkValue}`} as={Link} color="default" variant="light" size="sm">
-            <PlusIcon className="h-4 w-4" /> დამატება
+          <Button href={`/${linkValueForNew}`} as={Link} color="default" variant="light" size="sm">
+            <PlusIcon className="h-4 w-4" /> {t('add')}
           </Button>
         </div>
       </div>
@@ -79,7 +83,7 @@ export default function DataTableView<T extends { id: number }>({
             <TableColumn key={key}>{value}</TableColumn>
           ))}
         </TableHeader>
-        <TableBody items={data} emptyContent={'ჩანაწერები ვერ მოიძებნა'}>
+        <TableBody items={data} emptyContent={t('no_data_found')}>
           {item => (
             <TableRow key={item.id} className="even:bg-gray-50 odd:bg-white">
               {columnKey =>

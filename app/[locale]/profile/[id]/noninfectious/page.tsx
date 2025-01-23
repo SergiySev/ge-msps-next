@@ -81,6 +81,7 @@ export default async function NonInfectiousPage({ params, searchParams }: PagePr
   });
 
   const linkValue = 'noninfectious';
+  const linkValueForNew = `${linkValue}?patientId=${id}`;
   const title = t('tables.titles.assessments');
 
   const columns = [
@@ -96,5 +97,14 @@ export default async function NonInfectiousPage({ params, searchParams }: PagePr
     itemsPerPage,
   } as IPagination;
 
-  return <DataTableView pagination={pagination} data={data} linkValue={linkValue} title={title} columns={columns} />;
+  return (
+    <DataTableView
+      pagination={pagination}
+      data={data}
+      linkValue={linkValue}
+      linkValueForNew={linkValueForNew}
+      title={title}
+      columns={columns}
+    />
+  );
 }
