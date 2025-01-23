@@ -92,14 +92,20 @@ export default function Menu({ className }: { className?: string }) {
   ];
 
   const handleLanguageChange = (key: string) => {
-    // Get the path segments after the locale
-    const pathSegments = currentPath.split('/').slice(2);
+    // Get the current path
+    const pathSegments = currentPath.split('/').filter(Boolean); // Remove empty strings
+
+    // Check if the first segment is a valid language
+    const isCurrentPathStartsWithLang = languages.some(lang => pathSegments[0] === lang.key);
+
+    // If path starts with language code, replace it; otherwise, prepend the new language
+    const newPathSegments = isCurrentPathStartsWithLang ? [key, ...pathSegments.slice(1)] : [key, ...pathSegments];
+
     // Create new path with selected locale
-    const newPath = `/${key}/${pathSegments.join('/')}`;
-    console.log('Current path:', currentPath);
-    console.log('New path:', newPath);
-    // Use replace instead of push to avoid adding to history stack
-    window.location.href = newPath; // Use window.location instead of router
+    const newPath = `/${newPathSegments.join('/')}`;
+
+    // Use window.location for full page refresh with new language
+    window.location.href = newPath;
   };
 
   return (
