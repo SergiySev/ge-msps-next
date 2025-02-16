@@ -17,6 +17,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Clear Next.js cache
+        run: rm -rf .next
+
       - name: Build application
         run: npm run build
 
@@ -42,6 +45,7 @@ jobs:
             [ -s \$NVM_DIR/nvm.sh ] && \. \$NVM_DIR/nvm.sh && \
             npm install && \
             sudo npm install -g pm2 && \
+            rm -rf .next && \
             npm run build && \
             pm2 describe ge-msps-next > /dev/null && \
             pm2 reload ecosystem.config.js || \
