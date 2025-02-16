@@ -16,7 +16,7 @@ import { createNoninfectiousClientSchema, updateNoninfectiousClientSchema } from
 import toast from 'react-hot-toast';
 import { createNoninfectious, updateNoninfectious, deleteNoninfectious } from 'msps/lib/actions/noninfectiousAction';
 import { useTranslations } from 'next-intl';
-import { Divider } from "@heroui/react";
+import { Divider } from '@heroui/react';
 import { useEffect } from 'react';
 import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';
@@ -28,7 +28,6 @@ interface NoninfectiousFormProps {
 
 const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
   const isEditPage = data.hasOwnProperty('id');
-  const schema = isEditPage ? updateNoninfectiousClientSchema : createNoninfectiousClientSchema;
 
   const t = useTranslations();
   const router = useRouter();
@@ -44,10 +43,12 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
     resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
-      const action = isEditPage ? updateNoninfectious : createNoninfectious;
-      return action(formValues);
+      if (isEditPage) {
+        return updateNoninfectious(formValues);
+      }
+      return createNoninfectious(formValues);
     },
-    zodResolver(schema),
+    isEditPage ? zodResolver(updateNoninfectiousClientSchema) : zodResolver(createNoninfectiousClientSchema),
     {
       formProps: {
         defaultValues: {
@@ -56,7 +57,6 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          console.log('Success: ', input);
           toast.success('შეფასება შენახულია!');
           if (!isEditPage) resetFormAndAction();
         },

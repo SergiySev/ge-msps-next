@@ -22,7 +22,7 @@ model patient {
   sex                             patient_sex          @default(male)
   phone                           String?              @default("") @db.VarChar(255)
   address                         String?              @default("") @db.VarChar(255)
-  bmi                             Float?               @db.Float
+  bmi                             Float                @db.Float
   doctor_id                       Int
   region_id                       Int
   transplantation_date            DateTime?            @db.Date

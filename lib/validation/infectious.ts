@@ -43,7 +43,6 @@ const infectiousBaseSchema = z.object({
 export const createInfectiousClientSchema = infectiousBaseSchema;
 export const updateInfectiousClientSchema = infectiousBaseSchema.partial().extend({
   id: z.number().int(requiredText).positive(requiredText),
-  patient_id: z.number().int(requiredText).positive(requiredText),
 });
 
 export type CreateInfectiousClientSchema = z.infer<typeof createInfectiousClientSchema>;

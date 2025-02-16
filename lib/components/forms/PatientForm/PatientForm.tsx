@@ -12,7 +12,7 @@ import {
   ControlledTextArea,
 } from '../../controlled-form-components';
 import { createPatient, deletePatient, updatePatient } from 'msps/lib/actions/patientAction';
-import { Divider } from "@heroui/react";
+import { Divider } from '@heroui/react';
 import clsx from 'clsx';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,8 +31,6 @@ interface PatientFormProps {
 const PatientForm = ({ patient, regions, className }: PatientFormProps) => {
   const isEditPage = patient.hasOwnProperty('id');
   const t = useTranslations();
-
-  const schema = isEditPage ? updatePatientClientSchema : createPatientClientSchema;
   const router = useRouter();
 
   const {
@@ -46,22 +44,22 @@ const PatientForm = ({ patient, regions, className }: PatientFormProps) => {
     resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
-      const action = isEditPage ? updatePatient : createPatient;
-      return action(formValues);
+      if (isEditPage) {
+        return updatePatient(formValues);
+      }
+      return createPatient(formValues);
     },
-    zodResolver(schema),
+    isEditPage ? zodResolver(updatePatientClientSchema) : zodResolver(createPatientClientSchema),
     {
       formProps: {
         defaultValues: patient,
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          console.log('Success: ', `${input.last_name} ${input.first_name}`);
           toast.success(`${input.last_name} ${input.first_name} შენახულია!`);
           if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
-          console.log('Error: ', error);
           toast.error(`შეცდომა: ${error.serverError || ''}`);
         },
       },

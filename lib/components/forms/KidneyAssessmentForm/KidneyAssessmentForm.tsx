@@ -34,10 +34,8 @@ interface KidneyAssessmentFormProps {
 
 const KidneyAssessmentForm = ({ data, className }: KidneyAssessmentFormProps) => {
   const isEditPage = data.hasOwnProperty('id');
-  const schema = isEditPage ? updateKidneyAssessmentClientSchema : createKidneyAssessmentClientSchema;
 
   const t = useTranslations();
-
   const router = useRouter();
 
   const {
@@ -49,10 +47,12 @@ const KidneyAssessmentForm = ({ data, className }: KidneyAssessmentFormProps) =>
     resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
-      const action = isEditPage ? updateKidneyAssessment : createKidneyAssessment;
-      return action(formValues);
+      if (isEditPage) {
+        return updateKidneyAssessment(formValues);
+      }
+      return createKidneyAssessment(formValues);
     },
-    zodResolver(schema),
+    isEditPage ? zodResolver(updateKidneyAssessmentClientSchema) : zodResolver(createKidneyAssessmentClientSchema),
     {
       formProps: {
         defaultValues: {
@@ -61,7 +61,6 @@ const KidneyAssessmentForm = ({ data, className }: KidneyAssessmentFormProps) =>
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          console.log('Success: ', input);
           toast.success('შეფასება შენახულია!');
           if (!isEditPage) resetFormAndAction();
         },

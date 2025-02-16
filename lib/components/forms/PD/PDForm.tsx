@@ -16,7 +16,7 @@ import { createPDClientSchema, updatePDClientSchema } from 'msps/lib/validation/
 import toast from 'react-hot-toast';
 import { createPD, deletePD, updatePD } from 'msps/lib/actions/pdAction';
 import { useTranslations } from 'next-intl';
-import { Divider } from "@heroui/react";
+import { Divider } from '@heroui/react';
 import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';
 
@@ -27,7 +27,6 @@ interface PDFormProps {
 
 const PDForm = ({ data, className }: PDFormProps) => {
   const isEditPage = data.hasOwnProperty('id');
-  const schema = isEditPage ? updatePDClientSchema : createPDClientSchema;
 
   const t = useTranslations();
   const router = useRouter();
@@ -41,10 +40,12 @@ const PDForm = ({ data, className }: PDFormProps) => {
     resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
-      const action = isEditPage ? updatePD : createPD;
-      return action(formValues);
+      if (isEditPage) {
+        return updatePD(formValues);
+      }
+      return createPD(formValues);
     },
-    zodResolver(schema),
+    isEditPage ? zodResolver(updatePDClientSchema) : zodResolver(createPDClientSchema),
     {
       formProps: {
         defaultValues: {
@@ -53,7 +54,6 @@ const PDForm = ({ data, className }: PDFormProps) => {
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          console.log('Success: ', input);
           toast.success('შეფასება შენახულია!');
           if (!isEditPage) resetFormAndAction();
         },

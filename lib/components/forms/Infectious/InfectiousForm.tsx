@@ -13,7 +13,12 @@ import {
 import clsx from 'clsx';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createInfectiousClientSchema, updateInfectiousClientSchema } from 'msps/lib/validation/infectious';
+import {
+  CreateInfectiousClientSchema,
+  createInfectiousClientSchema,
+  UpdateInfectiousClientSchema,
+  updateInfectiousClientSchema,
+} from 'msps/lib/validation/infectious';
 import toast from 'react-hot-toast';
 import { createInfectious, updateInfectious, deleteInfectious } from 'msps/lib/actions/infectiousAction';
 import { useTranslations } from 'next-intl';
@@ -29,7 +34,6 @@ interface InfectiousFormProps {
 
 const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
   const isEditPage = data.hasOwnProperty('id');
-  const schema = isEditPage ? updateInfectiousClientSchema : createInfectiousClientSchema;
 
   const t = useTranslations();
   const router = useRouter();
@@ -45,10 +49,12 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
     resetFormAndAction,
   } = useHookFormAction(
     async formValues => {
-      const action = isEditPage ? updateInfectious : createInfectious;
-      return action(formValues);
+      if (isEditPage) {
+        return updateInfectious(formValues as UpdateInfectiousClientSchema);
+      }
+      return createInfectious(formValues as CreateInfectiousClientSchema);
     },
-    zodResolver(schema),
+    isEditPage ? zodResolver(updateInfectiousClientSchema) : zodResolver(createInfectiousClientSchema),
     {
       formProps: {
         defaultValues: {
@@ -82,7 +88,9 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
           editable={!isEditPage}
           label="პაციენტი"
           control={control}
-          rules={{ required: true }}
+          rules={{
+            required: 'პაციენტის ID სავალდებულოა',
+          }}
         />
 
         <ControlledDateInput name="date" label={t('check_date')} control={control} rules={{ required: true }} />
