@@ -43,7 +43,7 @@ const patientBaseSchema = z.object({
   address: z.string().optional().nullable(),
   doctor_id: z.number().int().positive(requiredText),
 
-  pd_transit_date: z
+  pd_transit_date: z.coerce
     .date()
     .refine(minDate(), {
       message: minDateWarning,
@@ -53,7 +53,7 @@ const patientBaseSchema = z.object({
     })
     .nullable()
     .optional(),
-  transplantation_date: z
+  transplantation_date: z.coerce
     .date()
     .refine(minDate(), {
       message: minDateWarning,
