@@ -23,7 +23,4 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
-
-  // Auth token for Sentry
-  authToken: process.env.SENTRY_AUTH_TOKEN,
 });
