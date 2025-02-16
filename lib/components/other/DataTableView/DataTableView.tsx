@@ -12,7 +12,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { IPagination } from 'msps/lib/types';
 import { searchParamsParsers } from 'msps/lib/params/searchParams';
 import { useQueryStates } from 'nuqs';

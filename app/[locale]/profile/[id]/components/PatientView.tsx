@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckIcon } from '@heroicons/react/16/solid';
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react';
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
 import { patient as Patient } from '@prisma/client';
 import { d } from 'msps/lib/validation/helpers/date';
 import { useTranslations } from 'next-intl';

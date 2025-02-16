@@ -1,4 +1,4 @@
-import { DateInput, DateInputProps } from '@nextui-org/react';
+import { DateInput, DateInputProps } from "@heroui/react";
 import React from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 import { CalendarDate, parseDate } from '@internationalized/date';

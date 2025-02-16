@@ -1,5 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/16/solid';
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react";
 import clsx from 'clsx';
 import { useAction } from 'next-safe-action/hooks';
 import { useEffect } from 'react';

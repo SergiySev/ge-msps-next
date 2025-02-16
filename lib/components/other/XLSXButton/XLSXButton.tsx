@@ -1,4 +1,4 @@
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 import { patientsJson } from './sheets/patient.sheet';
 import { pdJson } from './sheets/pd.sheet';
 import { infectiousJson } from './sheets/infectious.sheet';

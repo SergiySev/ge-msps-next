@@ -10,7 +10,7 @@ import {
   TableCell,
   getKeyValue,
   Button,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import Link from 'next/link';
 import clsx from 'clsx';
 import { d } from 'msps/lib/validation/helpers/date';

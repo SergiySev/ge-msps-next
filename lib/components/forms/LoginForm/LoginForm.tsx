@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 import { loginSchema, LoginSchema } from 'msps/lib/validation/login';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';

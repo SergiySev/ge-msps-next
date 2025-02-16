@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, RadioGroupProps } from '@nextui-org/react';
+import { Radio, RadioGroup, RadioGroupProps } from "@heroui/react";
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 interface RadioItem {

@@ -12,7 +12,7 @@ import {
   ControlledTextArea,
 } from '../../controlled-form-components';
 import { createPatient, deletePatient, updatePatient } from 'msps/lib/actions/patientAction';
-import { Divider } from '@nextui-org/react';
+import { Divider } from "@heroui/react";
 import clsx from 'clsx';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';

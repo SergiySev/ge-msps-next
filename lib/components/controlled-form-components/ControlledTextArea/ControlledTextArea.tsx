@@ -1,4 +1,4 @@
-import { Textarea, TextAreaProps } from '@nextui-org/react';
+import { Textarea, TextAreaProps } from "@heroui/react";
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 interface ControlledTextAreaProps<T extends FieldValues> extends UseControllerProps<T> {

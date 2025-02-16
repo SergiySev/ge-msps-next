@@ -3,7 +3,7 @@ import prisma from 'msps/lib/prisma';
 import ProfileHeader from './components/ProfileHeader';
 import PatientSection from './components/PatientSection';
 import { ReactNode } from 'react';
-import { Divider } from '@nextui-org/react';
+import { Divider } from "@heroui/react";
 import ProfileNavigation from './components/ProfileNavigation';
 
 export default async function ProfileLayout({

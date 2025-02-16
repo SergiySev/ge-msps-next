@@ -16,7 +16,7 @@ import { createPDClientSchema, updatePDClientSchema } from 'msps/lib/validation/
 import toast from 'react-hot-toast';
 import { createPD, deletePD, updatePD } from 'msps/lib/actions/pdAction';
 import { useTranslations } from 'next-intl';
-import { Divider } from '@nextui-org/react';
+import { Divider } from "@heroui/react";
 import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';
 

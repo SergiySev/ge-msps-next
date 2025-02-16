@@ -1,6 +1,6 @@
 'use client';
 
-import { useSwitch, VisuallyHidden, SwitchProps, Tooltip } from '@nextui-org/react';
+import { useSwitch, VisuallyHidden, SwitchProps, Tooltip } from "@heroui/react";
 import { BarsArrowDownIcon, NumberedListIcon } from '@heroicons/react/16/solid';
 import { useTranslations } from 'next-intl';
 

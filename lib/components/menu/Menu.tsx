@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   NavbarBrand,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import {
   ChevronDownIcon,
   HomeIcon,

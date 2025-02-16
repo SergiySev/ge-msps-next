@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Controller, FieldValues, UseControllerProps, useWatch } from 'react-hook-form';
-import { Input, Button } from '@nextui-org/react';
-import { Listbox, ListboxItem } from '@nextui-org/react';
-import { Spinner } from '@nextui-org/react';
+import { Input, Button } from "@heroui/react";
+import { Listbox, ListboxItem } from "@heroui/react";
+import { Spinner } from "@heroui/react";
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
 import { XCircleIcon } from '@heroicons/react/16/solid';

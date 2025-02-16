@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { ControlledPatientSelector } from '../../lib/components/controlled-form-components';
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 import { UserPlusIcon, UsersIcon } from '@heroicons/react/16/solid';
 import XLSXButton from 'msps/lib/components/other/XLSXButton/XLSXButton';
 import { useTranslations } from 'next-intl';

@@ -1,5 +1,5 @@
 import { ChatBubbleBottomCenterIcon } from '@heroicons/react/16/solid';
-import { Tooltip } from '@nextui-org/react';
+import { Tooltip } from "@heroui/react";
 
 interface WhoMadeItProps {
   creator: string;

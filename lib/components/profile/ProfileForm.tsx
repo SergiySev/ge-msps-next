@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@nextui-org/button';
+import { Button } from "@heroui/button";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProfileSchema } from 'msps/lib/validation/staff-profile';
 import { updateProfile } from 'msps/lib/actions/profileAction';

@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckIcon, PencilSquareIcon } from '@heroicons/react/16/solid';
-import { Button, Link, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react';
+import { Button, Link, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
 import { patient as Patient } from '@prisma/client';
 import { useTranslations } from 'next-intl';
 

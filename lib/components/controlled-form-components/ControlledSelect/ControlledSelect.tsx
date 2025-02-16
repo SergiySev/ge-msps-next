@@ -1,4 +1,4 @@
-import { Select, SelectItem, SelectProps } from '@nextui-org/react';
+import { Select, SelectItem, SelectProps } from "@heroui/react";
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 import { useCallback } from 'react';
 

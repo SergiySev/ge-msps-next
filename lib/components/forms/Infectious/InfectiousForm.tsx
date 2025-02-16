@@ -17,7 +17,7 @@ import { createInfectiousClientSchema, updateInfectiousClientSchema } from 'msps
 import toast from 'react-hot-toast';
 import { createInfectious, updateInfectious, deleteInfectious } from 'msps/lib/actions/infectiousAction';
 import { useTranslations } from 'next-intl';
-import { Divider } from '@nextui-org/react';
+import { Divider } from "@heroui/react";
 import { useEffect } from 'react';
 import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';

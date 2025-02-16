@@ -1,7 +1,7 @@
 'use client';
 
 import { PencilSquareIcon } from '@heroicons/react/16/solid';
-import { Button, Link } from '@nextui-org/react';
+import { Button, Link } from "@heroui/react";
 import { patient as Patient } from '@prisma/client';
 
 export default function ProfileHeader({ patient }: { patient: Patient }) {

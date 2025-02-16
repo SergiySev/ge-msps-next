@@ -1,4 +1,4 @@
-import { Input, InputProps } from '@nextui-org/react';
+import { Input, InputProps } from "@heroui/react";
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 interface ControlledInputProps<T extends FieldValues> extends UseControllerProps<T> {
