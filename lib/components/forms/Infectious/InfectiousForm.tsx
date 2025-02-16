@@ -17,7 +17,7 @@ import { createInfectiousClientSchema, updateInfectiousClientSchema } from 'msps
 import toast from 'react-hot-toast';
 import { createInfectious, updateInfectious, deleteInfectious } from 'msps/lib/actions/infectiousAction';
 import { useTranslations } from 'next-intl';
-import { Divider } from "@heroui/react";
+import { Divider } from '@heroui/react';
 import { useEffect } from 'react';
 import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';
@@ -157,18 +157,8 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
       <Divider className="md:col-span-2 border-dashed my-4" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 md:col-span-2 gap-4">
-        <ControlledDateInput
-          name="treatment_start_date"
-          label={t('treatment_start_date')}
-          control={control}
-          rules={{ required: true }}
-        />
-        <ControlledDateInput
-          name="treatment_end_date"
-          label={t('treatment_end_date')}
-          control={control}
-          rules={{ required: true }}
-        />
+        <ControlledDateInput name="treatment_start_date" label={t('treatment_start_date')} control={control} />
+        <ControlledDateInput name="treatment_end_date" label={t('treatment_end_date')} control={control} />
       </div>
 
       <Divider className="md:col-span-2 border-dashed my-4" />
