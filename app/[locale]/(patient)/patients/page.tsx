@@ -13,7 +13,6 @@ export default async function PatientsPage() {
       last_name: true,
       first_name: true,
       birth_date: true,
-      doctor_id: true,
       doctor: {
         select: {
           first_name: true,
@@ -31,14 +30,10 @@ export default async function PatientsPage() {
     ],
   });
 
-  const formattedPatients = latestPatients.map(patient => ({
-    ...patient,
-  }));
-
   return (
     <>
       <h4 className="text-xl font-semibold">{t('last_30_patients')}</h4>
-      <Patients patients={formattedPatients} className="pt-8 pb-8" />
+      <Patients patients={latestPatients} className="pt-8 pb-8" />
     </>
   );
 }
