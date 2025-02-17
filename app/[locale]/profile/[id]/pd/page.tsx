@@ -33,13 +33,13 @@ export default async function PDPage({ params, searchParams }: PageProps) {
             last_name: true,
           },
         },
-        staff_pd_created_byTostaff: {
+        created_by_staff: {
           select: {
             first_name: true,
             last_name: true,
           },
         },
-        staff_pd_updated_byTostaff: {
+        updated_by_staff: {
           select: {
             first_name: true,
             last_name: true,
@@ -59,7 +59,7 @@ export default async function PDPage({ params, searchParams }: PageProps) {
     return {
       id: item.id,
       patient_id: item.patient_id,
-      doctor: item.staff_pd_created_byTostaff.last_name + ' ' + item.staff_pd_created_byTostaff.first_name,
+      doctor: item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name,
       pd_modality: t(item.pd_modality),
       solution_per_input: t(item.solution_per_input),
       pd_ch_solution_136: item.pd_ch_solution_136,
@@ -67,12 +67,8 @@ export default async function PDPage({ params, searchParams }: PageProps) {
       pd_ch_solution_386: item.pd_ch_solution_386,
       icodextrin: item.icodextrin,
       date: d(item.date),
-      creator: item.staff_pd_created_byTostaff
-        ? item.staff_pd_created_byTostaff.last_name + ' ' + item.staff_pd_created_byTostaff.first_name
-        : '',
-      updater: item.staff_pd_updated_byTostaff
-        ? item.staff_pd_updated_byTostaff.last_name + ' ' + item.staff_pd_updated_byTostaff.first_name
-        : '',
+      creator: item.created_by_staff ? item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name : '',
+      updater: item.updated_by_staff ? item.updated_by_staff.last_name + ' ' + item.updated_by_staff.first_name : '',
       createdAt: d(item.created_at),
       updatedAt: d(item.updated_at),
     };

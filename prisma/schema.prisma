@@ -14,82 +14,82 @@ model department {
 }
 
 model patient {
-  id                              Int                  @id @default(autoincrement())
-  first_name                      String               @db.VarChar(255)
-  last_name                       String               @db.VarChar(255)
-  birth_date                      DateTime             @db.Date
-  personal_id                     String               @unique(map: "personal_id") @db.VarChar(11)
-  sex                             patient_sex          @default(male)
-  phone                           String?              @default("") @db.VarChar(255)
-  address                         String?              @default("") @db.VarChar(255)
-  bmi                             Float                @db.Float
-  doctor_id                       Int
-  region_id                       Int
-  transplantation_date            DateTime?            @db.Date
-  pd_transit_date                 DateTime?            @db.Date
-  md_diabetes                     Boolean?             @default(false)
-  md_hypertension                 Boolean?             @default(false)
-  md_glomerulonephritis           Boolean?             @default(false)
-  md_adptd                        Boolean?             @default(false)
-  md_lupus                        Boolean?             @default(false)
-  md_vasculitis                   Boolean?             @default(false)
-  md_amyloidosis                  Boolean?             @default(false)
-  md_unknown                      Boolean?             @default(false)
-  md_other                        Boolean?             @default(false)
-  md_other_comment                String?              @default("") @db.VarChar(1024)
-  cd_heart                        Boolean?             @default(false)
-  cd_cancer                       Boolean?             @default(false)
-  cd_a_pressure                   Boolean?             @default(false)
-  cd_p_pressure                   Boolean?             @default(false)
-  cd_cirrhosis                    Boolean?             @default(false)
-  cd_demention                    Boolean?             @default(false)
-  cd_pqod                         Boolean?             @default(false)
-  cd_other                        Boolean?             @default(false)
-  cd_other_comment                String?              @default("") @db.VarChar(1024)
-  mors                            Boolean?             @default(false)
-  mors_date                       DateTime?            @db.Date
-  mors_reason                     patient_mors_reason?
-  mors_comment                    String?              @default("") @db.VarChar(255)
-  created_at                      DateTime?            @default(now()) @db.Timestamp(0)
-  updated_at                      DateTime?            @db.Timestamp(0)
-  created_by                      Int
-  updated_by                      Int?
-  infectious                      infectious[]
-  kidney_assessment               kidney_assessment[]
-  noninfectious                   noninfectious[]
-  staff_patient_created_byTostaff staff                @relation("patient_created_byTostaff", fields: [created_by], references: [id], onUpdate: Restrict, map: "patient_created_by_staff_id_fk")
-  staff_patient_doctor_idTostaff  staff                @relation("patient_doctor_idTostaff", fields: [doctor_id], references: [id], onUpdate: Restrict, map: "patient_doctor_id_staff_id_fk")
-  region                          region               @relation(fields: [region_id], references: [id], onUpdate: Restrict, map: "patient_region_id_region_id_fk")
-  staff_patient_updated_byTostaff staff?               @relation("patient_updated_byTostaff", fields: [updated_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "patient_updated_by_staff_id_fk")
-  pd                              pd[]
+  id                    Int                  @id @default(autoincrement())
+  first_name            String               @db.VarChar(255)
+  last_name             String               @db.VarChar(255)
+  birth_date            DateTime             @db.Date
+  personal_id           String               @unique(map: "personal_id") @db.VarChar(11)
+  sex                   patient_sex          @default(male)
+  phone                 String?              @default("") @db.VarChar(255)
+  address               String?              @default("") @db.VarChar(255)
+  bmi                   Float                @db.Float
+  doctor_id             Int
+  region_id             Int
+  transplantation_date  DateTime?            @db.Date
+  pd_transit_date       DateTime?            @db.Date
+  md_diabetes           Boolean?             @default(false)
+  md_hypertension       Boolean?             @default(false)
+  md_glomerulonephritis Boolean?             @default(false)
+  md_adptd              Boolean?             @default(false)
+  md_lupus              Boolean?             @default(false)
+  md_vasculitis         Boolean?             @default(false)
+  md_amyloidosis        Boolean?             @default(false)
+  md_unknown            Boolean?             @default(false)
+  md_other              Boolean?             @default(false)
+  md_other_comment      String?              @default("") @db.VarChar(1024)
+  cd_heart              Boolean?             @default(false)
+  cd_cancer             Boolean?             @default(false)
+  cd_a_pressure         Boolean?             @default(false)
+  cd_p_pressure         Boolean?             @default(false)
+  cd_cirrhosis          Boolean?             @default(false)
+  cd_demention          Boolean?             @default(false)
+  cd_pqod               Boolean?             @default(false)
+  cd_other              Boolean?             @default(false)
+  cd_other_comment      String?              @default("") @db.VarChar(1024)
+  mors                  Boolean?             @default(false)
+  mors_date             DateTime?            @db.Date
+  mors_reason           patient_mors_reason?
+  mors_comment          String?              @default("") @db.VarChar(255)
+  created_at            DateTime?            @default(now()) @db.Timestamp(0)
+  updated_at            DateTime?            @db.Timestamp(0)
+  created_by            Int
+  updated_by            Int?
+  infectious            infectious[]
+  kidney_assessment     kidney_assessment[]
+  noninfectious         noninfectious[]
+  created_by_staff      staff                @relation("patient_created_byTostaff", fields: [created_by], references: [id], onUpdate: NoAction, map: "pat_created_fk")
+  doctor                staff                @relation("patient_doctor_idTostaff", fields: [doctor_id], references: [id], onUpdate: NoAction, map: "pat_doctor_fk")
+  region                region               @relation(fields: [region_id], references: [id], onUpdate: NoAction, map: "pat_region_fk")
+  updated_by_staff      staff?               @relation("patient_updated_byTostaff", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pat_updated_fk")
+  pd                    pd[]
 
-  @@index([created_by], map: "patient_created_by_staff_id_fk")
-  @@index([updated_by], map: "patient_updated_by_staff_id_fk")
-  @@index([region_id], map: "region_id")
-  @@index([doctor_id], map: "staff_id")
+  @@index([doctor_id], map: "pat_doctor_idx")
+  @@index([created_by], map: "pat_created_idx")
+  @@index([region_id], map: "pat_region_idx")
+  @@index([updated_by], map: "pat_updated_idx")
 }
 
 model pd {
-  id                         Int                   @id @unique(map: "id") @default(autoincrement())
-  patient_id                 Int
-  date                       DateTime              @db.Date
-  pd_modality                pd_pd_modality        @default(CAPD)
-  solution_per_input         pd_solution_per_input @default(lt_8)
-  pd_ch_solution_136         Boolean?              @default(false)
-  pd_ch_solution_227         Boolean?              @default(false)
-  pd_ch_solution_386         Boolean?              @default(false)
-  icodextrin                 Boolean?              @default(false)
-  created_at                 DateTime?             @default(now()) @db.Timestamp(0)
-  updated_at                 DateTime?             @db.Timestamp(0)
-  created_by                 Int
-  updated_by                 Int?
-  staff_pd_created_byTostaff staff                 @relation("pd_created_byTostaff", fields: [created_by], references: [id], onUpdate: Restrict, map: "pd_created_by_staff_id_fk")
-  patient                    patient               @relation(fields: [patient_id], references: [id], onUpdate: Restrict, map: "pd_patient_id_patient_id_fk")
-  staff_pd_updated_byTostaff staff?                @relation("pd_updated_byTostaff", fields: [updated_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "pd_updated_by_staff_id_fk")
+  id                 Int                   @id @unique(map: "id") @default(autoincrement())
+  patient_id         Int
+  date               DateTime              @db.Date
+  pd_modality        pd_pd_modality        @default(CAPD)
+  solution_per_input pd_solution_per_input @default(lt_8)
+  pd_ch_solution_136 Boolean?              @default(false)
+  pd_ch_solution_227 Boolean?              @default(false)
+  pd_ch_solution_386 Boolean?              @default(false)
+  icodextrin         Boolean?              @default(false)
+  created_at         DateTime?             @default(now()) @db.Timestamp(0)
+  updated_at         DateTime?             @db.Timestamp(0)
+  created_by         Int
+  updated_by         Int?
+  created_by_staff   staff                 @relation("pd_created_byTostaff", fields: [created_by], references: [id], onUpdate: NoAction, map: "pd_created_fk")
+  patient            patient               @relation(fields: [patient_id], references: [id], onUpdate: NoAction, map: "pd_patient_fk")
+  updated_by_staff   staff?                @relation("pd_updated_byTostaff", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pd_updated_fk")
 
-  @@index([patient_id], map: "patient_id")
-  @@index([created_by], map: "pd_created_by_staff_id_fk")
-  @@index([updated_by], map: "pd_updated_by_staff_id_fk")
+  @@index([patient_id], map: "pd_patient_idx")
+  @@index([created_by], map: "pd_created_idx")
+  @@index([updated_by], map: "pd_updated_idx")
 }
 
 model region {
@@ -100,124 +100,124 @@ model region {
 }
 
 model staff {
-  id                                                    Int                 @id @default(autoincrement())
-  first_name                                            String              @db.VarChar(255)
-  last_name                                             String              @db.VarChar(255)
-  role                                                  staff_role?         @default(nurse)
-  username                                              String              @unique(map: "username") @db.VarChar(255)
-  password                                              String              @db.VarChar(255)
-  token                                                 String?             @db.VarChar(255)
-  active                                                Boolean?            @default(true)
-  created_at                                            DateTime?           @default(now()) @db.Timestamp(0)
-  updated_at                                            DateTime?           @db.Timestamp(0)
-  infectious_infectious_created_byTostaff               infectious[]        @relation("infectious_created_byTostaff")
-  infectious_infectious_updated_byTostaff               infectious[]        @relation("infectious_updated_byTostaff")
-  kidney_assessment_kidney_assessment_created_byTostaff kidney_assessment[] @relation("kidney_assessment_created_byTostaff")
-  kidney_assessment_kidney_assessment_updated_byTostaff kidney_assessment[] @relation("kidney_assessment_updated_byTostaff")
-  noninfectious_noninfectious_created_byTostaff         noninfectious[]     @relation("noninfectious_created_byTostaff")
-  noninfectious_noninfectious_updated_byTostaff         noninfectious[]     @relation("noninfectious_updated_byTostaff")
-  patient_patient_created_byTostaff                     patient[]           @relation("patient_created_byTostaff")
-  patient_patient_doctor_idTostaff                      patient[]           @relation("patient_doctor_idTostaff")
-  patient_patient_updated_byTostaff                     patient[]           @relation("patient_updated_byTostaff")
-  pd_pd_created_byTostaff                               pd[]                @relation("pd_created_byTostaff")
-  pd_pd_updated_byTostaff                               pd[]                @relation("pd_updated_byTostaff")
+  id                 Int                 @id @default(autoincrement())
+  first_name         String              @db.VarChar(255)
+  last_name          String              @db.VarChar(255)
+  role               staff_role?         @default(nurse)
+  username           String              @unique(map: "username") @db.VarChar(255)
+  password           String              @db.VarChar(255)
+  token              String?             @db.VarChar(255)
+  active             Boolean?            @default(true)
+  created_at         DateTime?           @default(now()) @db.Timestamp(0)
+  updated_at         DateTime?           @db.Timestamp(0)
+  infectious_created infectious[]        @relation("infectious_created_byTostaff")
+  infectious_updated infectious[]        @relation("infectious_updated_byTostaff")
+  ka_created         kidney_assessment[] @relation("kidney_assessment_created_byTostaff")
+  ka_updated         kidney_assessment[] @relation("kidney_assessment_updated_byTostaff")
+  ninf_created       noninfectious[]     @relation("noninfectious_created_byTostaff")
+  ninf_updated       noninfectious[]     @relation("noninfectious_updated_byTostaff")
+  pat_created        patient[]           @relation("patient_created_byTostaff")
+  pat_doctor         patient[]           @relation("patient_doctor_idTostaff")
+  pat_updated        patient[]           @relation("patient_updated_byTostaff")
+  pd_created         pd[]                @relation("pd_created_byTostaff")
+  pd_updated         pd[]                @relation("pd_updated_byTostaff")
 }
 
 model infectious {
-  id                                 Int                       @id @unique(map: "id") @default(autoincrement())
-  patient_id                         Int
-  date                               DateTime                  @db.Date
-  infection_type                     infectious_infection_type @default(peritonitis)
-  infection_start_date               DateTime?                 @db.Date
-  infection_end_date                 DateTime?                 @db.Date
-  staphylococcus                     Boolean?                  @default(false)
-  streptococcus                      Boolean?                  @default(false)
-  intestinal_stick                   Boolean?                  @default(false)
-  pseudomona                         Boolean?                  @default(false)
-  enterococcus                       Boolean?                  @default(false)
-  candida                            Boolean?                  @default(false)
-  other                              Boolean?                  @default(false)
-  other_comment                      String?                   @default("") @db.VarChar(1024)
-  treatment_start_date               DateTime?                 @db.Date
-  treatment_end_date                 DateTime?                 @db.Date
-  vancomycin                         Boolean?                  @default(false)
-  ceftazidime                        Boolean?                  @default(false)
-  ceftriaxone                        Boolean?                  @default(false)
-  cefepime                           Boolean?                  @default(false)
-  meropenem                          Boolean?                  @default(false)
-  imipenem                           Boolean?                  @default(false)
-  ciprofloxacin                      Boolean?                  @default(false)
-  cefazolin                          Boolean?                  @default(false)
-  gentamicin                         Boolean?                  @default(false)
-  clindamycin                        Boolean?                  @default(false)
-  rifampicin                         Boolean?                  @default(false)
-  rluconazole                        Boolean?                  @default(false)
-  created_at                         DateTime?                 @default(now()) @db.Timestamp(0)
-  updated_at                         DateTime?                 @db.Timestamp(0)
-  created_by                         Int
-  updated_by                         Int?
-  staff_infectious_created_byTostaff staff                     @relation("infectious_created_byTostaff", fields: [created_by], references: [id], onUpdate: Restrict, map: "infectious_created_by_staff_id_fk")
-  patient                            patient                   @relation(fields: [patient_id], references: [id], onUpdate: Restrict, map: "infectious_patient_id_patient_id_fk")
-  staff_infectious_updated_byTostaff staff?                    @relation("infectious_updated_byTostaff", fields: [updated_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "infectious_updated_by_staff_id_fk")
+  id                   Int                       @id @unique(map: "id") @default(autoincrement())
+  patient_id           Int
+  date                 DateTime                  @db.Date
+  infection_type       infectious_infection_type @default(peritonitis)
+  infection_start_date DateTime?                 @db.Date
+  infection_end_date   DateTime?                 @db.Date
+  staphylococcus       Boolean?                  @default(false)
+  streptococcus        Boolean?                  @default(false)
+  intestinal_stick     Boolean?                  @default(false)
+  pseudomona           Boolean?                  @default(false)
+  enterococcus         Boolean?                  @default(false)
+  candida              Boolean?                  @default(false)
+  other                Boolean?                  @default(false)
+  other_comment        String?                   @default("") @db.VarChar(1024)
+  treatment_start_date DateTime?                 @db.Date
+  treatment_end_date   DateTime?                 @db.Date
+  vancomycin           Boolean?                  @default(false)
+  ceftazidime          Boolean?                  @default(false)
+  ceftriaxone          Boolean?                  @default(false)
+  cefepime             Boolean?                  @default(false)
+  meropenem            Boolean?                  @default(false)
+  imipenem             Boolean?                  @default(false)
+  ciprofloxacin        Boolean?                  @default(false)
+  cefazolin            Boolean?                  @default(false)
+  gentamicin           Boolean?                  @default(false)
+  clindamycin          Boolean?                  @default(false)
+  rifampicin           Boolean?                  @default(false)
+  rluconazole          Boolean?                  @default(false)
+  created_at           DateTime?                 @default(now()) @db.Timestamp(0)
+  updated_at           DateTime?                 @db.Timestamp(0)
+  created_by           Int
+  updated_by           Int?
+  created_by_staff     staff                     @relation("infectious_created_byTostaff", fields: [created_by], references: [id], onUpdate: NoAction, map: "inf_created_fk")
+  patient              patient                   @relation(fields: [patient_id], references: [id], onUpdate: NoAction, map: "inf_patient_fk")
+  updated_by_staff     staff?                    @relation("infectious_updated_byTostaff", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inf_updated_fk")
 
-  @@index([created_by], map: "infectious_created_by_staff_id_fk")
-  @@index([updated_by], map: "infectious_updated_by_staff_id_fk")
-  @@index([patient_id], map: "patient_id")
+  @@index([patient_id], map: "inf_patient_idx")
+  @@index([created_by], map: "inf_created_idx")
+  @@index([updated_by], map: "inf_updated_idx")
 }
 
 model kidney_assessment {
-  id                                        Int                    @id @default(autoincrement())
-  patient_id                                Int
-  check_date                                DateTime               @db.Date
-  gfr                                       Float?                 @db.Float
-  pet                                       kidney_assessment_pet?
-  ktv                                       Float?                 @db.Float
-  ka_comment                                String?                @db.Text
-  created_at                                DateTime?              @default(now()) @db.Timestamp(0)
-  updated_at                                DateTime?              @db.Timestamp(0)
-  created_by                                Int
-  updated_by                                Int?
-  staff_kidney_assessment_created_byTostaff staff                  @relation("kidney_assessment_created_byTostaff", fields: [created_by], references: [id], onUpdate: Restrict, map: "kidney_assessment_created_by_staff_id_fk")
-  patient                                   patient                @relation(fields: [patient_id], references: [id], onUpdate: Restrict, map: "kidney_assessment_patient_id_patient_id_fk")
-  staff_kidney_assessment_updated_byTostaff staff?                 @relation("kidney_assessment_updated_byTostaff", fields: [updated_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "kidney_assessment_updated_by_staff_id_fk")
+  id               Int                    @id @default(autoincrement())
+  patient_id       Int
+  check_date       DateTime               @db.Date
+  gfr              Float?                 @db.Float
+  pet              kidney_assessment_pet?
+  ktv              Float?                 @db.Float
+  ka_comment       String?                @db.Text
+  created_at       DateTime?              @default(now()) @db.Timestamp(0)
+  updated_at       DateTime?              @db.Timestamp(0)
+  created_by       Int
+  updated_by       Int?
+  created_by_staff staff                  @relation("kidney_assessment_created_byTostaff", fields: [created_by], references: [id], onUpdate: NoAction, map: "ka_created_fk")
+  patient          patient                @relation(fields: [patient_id], references: [id], onUpdate: NoAction, map: "ka_patient_fk")
+  updated_by_staff staff?                 @relation("kidney_assessment_updated_byTostaff", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ka_updated_fk")
 
-  @@index([created_by], map: "kidney_assessment_created_by_staff_id_fk")
-  @@index([patient_id], map: "kidney_assessment_patient_id_patient_id_fk")
-  @@index([updated_by], map: "kidney_assessment_updated_by_staff_id_fk")
+  @@index([patient_id], map: "ka_patient_idx")
+  @@index([created_by], map: "ka_created_idx")
+  @@index([updated_by], map: "ka_updated_idx")
 }
 
 model noninfectious {
-  id                                    Int       @id @unique(map: "id") @default(autoincrement())
-  patient_id                            Int
-  date                                  DateTime  @db.Date
-  hernia                                Boolean?  @default(false)
-  catheter_positioning                  Boolean?  @default(false)
-  catheter_malposition                  Boolean?  @default(false)
-  catheter_intraluminal_occlusion       Boolean?  @default(false)
-  catheter_extraluminal_occlusion       Boolean?  @default(false)
-  catheter_rinking                      Boolean?  @default(false)
-  catheter_repositioning                Boolean?  @default(false)
-  catheter_leakage                      Boolean?  @default(false)
-  hydrothorax                           Boolean?  @default(false)
-  abdominal_leakage                     Boolean?  @default(false)
-  genital_discharge                     Boolean?  @default(false)
-  hepomeritoneum                        Boolean?  @default(false)
-  chyloperitoneum                       Boolean?  @default(false)
-  catheter_decrease                     Boolean?  @default(false)
-  eps                                   Boolean?  @default(false)
-  other                                 Boolean?  @default(false)
-  other_comment                         String?   @default("") @db.VarChar(1024)
-  created_at                            DateTime? @default(now()) @db.Timestamp(0)
-  updated_at                            DateTime? @db.Timestamp(0)
-  created_by                            Int
-  updated_by                            Int?
-  staff_noninfectious_created_byTostaff staff     @relation("noninfectious_created_byTostaff", fields: [created_by], references: [id], onUpdate: Restrict, map: "noninfectious_created_by_staff_id_fk")
-  patient                               patient   @relation(fields: [patient_id], references: [id], onUpdate: Restrict, map: "noninfectious_patient_id_patient_id_fk")
-  staff_noninfectious_updated_byTostaff staff?    @relation("noninfectious_updated_byTostaff", fields: [updated_by], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "noninfectious_updated_by_staff_id_fk")
+  id                              Int       @id @unique(map: "id") @default(autoincrement())
+  patient_id                      Int
+  date                            DateTime  @db.Date
+  hernia                          Boolean?  @default(false)
+  catheter_positioning            Boolean?  @default(false)
+  catheter_malposition            Boolean?  @default(false)
+  catheter_intraluminal_occlusion Boolean?  @default(false)
+  catheter_extraluminal_occlusion Boolean?  @default(false)
+  catheter_rinking                Boolean?  @default(false)
+  catheter_repositioning          Boolean?  @default(false)
+  catheter_leakage                Boolean?  @default(false)
+  hydrothorax                     Boolean?  @default(false)
+  abdominal_leakage               Boolean?  @default(false)
+  genital_discharge               Boolean?  @default(false)
+  hepomeritoneum                  Boolean?  @default(false)
+  chyloperitoneum                 Boolean?  @default(false)
+  catheter_decrease               Boolean?  @default(false)
+  eps                             Boolean?  @default(false)
+  other                           Boolean?  @default(false)
+  other_comment                   String?   @default("") @db.VarChar(1024)
+  created_at                      DateTime? @default(now()) @db.Timestamp(0)
+  updated_at                      DateTime? @db.Timestamp(0)
+  created_by                      Int
+  updated_by                      Int?
+  created_by_staff                staff     @relation("noninfectious_created_byTostaff", fields: [created_by], references: [id], onUpdate: NoAction, map: "ninf_created_fk")
+  patient                         patient   @relation(fields: [patient_id], references: [id], onUpdate: NoAction, map: "ninf_patient_fk")
+  updated_by_staff                staff?    @relation("noninfectious_updated_byTostaff", fields: [updated_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ninf_updated_fk")
 
-  @@index([created_by], map: "noninfectious_created_by_staff_id_fk")
-  @@index([updated_by], map: "noninfectious_updated_by_staff_id_fk")
-  @@index([patient_id], map: "patient_id")
+  @@index([patient_id], map: "ninf_patient_idx")
+  @@index([created_by], map: "ninf_created_idx")
+  @@index([updated_by], map: "ninf_updated_idx")
 }
 
 enum pd_pd_modality {

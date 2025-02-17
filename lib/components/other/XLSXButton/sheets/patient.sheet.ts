@@ -12,8 +12,8 @@ export const patientsJson = (data: unknown, t: (key: string) => string) => ({
     },
     {
       label: t('doctor'),
-      value: (row: { staff_patient_doctor_idTostaff: { first_name: string; last_name: string } }) =>
-        `${row.staff_patient_doctor_idTostaff.first_name.toString().charAt(0)}. ${row.staff_patient_doctor_idTostaff.last_name}`,
+      value: (row: { doctor: { first_name: string; last_name: string } }) =>
+        `${row.doctor.first_name.toString().charAt(0)}. ${row.doctor.last_name}`,
     },
     {
       label: t('bmi'),

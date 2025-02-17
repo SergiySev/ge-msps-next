@@ -36,13 +36,13 @@ export default async function NonInfectiousPage({ params, searchParams }: PagePr
             last_name: true,
           },
         },
-        staff_noninfectious_created_byTostaff: {
+        created_by_staff: {
           select: {
             first_name: true,
             last_name: true,
           },
         },
-        staff_noninfectious_updated_byTostaff: {
+        updated_by_staff: {
           select: {
             first_name: true,
             last_name: true,
@@ -60,21 +60,10 @@ export default async function NonInfectiousPage({ params, searchParams }: PagePr
       id: item.id,
       patient_id: item.patient_id,
       patient: item.patient.last_name + ' ' + item.patient.first_name,
-      doctor:
-        item.staff_noninfectious_created_byTostaff.last_name +
-        ' ' +
-        item.staff_noninfectious_created_byTostaff.first_name,
+      doctor: item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name,
       date: d(item.date),
-      creator: item.staff_noninfectious_created_byTostaff
-        ? item.staff_noninfectious_created_byTostaff.last_name +
-          ' ' +
-          item.staff_noninfectious_created_byTostaff.first_name
-        : '',
-      updater: item.staff_noninfectious_updated_byTostaff
-        ? item.staff_noninfectious_updated_byTostaff.last_name +
-          ' ' +
-          item.staff_noninfectious_updated_byTostaff.first_name
-        : '',
+      creator: item.created_by_staff ? item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name : '',
+      updater: item.updated_by_staff ? item.updated_by_staff.last_name + ' ' + item.updated_by_staff.first_name : '',
       createdAt: d(item.created_at),
       updatedAt: d(item.updated_at),
     };

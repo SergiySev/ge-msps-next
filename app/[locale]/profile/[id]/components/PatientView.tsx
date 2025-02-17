@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckIcon } from '@heroicons/react/16/solid';
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/react';
 import { patient as Patient } from '@prisma/client';
 import { d } from 'msps/lib/validation/helpers/date';
 import { useTranslations } from 'next-intl';
@@ -11,7 +11,7 @@ type ExtendedPatient = Patient & {
   region: {
     name: string;
   };
-  staff_patient_doctor_idTostaff: {
+  doctor: {
     first_name: string;
     last_name: string;
   };
@@ -68,7 +68,7 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
         <TableBody>
           <TableRow>
             <TableCell>
-              {data.staff_patient_doctor_idTostaff.last_name} {data.staff_patient_doctor_idTostaff.first_name}
+              {data.doctor.last_name} {data.doctor.first_name}
             </TableCell>
           </TableRow>
         </TableBody>

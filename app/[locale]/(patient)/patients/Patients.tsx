@@ -1,16 +1,7 @@
 'use client';
 
 import { PencilSquareIcon } from '@heroicons/react/16/solid';
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  getKeyValue,
-  Button,
-} from "@heroui/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Button } from '@heroui/react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { d } from 'msps/lib/validation/helpers/date';
@@ -21,7 +12,7 @@ interface Patient {
   first_name: string;
   last_name: string;
   birth_date: Date;
-  staff_patient_doctor_idTostaff: {
+  doctor: {
     first_name: string;
     last_name: string;
   };
@@ -46,7 +37,7 @@ const Patients = ({ patients, className }: PatientsProps) => {
     key: patient.id,
     patient_name: `${patient.last_name} ${patient.first_name}`,
     birth_date: d(patient.birth_date),
-    doctor: `${patient.staff_patient_doctor_idTostaff.last_name} ${patient.staff_patient_doctor_idTostaff.first_name}`,
+    doctor: `${patient.doctor.last_name} ${patient.doctor.first_name}`,
     actions: (
       <Button href={`/patient/${patient.id}`} as={Link} color="default" isIconOnly variant="light" size="sm">
         <PencilSquareIcon className="h-4 w-4" />
