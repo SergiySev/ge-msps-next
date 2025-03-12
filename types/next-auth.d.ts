@@ -1,4 +1,5 @@
 import 'next-auth';
+import { staff_role } from '@prisma/client';
 
 declare module 'next-auth' {
   interface User {
@@ -6,6 +7,9 @@ declare module 'next-auth' {
     username: string;
     firstName: string;
     lastName: string;
+    role: staff_role;
+    hospitalId: number | null;
+    hospitalName?: string;
   }
 
   interface Session {
@@ -14,6 +18,9 @@ declare module 'next-auth' {
       username: string;
       firstName: string;
       lastName: string;
+      role: staff_role;
+      hospitalId: number | null;
+      hospitalName?: string;
     };
   }
 }
@@ -23,5 +30,8 @@ declare module 'next-auth/jwt' {
     firstName: string;
     lastName: string;
     username: string;
+    role: staff_role;
+    hospitalId: number | null;
+    hospitalName?: string;
   }
 }

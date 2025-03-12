@@ -30,16 +30,34 @@ export const authOptions: NextAuthOptions = {
           where: {
             username: credentials.username,
           },
+          include: {
+            hospital: true,
+          },
         });
 
         if (!user) {
           throw new Error('No user found with this username');
         }
 
-        const passwordMatch = await bcrypt.compare(credentials.password, user.password);
+        if (!user.active) {
+          throw new Error('Your account is inactive. Please contact administrator');
+        }
 
+        // Check password
+        const passwordMatch = await bcrypt.compare(credentials.password, user.password);
         if (!passwordMatch) {
           throw new Error('Incorrect password');
+        }
+
+        // Hospital validation for non-superadmin users
+        if (user.role !== 'superadmin') {
+          if (!user.hospital_id) {
+            throw new Error('No hospital assigned. Please contact administrator');
+          }
+
+          if (!user.hospital?.active) {
+            throw new Error('Hospital is inactive. Please contact administrator');
+          }
         }
 
         return {
@@ -47,6 +65,9 @@ export const authOptions: NextAuthOptions = {
           username: user.username,
           firstName: user.first_name,
           lastName: user.last_name,
+          role: user.role || 'nurse',
+          hospitalId: user.hospital_id,
+          hospitalName: user.hospital?.name,
         };
       },
     }),
@@ -57,6 +78,9 @@ export const authOptions: NextAuthOptions = {
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.username = user.username;
+        token.role = user.role;
+        token.hospitalId = user.hospitalId;
+        token.hospitalName = user.hospitalName;
       }
       return token;
     },
@@ -68,6 +92,9 @@ export const authOptions: NextAuthOptions = {
           username: token.username as string,
           firstName: token.firstName as string,
           lastName: token.lastName as string,
+          role: token.role,
+          hospitalId: token.hospitalId,
+          hospitalName: token.hospitalName,
         };
       }
       return session;
