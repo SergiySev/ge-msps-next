@@ -22,10 +22,10 @@ export default async function PatientsPage() {
     },
     orderBy: [
       {
-        updated_at: 'desc',
+        created_at: 'desc',
       },
       {
-        created_at: 'desc',
+        updated_at: 'desc',
       },
     ],
   });
