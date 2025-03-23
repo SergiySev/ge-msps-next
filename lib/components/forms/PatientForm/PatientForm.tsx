@@ -60,6 +60,7 @@ const PatientForm = ({ patient, regions, className }: PatientFormProps) => {
           if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
+          console.error('Error: ', error);
           toast.error(`შეცდომა: ${error.serverError || ''}`);
         },
       },

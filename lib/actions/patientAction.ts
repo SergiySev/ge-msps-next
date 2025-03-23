@@ -20,8 +20,8 @@ export const createPatient = actionClient.schema(createPatientServerSchema).acti
     });
     return { data: patient as Patient };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error creating patient:', error);
+    throw error;
   }
 });
 
@@ -39,8 +39,8 @@ export const updatePatient = actionClient.schema(updatePatientServerSchema).acti
     });
     return { data: patient as Patient };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error updating patient:', error);
+    throw error;
   }
 });
 
@@ -54,7 +54,7 @@ export const deletePatient = actionClient.schema(deleteActionSchema).action(asyn
     });
     return { data };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error deleting patient:', error);
+    throw error;
   }
 });

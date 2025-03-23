@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
-import { Divider } from "@heroui/react";
+import { Divider } from '@heroui/react';
 import { updateDiseasesClientSchema } from 'msps/lib/validation/diseases';
 import { updateDiseases } from 'msps/lib/actions/diseasesAction';
 import { useEffect } from 'react';
@@ -52,7 +52,7 @@ const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
           if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
-          console.log('Error: ', error);
+          console.error('Error: ', error);
           toast.error(`შეცდომა: ${error.serverError || ''}`);
         },
       },

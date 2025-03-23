@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from "@heroui/button";
+import { Button } from '@heroui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProfileSchema } from 'msps/lib/validation/staff-profile';
 import { updateProfile } from 'msps/lib/actions/profileAction';
@@ -36,6 +36,7 @@ export const ProfileForm = ({ initialUsername }: ProfileFormProps) => {
         toast.success(t('profileUpdateSuccess'));
       },
       onError: ({ error }) => {
+        console.error('Error: ', error);
         toast.error(error.serverError || t('somethingWentWrong'));
       },
     },

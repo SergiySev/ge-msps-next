@@ -24,8 +24,8 @@ export const createKidneyAssessment = actionClient
       });
       return { data /* : patient as KidneyAssessment  */ };
     } catch (error) {
-      console.log('Error: ', error);
-      return { error };
+      console.error('Error creating kidney assessment:', error);
+      throw error;
     }
   });
 
@@ -45,8 +45,8 @@ export const updateKidneyAssessment = actionClient
       });
       return { data /* : patient as KidneyAssessment */ };
     } catch (error) {
-      console.log('Error: ', error);
-      return { error };
+      console.error('Error updating kidney assessment:', error);
+      throw error;
     }
   });
 
@@ -60,7 +60,7 @@ export const deleteKidneyAssessment = actionClient.schema(deleteActionSchema).ac
     });
     return { data };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error deleting kidney assessment:', error);
+    throw error;
   }
 });

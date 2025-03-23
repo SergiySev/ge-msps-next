@@ -58,6 +58,7 @@ const PDForm = ({ data, className }: PDFormProps) => {
           if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
+          console.error('Error: ', error);
           toast.error(`შეცდომა: ${error.serverError || ''}`);
         },
       },

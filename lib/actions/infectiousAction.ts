@@ -19,8 +19,8 @@ export const createInfectious = actionClient.schema(createInfectiousServerSchema
     });
     return { data /* : patient as Infectious  */ };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error creating infectious:', error);
+    throw error;
   }
 });
 
@@ -38,8 +38,8 @@ export const updateInfectious = actionClient.schema(updateInfectiousServerSchema
     });
     return { data /* : patient as Infectious */ };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error updating infectious:', error);
+    throw error;
   }
 });
 
@@ -53,7 +53,7 @@ export const deleteInfectious = actionClient.schema(deleteActionSchema).action(a
     });
     return { data };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error deleting infectious:', error);
+    throw error;
   }
 });

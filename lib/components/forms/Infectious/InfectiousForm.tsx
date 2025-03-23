@@ -68,6 +68,7 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
           if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
+          console.error('Error: ', error);
           toast.error(`შეცდომა: ${error.serverError || ''}`);
         },
       },

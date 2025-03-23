@@ -21,8 +21,8 @@ export const createNoninfectious = actionClient
       });
       return { data /* : patient as Noninfectious  */ };
     } catch (error) {
-      console.log('Error: ', error);
-      return { error };
+      console.error('Error creating noninfectious:', error);
+      throw error;
     }
   });
 
@@ -42,8 +42,8 @@ export const updateNoninfectious = actionClient
       });
       return { data /* : patient as Noninfectious */ };
     } catch (error) {
-      console.log('Error: ', error);
-      return { error };
+      console.error('Error updating noninfectious:', error);
+      throw error;
     }
   });
 
@@ -57,7 +57,7 @@ export const deleteNoninfectious = actionClient.schema(deleteActionSchema).actio
     });
     return { data };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error deleting noninfectious:', error);
+    throw error;
   }
 });

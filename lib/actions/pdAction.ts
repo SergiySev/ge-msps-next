@@ -19,8 +19,8 @@ export const createPD = actionClient.schema(createPDServerSchema).action(async (
     });
     return { data };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error creating PD:', error);
+    throw error;
   }
 });
 
@@ -38,8 +38,8 @@ export const updatePD = actionClient.schema(updatePDServerSchema).action(async (
     });
     return { data };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error updating PD:', error);
+    throw error;
   }
 });
 
@@ -53,6 +53,7 @@ export const deletePD = actionClient.schema(deleteActionSchema).action(async ({ 
     });
     return { data };
   } catch (error) {
-    return { error };
+    console.error('Error deleting PD:', error);
+    throw error;
   }
 });

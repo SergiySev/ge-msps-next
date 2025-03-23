@@ -16,7 +16,7 @@ export const updateProfile = actionClient.schema(updateProfileSchema).action(asy
     });
 
     if (!user) {
-      return { error: 'User not found' };
+      throw new Error('User not found');
     }
 
     // Check if username is already taken by another staff member
@@ -26,14 +26,14 @@ export const updateProfile = actionClient.schema(updateProfileSchema).action(asy
       });
 
       if (existingUser) {
-        return { error: 'Username is already taken' };
+        throw new Error('Username is already taken');
       }
     }
 
     // Verify current password
     const isValidPassword = await compare(parsedInput.currentPassword, user.password);
     if (!isValidPassword) {
-      return { error: 'Current password is incorrect' };
+      throw new Error('Current password is incorrect');
     }
 
     // Hash new password
@@ -52,7 +52,7 @@ export const updateProfile = actionClient.schema(updateProfileSchema).action(asy
     revalidatePath('/profile');
     return { success: 'Profile updated successfully' };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error: 'Something went wrong' };
+    console.error('Error updating profile:', error);
+    throw error;
   }
 });

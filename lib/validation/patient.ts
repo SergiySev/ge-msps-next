@@ -22,7 +22,7 @@ const patientBaseSchema = z.object({
 
   personal_id: z.string().length(11, requiredSymbols(11)).regex(/^\d+$/, onlyNumbers),
 
-  phone: z.string().regex(/^\d+$/).optional().nullable(),
+  phone: z.string().regex(/^\d+$/).optional(),
   bmi: z.coerce
     .number({ message: requiredText })
     .refine(
@@ -40,7 +40,7 @@ const patientBaseSchema = z.object({
         message: possibleBMI,
       }
     ),
-  address: z.string().optional().nullable(),
+  address: z.string().optional(),
   doctor_id: z.number().int().positive(requiredText),
 
   pd_transit_date: z.coerce
@@ -64,10 +64,10 @@ const patientBaseSchema = z.object({
     .nullable()
     .optional(),
 
-  mors: z.boolean().optional().nullable(),
+  mors: z.boolean().default(false),
   mors_reason: z.nativeEnum(patient_mors_reason).optional().nullable(),
   mors_date: z.coerce.date().optional().nullable(),
-  mors_comment: z.string().optional().nullable(),
+  mors_comment: z.string().optional(),
 });
 
 export const createPatientClientSchema = patientBaseSchema;

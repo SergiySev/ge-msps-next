@@ -20,7 +20,7 @@ export const updateDiseases = actionClient.schema(updateDiseasesServerSchema).ac
     });
     return { data: patient as Patient };
   } catch (error) {
-    console.log('Error: ', error);
-    return { error };
+    console.error('Error updating diseases:', error);
+    throw error;
   }
 });
