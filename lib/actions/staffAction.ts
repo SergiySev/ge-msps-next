@@ -1,59 +1,64 @@
-import { createSafeActionClient } from 'next-safe-action';
+'use server';
+
+import { authActionClient } from '../safe-action';
 import { updateStaffSchema } from '../validation/staff';
 import prisma from '../prisma';
 import { hash } from 'bcryptjs';
-import { getServerSession } from 'next-auth';
-import { authOptions } from 'msps/app/api/auth/[...nextauth]/options';
 import { z } from 'zod';
 
 type UpdateStaffInput = z.infer<typeof updateStaffSchema>;
 
-const action = createSafeActionClient();
+// Staff update action with auth middleware and manager/admin role check
+export const updateStaff = authActionClient
+  .schema(updateStaffSchema)
+  .use(async ({ next, ctx }) => {
+    const { session } = ctx;
 
-export const updateStaff = action.schema(updateStaffSchema).action(async ({ parsedInput }) => {
-  const session = await getServerSession(authOptions);
+    // Check if user has manager or admin role
+    if (!['manager', 'admin'].includes(session.role)) {
+      throw new Error('Unauthorized: Only managers and administrators can update staff records');
+    }
 
-  if (!session) {
-    throw new Error('Unauthorized');
-  }
+    return next();
+  })
+  .action(async ({ parsedInput, ctx: { session } }) => {
+    try {
+      const { id, username, first_name, last_name, role, isActive, newPassword } = parsedInput;
 
-  // Check if user has manager or admin role
-  if (!['manager', 'admin'].includes(session.user.role)) {
-    throw new Error('Unauthorized');
-  }
+      // Check if username is already taken by another user
+      const existingUser = await prisma.staff.findFirst({
+        where: {
+          username,
+          NOT: {
+            id: parseInt(id),
+          },
+        },
+      });
 
-  const { id, username, first_name, last_name, role, isActive, newPassword } = parsedInput;
+      if (existingUser) {
+        return { error: 'Username already exists' };
+      }
 
-  // Check if username is already taken by another user
-  const existingUser = await prisma.staff.findFirst({
-    where: {
-      username,
-      NOT: {
-        id: parseInt(id),
-      },
-    },
+      const updateData: any = {
+        username,
+        first_name,
+        last_name,
+        role,
+        active: isActive,
+      };
+
+      if (newPassword) {
+        updateData.password = await hash(newPassword, 12);
+      }
+
+      const updatedStaff = await prisma.staff.update({
+        where: { id: parseInt(id) },
+        data: updateData,
+      });
+
+      return { success: true, data: updatedStaff };
+    } catch (error) {
+      console.error('Error updating staff:', error);
+      return { error: 'Failed to update staff record' };
+    }
   });
-
-  if (existingUser) {
-    return { error: 'Username already exists' };
-  }
-
-  const updateData: any = {
-    username,
-    first_name,
-    last_name,
-    role,
-    active: isActive,
-  };
-
-  if (newPassword) {
-    updateData.password = await hash(newPassword, 12);
-  }
-
-  const updatedStaff = await prisma.staff.update({
-    where: { id: parseInt(id) },
-    data: updateData,
-  });
-
-  return { success: true, data: updatedStaff };
-});
