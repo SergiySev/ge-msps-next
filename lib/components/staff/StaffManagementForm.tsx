@@ -31,7 +31,7 @@ export const StaffManagementForm = ({ staffMember }: StaffManagementFormProps) =
   const {
     form: {
       control,
-      formState: { isValid, isSubmitting },
+      formState: { isSubmitting },
     },
     handleSubmitWithAction,
   } = useHookFormAction(updateStaff, zodResolver(updateStaffSchema), {
@@ -46,6 +46,7 @@ export const StaffManagementForm = ({ staffMember }: StaffManagementFormProps) =
         newPassword: '',
         confirmPassword: '',
       },
+      mode: 'onChange',
     },
     actionProps: {
       onSuccess: () => {
@@ -131,7 +132,7 @@ export const StaffManagementForm = ({ staffMember }: StaffManagementFormProps) =
           placeholder=" "
         />
 
-        <Button type="submit" color="primary" isLoading={isSubmitting} isDisabled={!isValid} className="w-full mt-4">
+        <Button type="submit" color="primary" isLoading={isSubmitting} className="w-full mt-4">
           {t('updateStaff')}
         </Button>
       </div>

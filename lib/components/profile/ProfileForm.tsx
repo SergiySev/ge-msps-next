@@ -21,7 +21,7 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
   const {
     form: {
       control,
-      formState: { isValid, isSubmitting },
+      formState: { isSubmitting },
     },
     handleSubmitWithAction,
   } = useHookFormAction(updateProfile, zodResolver(updateProfileSchema), {
@@ -34,6 +34,7 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
         newPassword: '',
         confirmPassword: '',
       },
+      mode: 'onChange',
     },
     actionProps: {
       onSuccess: ({}) => {
@@ -87,7 +88,7 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
           type="password"
           label={t('currentPassword')}
           control={control}
-          rules={{ required: true }}
+          rules={{ required: false }}
           variant="bordered"
           className="w-full"
           placeholder=" "
@@ -98,7 +99,7 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
           type="password"
           label={t('newPassword')}
           control={control}
-          rules={{ required: true }}
+          rules={{ required: false }}
           variant="bordered"
           className="w-full"
           placeholder=" "
@@ -109,13 +110,13 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
           type="password"
           label={t('confirmPassword')}
           control={control}
-          rules={{ required: true }}
+          rules={{ required: false }}
           variant="bordered"
           className="w-full"
           placeholder=" "
         />
 
-        <Button type="submit" color="primary" isLoading={isSubmitting} isDisabled={!isValid} className="w-full mt-4">
+        <Button type="submit" color="primary" isLoading={isSubmitting} className="w-full mt-4">
           {t('updateProfile')}
         </Button>
       </div>

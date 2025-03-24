@@ -8,12 +8,26 @@ export const updateStaffSchema = z
     last_name: z.string().min(2, 'Last name must be at least 2 characters'),
     role: z.enum(['nurse', 'doctor', 'manager', 'admin']),
     isActive: z.boolean(),
-    newPassword: z.string().min(8, 'Password must be at least 8 characters').optional(),
+    newPassword: z.string().optional(),
     confirmPassword: z.string().optional(),
   })
   .refine(
     data => {
-      if (data.newPassword) {
+      // If one password field is filled, both must be filled
+      const newPasswordProvided = !!data.newPassword;
+      const confirmPasswordProvided = !!data.confirmPassword;
+
+      return (newPasswordProvided && confirmPasswordProvided) || (!newPasswordProvided && !confirmPasswordProvided);
+    },
+    {
+      message: 'Both password fields must be filled when setting a new password',
+      path: ['confirmPassword'],
+    }
+  )
+  .refine(
+    data => {
+      // If passwords are provided, they must match
+      if (data.newPassword && data.confirmPassword) {
         return data.newPassword === data.confirmPassword;
       }
       return true;
@@ -21,5 +35,18 @@ export const updateStaffSchema = z
     {
       message: "Passwords don't match",
       path: ['confirmPassword'],
+    }
+  )
+  .refine(
+    data => {
+      // If password is provided, it must meet minimum length
+      if (data.newPassword) {
+        return data.newPassword.length >= 6;
+      }
+      return true;
+    },
+    {
+      message: 'Password must be at least 6 characters',
+      path: ['newPassword'],
     }
   );

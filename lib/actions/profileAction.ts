@@ -40,19 +40,27 @@ export const updateProfile = authActionClient
         return { error: 'Staff member not found' };
       }
 
-      const isPasswordValid = await compare(parsedInput.currentPassword, staff.password);
-      if (!isPasswordValid) {
-        return { error: 'Current password is incorrect' };
+      // Base data to update (always update these fields)
+      const updateData: any = {
+        username: parsedInput.username,
+        first_name: parsedInput.first_name,
+        last_name: parsedInput.last_name,
+      };
+
+      // If password fields are provided, verify current password and update
+      if (parsedInput.currentPassword && parsedInput.newPassword && parsedInput.confirmPassword) {
+        const isPasswordValid = await compare(parsedInput.currentPassword, staff.password);
+        if (!isPasswordValid) {
+          return { error: 'Current password is incorrect' };
+        }
+
+        // Add password to update data
+        updateData.password = await hash(parsedInput.newPassword, 10);
       }
 
       await prisma.staff.update({
         where: { id: session.id },
-        data: {
-          username: parsedInput.username,
-          first_name: parsedInput.first_name,
-          last_name: parsedInput.last_name,
-          password: await hash(parsedInput.newPassword, 10),
-        },
+        data: updateData,
       });
 
       revalidatePath('/profile');

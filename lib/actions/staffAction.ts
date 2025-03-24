@@ -39,6 +39,7 @@ export const updateStaff = authActionClient
         return { error: 'Username already exists' };
       }
 
+      // Base data to update
       const updateData: any = {
         username,
         first_name,
@@ -47,6 +48,7 @@ export const updateStaff = authActionClient
         active: isActive,
       };
 
+      // Only update password if provided
       if (newPassword) {
         updateData.password = await hash(newPassword, 12);
       }
