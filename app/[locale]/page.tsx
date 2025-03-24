@@ -3,15 +3,17 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { ControlledPatientSelector } from '../../lib/components/controlled-form-components';
-import { Button } from "@heroui/react";
+import { Button } from '@heroui/react';
 import { UserPlusIcon, UsersIcon } from '@heroicons/react/16/solid';
 import XLSXButton from 'msps/lib/components/other/XLSXButton/XLSXButton';
 import { useTranslations } from 'next-intl';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 
 export default function Index() {
   const { control } = useForm();
   const router = useRouter();
   const t = useTranslations();
+  const { canCreateOrUpdate, isAdmin, isManager } = usePermissions();
 
   const handlePatientSelect = (patientId: number) => {
     router.push(`/profile/${patientId}/diseases`);
@@ -28,15 +30,17 @@ export default function Index() {
         />
       </div>
 
-      <div className="flex items-center justify-center w-full p-6 border rounded-lg">
-        <Button
-          color="primary"
-          onPress={() => router.push('/patient/')}
-          startContent={<UserPlusIcon className="min-w-6 min-h-6" />}
-        >
-          {t('index.addNewPatient')}
-        </Button>
-      </div>
+      {canCreateOrUpdate && (
+        <div className="flex items-center justify-center w-full p-6 border rounded-lg">
+          <Button
+            color="primary"
+            onPress={() => router.push('/patient/')}
+            startContent={<UserPlusIcon className="min-w-6 min-h-6" />}
+          >
+            {t('index.addNewPatient')}
+          </Button>
+        </div>
+      )}
 
       <div className="flex items-center justify-center w-full p-6 border rounded-lg">
         <Button
@@ -49,9 +53,11 @@ export default function Index() {
         </Button>
       </div>
 
-      <div className="flex items-center justify-center w-full p-6 border rounded-lg">
-        <XLSXButton />
-      </div>
+      {(isAdmin || isManager) && (
+        <div className="flex items-center justify-center w-full p-6 border rounded-lg">
+          <XLSXButton />
+        </div>
+      )}
     </div>
   );
 }

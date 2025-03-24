@@ -5,17 +5,27 @@ import { createPatientServerSchema, updatePatientServerSchema } from '../validat
 import prisma from '../prisma';
 import { patient as Patient } from '@prisma/client';
 import { deleteActionSchema } from '../validation/DeleteActionSchema';
-import { getAuthenticatedUserId } from '../auth/authenticated';
+import {
+  checkCreatePermission,
+  checkUpdatePermission,
+  checkDeletePermission,
+  checkRecordAccess,
+} from '../auth/authenticated';
 
 export const createPatient = actionClient.schema(createPatientServerSchema).action(async ({ parsedInput }) => {
   try {
-    const userId = await getAuthenticatedUserId();
+    // Check if user can create records and get session in one call
+    const { session, canProceed, error } = await checkCreatePermission();
+    if (!canProceed) {
+      throw new Error(error);
+    }
 
     const patient = await prisma.patient.create({
       data: {
         ...parsedInput,
+        hospital_id: session.hospitalId,
         created_at: new Date(),
-        created_by: userId,
+        created_by: session.id,
       },
     });
     return { data: patient as Patient };
@@ -27,14 +37,34 @@ export const createPatient = actionClient.schema(createPatientServerSchema).acti
 
 export const updatePatient = actionClient.schema(updatePatientServerSchema).action(async ({ parsedInput }) => {
   try {
-    const userId = await getAuthenticatedUserId();
+    // Check if user can update records and get session in one call
+    const { session, canProceed, error } = await checkUpdatePermission();
+    if (!canProceed) {
+      throw new Error(error);
+    }
+
+    // Get the patient to check hospital access
+    const existingPatient = await prisma.patient.findUnique({
+      where: { id: parsedInput.id },
+      select: { hospital_id: true },
+    });
+
+    if (!existingPatient) {
+      throw new Error('Patient not found');
+    }
+
+    // Check if user has access to this record based on hospital
+    const { canAccess, error: accessError } = checkRecordAccess(session, existingPatient.hospital_id);
+    if (!canAccess) {
+      throw new Error(accessError);
+    }
 
     const patient = await prisma.patient.update({
       where: { id: parsedInput.id },
       data: {
         ...parsedInput,
         updated_at: new Date(),
-        updated_by: userId,
+        updated_by: session.id,
       },
     });
     return { data: patient as Patient };
@@ -46,8 +76,27 @@ export const updatePatient = actionClient.schema(updatePatientServerSchema).acti
 
 export const deletePatient = actionClient.schema(deleteActionSchema).action(async ({ parsedInput }) => {
   try {
-    // Verify user is authenticated before delete
-    await getAuthenticatedUserId();
+    // Check if user can delete records and get session in one call
+    const { session, canProceed, error } = await checkDeletePermission();
+    if (!canProceed) {
+      throw new Error(error);
+    }
+
+    // Get the patient to check hospital access
+    const existingPatient = await prisma.patient.findUnique({
+      where: { id: parsedInput.id },
+      select: { hospital_id: true },
+    });
+
+    if (!existingPatient) {
+      throw new Error('Patient not found');
+    }
+
+    // Check if user has access to this record based on hospital
+    const { canAccess, error: accessError } = checkRecordAccess(session, existingPatient.hospital_id);
+    if (!canAccess) {
+      throw new Error(accessError);
+    }
 
     const data = await prisma.patient.delete({
       where: { id: parsedInput.id },
