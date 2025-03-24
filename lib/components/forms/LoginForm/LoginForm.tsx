@@ -76,7 +76,7 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
       className={clsx('flex flex-col items-center justify-center min-h-[400px] w-full max-w-md mx-auto p-6', className)}
     >
       <div className="flex flex-col w-full gap-6 border rounded-lg p-10">
-        <h4 className="text-xl font-semibold text-center mb-4">ავტორიზაცია</h4>
+        <h4 className="text-xl font-semibold text-center mb-4">{t('login')}</h4>
 
         <ControlledInput
           name="username"
