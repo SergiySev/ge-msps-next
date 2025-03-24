@@ -22,18 +22,21 @@ import {
   ArrowLeftStartOnRectangleIcon,
   ClipboardDocumentListIcon,
   ClipboardDocumentCheckIcon,
+  BuildingOfficeIcon,
 } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
 import { signOut, useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
+import { usePermissions } from 'msps/lib/hooks/usePermissions';
 
 export default function Menu({ className }: { className?: string }) {
   const { data: session, status } = useSession();
   const currentPath = usePathname();
   const t = useTranslations();
   const locale = useLocale();
+  const { isAdmin } = usePermissions();
 
   if (status === 'loading' || status === 'unauthenticated') {
     return null;
@@ -120,6 +123,11 @@ export default function Menu({ className }: { className?: string }) {
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <div className="flex items-center gap-2">
+          {isAdmin && (
+            <Button href="/admin/hospitals" as={Link} color="default" variant="light" size="md">
+              <BuildingOfficeIcon className="w-4 h-4" /> {t('hospital.title')}
+            </Button>
+          )}
           {isAdminOrManager ? (
             <Button href="/staff" as={Link} color="default" variant="light" size="md">
               <UserIcon className="w-4 h-4" /> {t('staff')}

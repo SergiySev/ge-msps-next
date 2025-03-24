@@ -172,6 +172,30 @@
   "noninfectious_edit": "Edit Non-infectious",
   "pd_add": "Add PD",
   "pd_edit": "Edit PD",
+  "new_hospital": "Add Hospital",
+  "edit_hospital": "Edit Hospital",
+
+  "id": "ID",
+  "name": "Name",
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+  "actions": {
+    "add": "Add",
+    "edit": "Edit",
+    "downloadPdExcel": "Download PD Excel"
+  },
+
+  "hospital": {
+    "title": "Hospitals",
+    "name": "Hospital Name",
+    "active": "Active",
+    "no_records": "No hospitals found",
+    "add": "Add Hospital",
+    "edit": "Edit Hospital",
+    "actions": "Actions",
+    "back_to_list": "Back to Hospitals"
+  },
 
   "patients_page": {
     "table": {
@@ -290,12 +314,6 @@
     "exit": "Exit"
   },
 
-  "actions": {
-    "add": "Add",
-    "edit": "Edit",
-    "downloadPdExcel": "Download PD Excel"
-  },
-
   "form": {
     "clearable_text": "-- Select --",
     "delete_patient_warning": "To delete a patient, you must first delete all associated records (PD, Assessment...) from the patient's profile"
@@ -305,9 +323,6 @@
   "staffUpdateSuccess": "Staff Member Successfully Updated",
   "backToList": "Back to List",
   "manage": "Manage",
-  "status": "Status",
-  "active": "Active",
-  "inactive": "Inactive",
   "noRole": "No Role",
   "role": "Role",
   "manager": "Manager",
