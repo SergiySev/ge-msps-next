@@ -1,58 +1,66 @@
 'use server';
 
-import { actionClient } from '../safe-action';
-import { updateProfileSchema } from 'msps/lib/validation/staff-profile';
+import { createSafeActionClient } from 'next-safe-action';
+import { updateProfileSchema } from '../validation/staff-profile';
 import prisma from '../prisma';
 import { hash, compare } from 'bcryptjs';
+import { getServerSession } from 'next-auth';
+import { authOptions } from 'msps/app/api/auth/[...nextauth]/options';
 import { revalidatePath } from 'next/cache';
-import { getAuthenticatedUserId } from '../auth/authenticated';
+import { z } from 'zod';
 
-export const updateProfile = actionClient.schema(updateProfileSchema).action(async ({ parsedInput }) => {
+type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+
+const action = createSafeActionClient();
+
+export const updateProfile = action.schema(updateProfileSchema).action(async ({ parsedInput }) => {
   try {
-    const userId = await getAuthenticatedUserId();
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return { error: 'Not authenticated' };
+    }
 
-    const user = await prisma.staff.findUnique({
-      where: { id: userId },
+    // Check if username is already taken by another user
+    const existingUser = await prisma.staff.findFirst({
+      where: {
+        username: parsedInput.username,
+        NOT: {
+          id: parseInt(session.user.id),
+        },
+      },
     });
 
-    if (!user) {
-      throw new Error('User not found');
+    if (existingUser) {
+      return { error: 'Username already exists' };
     }
 
-    // Check if username is already taken by another staff member
-    if (parsedInput.username !== user.username) {
-      const existingUser = await prisma.staff.findUnique({
-        where: { username: parsedInput.username },
-      });
+    const staff = await prisma.staff.findUnique({
+      where: { id: parseInt(session.user.id) },
+    });
 
-      if (existingUser) {
-        throw new Error('Username is already taken');
-      }
+    if (!staff) {
+      return { error: 'Staff member not found' };
     }
 
-    // Verify current password
-    const isValidPassword = await compare(parsedInput.currentPassword, user.password);
-    if (!isValidPassword) {
-      throw new Error('Current password is incorrect');
+    const isPasswordValid = await compare(parsedInput.currentPassword, staff.password);
+    if (!isPasswordValid) {
+      return { error: 'Current password is incorrect' };
     }
 
-    // Hash new password
-    const hashedPassword = await hash(parsedInput.newPassword, 10);
-
-    // Update user
     await prisma.staff.update({
-      where: { id: userId },
+      where: { id: parseInt(session.user.id) },
       data: {
         username: parsedInput.username,
-        password: hashedPassword,
-        updated_at: new Date(),
+        first_name: parsedInput.first_name,
+        last_name: parsedInput.last_name,
+        password: await hash(parsedInput.newPassword, 10),
       },
     });
 
     revalidatePath('/profile');
-    return { success: 'Profile updated successfully' };
+    return { success: true };
   } catch (error) {
     console.error('Error updating profile:', error);
-    throw error;
+    return { error: 'Failed to update profile' };
   }
 });

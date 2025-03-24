@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   NavbarBrand,
-} from "@heroui/react";
+} from '@heroui/react';
 import {
   ChevronDownIcon,
   HomeIcon,
@@ -20,6 +20,8 @@ import {
   UserIcon,
   GlobeAltIcon,
   ArrowLeftStartOnRectangleIcon,
+  ClipboardDocumentListIcon,
+  ClipboardDocumentCheckIcon,
 } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -39,36 +41,26 @@ export default function Menu({ className }: { className?: string }) {
 
   const isActive = (path: string) => currentPath === path;
 
+  const isAdminOrManager = session?.user?.role === 'admin' || session?.user?.role === 'manager';
+
   const dropdownMenuItems = [
     {
       key: 'patient',
-      href: '/patient',
-      label: t('menu.patient'),
-      icon: PlusIcon,
-    },
-    {
-      key: 'pd',
-      href: '/pd',
-      label: t('menu.pd'),
-      icon: PlusIcon,
-    },
-    {
-      key: 'kidney-assessment',
-      href: '/kidney-assessment',
-      label: t('menu.assessment'),
-      icon: PlusIcon,
+      href: '/patient/add',
+      label: 'Patient',
+      icon: UserIcon,
     },
     {
       key: 'infectious',
-      href: '/infectious',
-      label: t('menu.infectious'),
-      icon: PlusIcon,
+      href: '/infectious/add',
+      label: 'Infectious',
+      icon: ClipboardDocumentListIcon,
     },
     {
-      key: 'noninfectious',
-      href: '/noninfectious',
-      label: t('menu.noninfectious'),
-      icon: PlusIcon,
+      key: 'comorbidity',
+      href: '/comorbidity/add',
+      label: 'Comorbidity',
+      icon: ClipboardDocumentCheckIcon,
     },
   ];
 
@@ -127,29 +119,23 @@ export default function Menu({ className }: { className?: string }) {
         </NavbarItem>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <Dropdown className="shadow-md border rounded-lg">
-          <NavbarItem>
-            <DropdownTrigger>
-              <Button
-                startContent={<PlusIcon className="w-4 h-4" />}
-                endContent={<ChevronDownIcon className="w-4 h-4" />}
-                radius="sm"
-                variant="light"
-              >
-                {t('menu.new')}
-              </Button>
-            </DropdownTrigger>
-          </NavbarItem>
-          <DropdownMenu aria-label="ახალი...">
-            {dropdownMenuItems.map(({ key, href, label, icon: Icon }) => (
-              <DropdownItem key={key} textValue={key} className="m-0 p-0">
-                <Button href={href} as={Link} color="default" variant="light" size="md">
-                  <Icon className="w-4 h-4" /> {label}
-                </Button>
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
+        <div className="flex items-center gap-2">
+          {isAdminOrManager ? (
+            <Button href="/staff" as={Link} color="default" variant="light" size="md">
+              <UserIcon className="w-4 h-4" /> {t('staff')}
+            </Button>
+          ) : (
+            <DropdownMenu aria-label={t('new')}>
+              {dropdownMenuItems.map(({ key, href, label, icon: Icon }) => (
+                <DropdownItem key={key} textValue={key} className="m-0 p-0">
+                  <Button href={href} as={Link} color="default" variant="light" size="md">
+                    <Icon className="w-4 h-4" /> {label}
+                  </Button>
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          )}
+        </div>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>

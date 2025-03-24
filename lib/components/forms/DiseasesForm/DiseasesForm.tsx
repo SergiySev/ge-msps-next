@@ -47,7 +47,6 @@ const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          console.log('Success: ', `${input.last_name} ${input.first_name}`);
           toast.success(`${data.last_name} ${data.first_name} შენახულია!`);
           if (!isEditPage) resetFormAndAction();
         },

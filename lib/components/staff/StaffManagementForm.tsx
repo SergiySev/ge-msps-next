@@ -1,21 +1,31 @@
 'use client';
 
-import { Button } from '@heroui/button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { updateProfileSchema } from 'msps/lib/validation/staff-profile';
-import { updateProfile } from 'msps/lib/actions/profileAction';
-import { ControlledInput } from '../controlled-form-components';
-import toast from 'react-hot-toast';
-import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { useTranslations } from 'next-intl';
+import { Button } from '@heroui/button';
+import { ControlledInput } from '../controlled-form-components';
+import { ControlledSelect } from '../controlled-form-components';
+import { ControlledCheckbox } from '../controlled-form-components';
+import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { updateStaff } from 'msps/lib/actions/staffAction';
+import { updateStaffSchema } from 'msps/lib/validation/staff';
+import toast from 'react-hot-toast';
 
-interface ProfileFormProps {
-  initialUsername: string;
-  initialFirstName: string;
-  initialLastName: string;
+interface StaffMember {
+  id: number;
+  username: string;
+  first_name: string | null;
+  last_name: string | null;
+  role: string | null;
+  active: boolean | null;
+  created_at: Date | null;
 }
 
-export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName }: ProfileFormProps) => {
+interface StaffManagementFormProps {
+  staffMember: StaffMember;
+}
+
+export const StaffManagementForm = ({ staffMember }: StaffManagementFormProps) => {
   const t = useTranslations();
 
   const {
@@ -24,20 +34,22 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
       formState: { isValid, isSubmitting },
     },
     handleSubmitWithAction,
-  } = useHookFormAction(updateProfile, zodResolver(updateProfileSchema), {
+  } = useHookFormAction(updateStaff, zodResolver(updateStaffSchema), {
     formProps: {
       defaultValues: {
-        username: initialUsername,
-        first_name: initialFirstName,
-        last_name: initialLastName,
-        currentPassword: '',
+        id: staffMember.id.toString(),
+        username: staffMember.username,
+        first_name: staffMember.first_name || '',
+        last_name: staffMember.last_name || '',
+        role: (staffMember.role as 'nurse' | 'doctor' | 'manager' | 'admin' | undefined) || 'nurse',
+        isActive: staffMember.active || false,
         newPassword: '',
         confirmPassword: '',
       },
     },
     actionProps: {
-      onSuccess: ({}) => {
-        toast.success(t('profileUpdateSuccess'));
+      onSuccess: () => {
+        toast.success(t('staffUpdateSuccess'));
       },
       onError: ({ error }) => {
         console.error('Error: ', error);
@@ -82,23 +94,28 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
           placeholder=" "
         />
 
-        <ControlledInput
-          name="currentPassword"
-          type="password"
-          label={t('currentPassword')}
+        <ControlledSelect
+          name="role"
+          label={t('role')}
           control={control}
           rules={{ required: true }}
           variant="bordered"
           className="w-full"
-          placeholder=" "
+          items={[
+            { id: 'nurse', name: t('nurse') },
+            { id: 'doctor', name: t('doctor') },
+            { id: 'manager', name: t('manager') },
+            { id: 'admin', name: t('admin') },
+          ]}
         />
+
+        <ControlledCheckbox name="isActive" label={t('active')} control={control} className="w-full" color="primary" />
 
         <ControlledInput
           name="newPassword"
           type="password"
           label={t('newPassword')}
           control={control}
-          rules={{ required: true }}
           variant="bordered"
           className="w-full"
           placeholder=" "
@@ -109,14 +126,13 @@ export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName
           type="password"
           label={t('confirmPassword')}
           control={control}
-          rules={{ required: true }}
           variant="bordered"
           className="w-full"
           placeholder=" "
         />
 
         <Button type="submit" color="primary" isLoading={isSubmitting} isDisabled={!isValid} className="w-full mt-4">
-          {t('updateProfile')}
+          {t('updateStaff')}
         </Button>
       </div>
     </form>

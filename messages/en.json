@@ -299,5 +299,20 @@
   "form": {
     "clearable_text": "-- Select --",
     "delete_patient_warning": "To delete a patient, you must first delete all associated records (PD, Assessment...) from the patient's profile"
-  }
+  },
+
+  "staffManagement": "Staff Management",
+  "staffUpdateSuccess": "Staff Member Successfully Updated",
+  "backToList": "Back to List",
+  "manage": "Manage",
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+  "noRole": "No Role",
+  "role": "Role",
+  "manager": "Manager",
+  "admin": "Admin",
+  "createdAt": "Created At",
+  "updateStaff": "Update Staff",
+  "staff": "Staff"
 }

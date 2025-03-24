@@ -63,7 +63,6 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          console.log('Success: ', input);
           toast.success('შეფასება შენახულია!');
           if (!isEditPage) resetFormAndAction();
         },

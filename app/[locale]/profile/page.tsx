@@ -1,23 +1,34 @@
-import { ProfileForm } from 'msps/lib/components/profile/ProfileForm';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { authOptions } from 'msps/app/api/auth/[...nextauth]/options';
+import prisma from 'msps/lib/prisma';
+import { ProfileForm } from 'msps/lib/components/profile/ProfileForm';
 
 export default async function ProfilePage() {
+  const t = await getTranslations();
   const session = await getServerSession(authOptions);
 
-  const locale = getLocale();
-  const t = await getTranslations({ locale });
+  if (!session?.user) {
+    redirect('/');
+  }
 
-  if (!session) {
-    redirect('/auth/signin');
+  const staffMember = await prisma.staff.findUnique({
+    where: { id: parseInt(session.user.id) },
+  });
+
+  if (!staffMember) {
+    redirect('/');
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">{t('profile')}</h1>
-      <ProfileForm initialUsername={session.user.username} />
-    </div>
+    <>
+      <h4 className="text-xl font-semibold">{t('profile')}</h4>
+      <ProfileForm
+        initialUsername={staffMember.username}
+        initialFirstName={staffMember.first_name || ''}
+        initialLastName={staffMember.last_name || ''}
+      />
+    </>
   );
 }
