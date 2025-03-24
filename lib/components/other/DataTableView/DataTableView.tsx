@@ -12,13 +12,14 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@heroui/react";
+} from '@heroui/react';
 import { IPagination } from 'msps/lib/types';
 import { searchParamsParsers } from 'msps/lib/params/searchParams';
 import { useQueryStates } from 'nuqs';
 import SortingSwitch from 'msps/lib/components/other/SortingSwitch/SortingSwitch';
 import WhoMadeIt from '../WhoMadeIt/WhoMadeIt';
 import { useTranslations } from 'next-intl';
+import { usePermissions } from 'msps/lib/hooks/usePermissions';
 
 interface DataTableViewProps<T extends { id: number }> {
   linkValue: string;
@@ -39,6 +40,10 @@ export default function DataTableView<T extends { id: number }>({
 }: DataTableViewProps<T>) {
   const [{ page, sorting }, setParams] = useQueryStates(searchParamsParsers);
   const t = useTranslations();
+  const { isAdmin, isManager } = usePermissions();
+
+  // Hide add button for admin and manager roles
+  const showAddButton = !isAdmin && !isManager;
 
   return (
     <div className="mt-4">
@@ -52,10 +57,13 @@ export default function DataTableView<T extends { id: number }>({
             defaultSelected={sorting}
           />
         </div>
+
         <div className="w-1/4 text-right">
-          <Button href={`/${linkValueForNew}`} as={Link} color="default" variant="light" size="sm">
-            <PlusIcon className="h-4 w-4" /> {t('add')}
-          </Button>
+          {showAddButton && (
+            <Button href={`/${linkValueForNew}`} as={Link} color="default" variant="light" size="sm">
+              <PlusIcon className="h-4 w-4" /> {t('add')}
+            </Button>
+          )}
         </div>
       </div>
       <Table
