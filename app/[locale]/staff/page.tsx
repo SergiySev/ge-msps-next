@@ -26,7 +26,8 @@ export default async function StaffPage() {
       username: true,
       role: true,
       active: true,
-      created_at: true,
+      first_name: true,
+      last_name: true,
     },
     orderBy: {
       created_at: 'desc',

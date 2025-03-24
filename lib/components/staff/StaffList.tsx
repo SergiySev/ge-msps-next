@@ -5,13 +5,15 @@ import Link from 'next/link';
 import { Button } from '@heroui/button';
 import { Badge } from '@heroui/badge';
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from '@heroui/table';
+import { PencilSquareIcon } from '@heroicons/react/16/solid';
 
 interface StaffMember {
   id: number;
   username: string;
+  first_name: string;
+  last_name: string;
   role: string | null;
   active: boolean | null;
-  created_at: Date | null;
 }
 
 interface StaffListProps {
@@ -24,31 +26,29 @@ export const StaffList = ({ staff }: StaffListProps) => {
   return (
     <Table aria-label="Staff list">
       <TableHeader>
+        <TableColumn>{t('first_name')}</TableColumn>
+        <TableColumn>{t('last_name')}</TableColumn>
         <TableColumn>{t('username')}</TableColumn>
         <TableColumn>{t('role')}</TableColumn>
         <TableColumn>{t('active')}</TableColumn>
-        <TableColumn>{t('createdAt')}</TableColumn>
         <TableColumn>{t('manage')}</TableColumn>
       </TableHeader>
       <TableBody>
         {staff.map(member => (
           <TableRow key={member.id}>
+            <TableCell>{member.first_name}</TableCell>
+            <TableCell>{member.last_name}</TableCell>
             <TableCell>{member.username}</TableCell>
             <TableCell>
               <Badge color="primary" variant="flat">
                 {member.role || t('noRole')}
               </Badge>
             </TableCell>
-            <TableCell>
-              <Badge color={member.active ? 'success' : 'danger'} variant="flat">
-                {member.active ? t('active') : t('inactive')}
-              </Badge>
-            </TableCell>
-            <TableCell>{member.created_at ? new Date(member.created_at).toLocaleDateString() : '-'}</TableCell>
+            <TableCell className="text-center">{member.active ? '✅' : '❌'}</TableCell>
             <TableCell>
               <Link href={`/staff/${member.id}`}>
                 <Button size="sm" color="primary" variant="flat">
-                  {t('manage')}
+                  <PencilSquareIcon className="h-4 w-4" />
                 </Button>
               </Link>
             </TableCell>
