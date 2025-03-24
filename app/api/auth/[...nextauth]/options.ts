@@ -30,6 +30,9 @@ export const authOptions: NextAuthOptions = {
           where: {
             username: credentials.username,
           },
+          include: {
+            hospital: true,
+          },
         });
 
         if (!user) {
@@ -47,6 +50,9 @@ export const authOptions: NextAuthOptions = {
           username: user.username,
           firstName: user.first_name,
           lastName: user.last_name,
+          hospitalId: user.hospital_id,
+          hospitalName: user.hospital.name,
+          role: user.role || 'nurse',
         };
       },
     }),
@@ -57,6 +63,9 @@ export const authOptions: NextAuthOptions = {
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.username = user.username;
+        token.hospitalId = user.hospitalId;
+        token.hospitalName = user.hospitalName;
+        token.role = user.role;
       }
       return token;
     },
@@ -68,6 +77,9 @@ export const authOptions: NextAuthOptions = {
           username: token.username as string,
           firstName: token.firstName as string,
           lastName: token.lastName as string,
+          hospitalId: token.hospitalId as number,
+          hospitalName: token.hospitalName as string,
+          role: token.role as 'admin' | 'manager' | 'doctor' | 'nurse',
         };
       }
       return session;
