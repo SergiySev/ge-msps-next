@@ -18,6 +18,10 @@ export const pdJson = (data: unknown, t: (key: string) => string) => ({
     { label: t('pd_ch_solution_227'), value: 'pd_ch_solution_227' },
     { label: t('pd_ch_solution_386'), value: 'pd_ch_solution_386' },
     { label: t('icodextrin'), value: 'icodextrin' },
+    {
+      label: t('hospital.title'),
+      value: 'hospital_name',
+    },
   ],
   content: [...(data as [])],
 });

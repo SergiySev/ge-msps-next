@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-
 import { NextResponse } from 'next/server';
+import { getAuthSession, isUserAdmin, isUserManager } from 'msps/lib/auth/authenticated';
 
 const prisma = new PrismaClient();
 
 interface InputObject {
-  [key: string]: string | number | boolean | null | undefined;
+  [key: string]: string | number | boolean | null | undefined | { name: string };
 }
 
 interface OutputObject {
@@ -20,6 +20,9 @@ function removeFalseValuesAndConvertTrue<T extends InputObject>(list: T[]): Outp
         newItem[key] = (item[key] as Date).toISOString();
       } else if (item[key] === true) {
         newItem[key] = 1;
+      } else if (key === 'hospital' && item[key] && typeof item[key] === 'object') {
+        // Handle hospital object specifically
+        newItem['hospital_name'] = (item[key] as { name: string }).name;
       } else if (item[key]) {
         newItem[key] = item[key];
       }
@@ -29,7 +32,20 @@ function removeFalseValuesAndConvertTrue<T extends InputObject>(list: T[]): Outp
 }
 
 export async function GET() {
+  const session = await getAuthSession();
+  const isAdmin = await isUserAdmin();
+  const isManager = await isUserManager();
+
+  // Only admin and manager roles can access this endpoint
+  if (!isAdmin && !isManager) {
+    return NextResponse.json({ error: 'You do not have permission to access this endpoint' }, { status: 403 });
+  }
+
+  // Get hospital ID for filtering (admin can see all, manager only their hospital)
+  const hospitalId = isAdmin ? undefined : session.hospitalId;
+
   const noninfectiousList = await prisma.noninfectious.findMany({
+    where: hospitalId ? { hospital_id: hospitalId } : undefined,
     select: {
       id: true,
       patient_id: true,
@@ -51,6 +67,11 @@ export async function GET() {
       eps: true,
       other: true,
       other_comment: true,
+      hospital: {
+        select: {
+          name: true,
+        },
+      },
     },
     orderBy: {
       date: 'desc',
@@ -58,6 +79,7 @@ export async function GET() {
   });
 
   const infectionsList = await prisma.infectious.findMany({
+    where: hospitalId ? { hospital_id: hospitalId } : undefined,
     select: {
       id: true,
       patient_id: true,
@@ -87,6 +109,11 @@ export async function GET() {
       clindamycin: true,
       rifampicin: true,
       rluconazole: true,
+      hospital: {
+        select: {
+          name: true,
+        },
+      },
     },
     orderBy: {
       date: 'desc',
@@ -94,6 +121,7 @@ export async function GET() {
   });
 
   const pdList = await prisma.pd.findMany({
+    where: hospitalId ? { hospital_id: hospitalId } : undefined,
     select: {
       id: true,
       patient_id: true,
@@ -104,6 +132,11 @@ export async function GET() {
       pd_ch_solution_227: true,
       pd_ch_solution_386: true,
       icodextrin: true,
+      hospital: {
+        select: {
+          name: true,
+        },
+      },
     },
     orderBy: {
       date: 'desc',
@@ -111,6 +144,7 @@ export async function GET() {
   });
 
   const assessmentList = await prisma.kidney_assessment.findMany({
+    where: hospitalId ? { hospital_id: hospitalId } : undefined,
     select: {
       id: true,
       patient_id: true,
@@ -119,6 +153,11 @@ export async function GET() {
       pet: true,
       ktv: true,
       ka_comment: true,
+      hospital: {
+        select: {
+          name: true,
+        },
+      },
     },
     orderBy: {
       check_date: 'desc',
@@ -126,6 +165,7 @@ export async function GET() {
   });
 
   const patientList = await prisma.patient.findMany({
+    where: hospitalId ? { hospital_id: hospitalId } : undefined,
     select: {
       id: true,
       birth_date: true,
@@ -168,6 +208,11 @@ export async function GET() {
         select: {
           first_name: true,
           last_name: true,
+        },
+      },
+      hospital: {
+        select: {
+          name: true,
         },
       },
     },

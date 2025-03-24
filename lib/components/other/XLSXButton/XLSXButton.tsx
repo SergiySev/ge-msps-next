@@ -1,4 +1,4 @@
-import { Button } from "@heroui/react";
+import { Button } from '@heroui/react';
 import { patientsJson } from './sheets/patient.sheet';
 import { pdJson } from './sheets/pd.sheet';
 import { infectiousJson } from './sheets/infectious.sheet';
@@ -24,6 +24,7 @@ export default function XLSXButton() {
     const fetchData = await fetch('/api/xlsx');
     const response = await fetchData.json();
 
+    // console.log(response);
     xlsx(
       [
         // @ts-expect-error: Type mismatch due to dynamic data structure

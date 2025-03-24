@@ -50,6 +50,10 @@ export const patientsJson = (data: unknown, t: (key: string) => string) => ({
       value: (row: { mors_reason: string }) => (row.mors_reason ? t(row.mors_reason) : ''),
     },
     { label: t('mors_comment'), value: 'mors_comment' },
+    {
+      label: t('hospital.title'),
+      value: 'hospital_name',
+    },
   ],
   content: [...(data as [])],
 });

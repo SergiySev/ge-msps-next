@@ -10,6 +10,10 @@ export const assessmentJson = (data: unknown, t: (key: string) => string) => ({
     { label: t('ktv'), value: 'ktv' },
     { label: t('pet'), value: 'pet' },
     { label: t('ka_comment'), value: 'ka_comment' },
+    {
+      label: t('hospital.title'),
+      value: 'hospital_name',
+    },
   ],
   content: [...(data as [])],
 });

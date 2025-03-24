@@ -23,6 +23,10 @@ export const noninfectiousJson = (data: unknown, t: (key: string) => string) => 
     { label: t('eps'), value: 'eps' },
     { label: t('other'), value: 'other' },
     { label: t('other_comment'), value: 'other_comment' },
+    {
+      label: t('hospital.title'),
+      value: 'hospital_name',
+    },
   ],
   content: [...(data as [])],
 });
