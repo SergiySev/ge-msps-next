@@ -70,9 +70,17 @@ export default function Menu({ className }: { className?: string }) {
   const handleLogout = async () => {
     try {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
       await signOut({
         redirect: true,
-        callbackUrl: `${baseUrl}/login`, // Use dynamic base URL
+        callbackUrl: `${baseUrl}/login`,
       });
       toast.success(t('logoutSuccess'));
     } catch (error) {
