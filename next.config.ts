@@ -9,7 +9,26 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  webpack: (config, { dev, isServer }) => {
+    // Optimize cache serialization
+    if (!dev && !isServer) {
+      config.cache = {
+        type: 'filesystem',
+        buildDependencies: {
+          config: [__filename],
+        },
+        cacheDirectory: '.next/cache/webpack',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      };
+    }
+    return config;
+  },
 };
+
+// Ensure SENTRY_AUTH_TOKEN is available
+if (!process.env.SENTRY_AUTH_TOKEN) {
+  console.warn('⚠️ SENTRY_AUTH_TOKEN is not set. Sentry source maps upload will be disabled.');
+}
 
 export default withSentryConfig(withNextIntl(nextConfig), {
   // For all available options, see:
@@ -52,4 +71,7 @@ export default withSentryConfig(withNextIntl(nextConfig), {
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
+
+  // Disable telemetry collection
+  telemetry: false,
 });
