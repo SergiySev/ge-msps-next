@@ -1,5 +1,6 @@
 import prisma from 'msps/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { getAuthSession } from 'msps/lib/auth/authenticated';
 
 const STAFF_SELECT = {
   id: true,
@@ -15,6 +16,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchTerm = request.nextUrl.searchParams.get('q')?.trim();
     const role = request.nextUrl.searchParams.get('role')?.trim();
+    const session = await getAuthSession();
 
     if (!searchTerm && !role) {
       return NextResponse.json({ error: 'Search term or role is required' }, { status: 400 });
@@ -29,6 +31,7 @@ export async function GET(request: NextRequest) {
     }
 
     const where = {
+      hospital_id: session.hospitalId, // Only search within user's hospital
       ...(role && { role: role as StaffRole }),
       ...(searchTerm && {
         OR: [{ last_name: { contains: searchTerm } }, { first_name: { contains: searchTerm } }],
@@ -45,6 +48,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(result);
   } catch (error) {
     console.error('Staff search failed:', error);
-    return NextResponse.json(null, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
