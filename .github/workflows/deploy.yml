@@ -9,10 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Debug SSH connection
-        run: |
-          ssh -vvv -i ~/.ssh/deploy_key -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo SSH connection test"
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
