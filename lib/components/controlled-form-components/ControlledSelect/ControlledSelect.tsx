@@ -1,4 +1,4 @@
-import { Select, SelectItem, SelectProps } from "@heroui/react";
+import { Select, SelectItem, SelectProps } from '@heroui/react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 import { useCallback } from 'react';
 
@@ -84,11 +84,7 @@ const ControlledSelect = <T extends FieldValues>({
           {...props}
         >
           {item => (
-            <SelectItem
-              key={String(item.id)}
-              value={String(item.id)}
-              className={item.id === EMPTY_OPTION_KEY ? 'text-gray-400' : ''}
-            >
+            <SelectItem key={String(item.id)} className={item.id === EMPTY_OPTION_KEY ? 'text-gray-400' : ''}>
               {item.name}
             </SelectItem>
           )}
