@@ -140,7 +140,11 @@
   "newPassword": "New Password",
   "confirmPassword": "Confirm Password",
   "updateProfile": "Update Profile",
+  "updatePassword": "Update Password",
   "profileUpdateSuccess": "Profile Successfully Updated",
+  "passwordUpdateSuccess": "Password Successfully Updated",
+  "personalInformation": "Personal Information",
+  "changePassword": "Change Password",
   "somethingWentWrong": "An Error Occurred",
 
   "date": "Date",

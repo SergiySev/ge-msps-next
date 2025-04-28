@@ -23,7 +23,7 @@ export default async function ProfilePage() {
 
   return (
     <>
-      <h4 className="text-xl font-semibold">{t('profile')}</h4>
+      {/* <h4 className="text-xl font-semibold">{t('profile')}</h4> */}
       <ProfileForm
         initialUsername={staffMember.username}
         initialFirstName={staffMember.first_name || ''}

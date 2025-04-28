@@ -140,7 +140,11 @@
   "newPassword": "ახალი პაროლი",
   "confirmPassword": "გაიმეორეთ პაროლი",
   "updateProfile": "პროფილის განახლება",
+  "updatePassword": "პაროლის განახლება",
   "profileUpdateSuccess": "პროფილი წარმატებით განახლდა",
+  "passwordUpdateSuccess": "პაროლი წარმატებით განახლდა",
+  "personalInformation": "პირადი ინფორმაცია",
+  "changePassword": "პაროლის შეცვლა",
   "somethingWentWrong": "დაფიქსირდა შეცდომა",
 
   "date": "თარიღი",
