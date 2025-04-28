@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import NextLink from 'next/link';
 import {
   Navbar,
   NavbarContent,
@@ -49,20 +50,26 @@ export default function Menu({ className }: { className?: string }) {
   const dropdownMenuItems = [
     {
       key: 'patient',
-      href: '/patient/add',
-      label: 'Patient',
+      href: '/patient',
+      label: t('menu.patient'),
       icon: UserIcon,
     },
     {
-      key: 'infectious',
-      href: '/infectious/add',
-      label: 'Infectious',
+      key: 'kidney-assessment',
+      href: '/kidney-assessment',
+      label: t('menu.assessment'),
       icon: ClipboardDocumentListIcon,
     },
     {
-      key: 'comorbidity',
-      href: '/comorbidity/add',
-      label: 'Comorbidity',
+      key: 'infectious',
+      href: '/infectious',
+      label: t('menu.infectious'),
+      icon: ClipboardDocumentCheckIcon,
+    },
+    {
+      key: 'noninfectious',
+      href: '/noninfectious',
+      label: t('menu.noninfectious'),
       icon: ClipboardDocumentCheckIcon,
     },
   ];
@@ -115,41 +122,65 @@ export default function Menu({ className }: { className?: string }) {
     <Navbar className={clsx('', className)} position="static">
       <NavbarBrand>
         <NavbarItem isActive={isActive('/')}>
-          <Link href="/" aria-current={isActive('/') ? 'page' : undefined} title={t('menu.home')}>
-            <HomeIcon className="w-4 h-4 mr-2" />
-            {t('menu.home')}
-          </Link>
+          <NextLink href="/" prefetch={true}>
+            <span
+              className={isActive('/') ? 'text-primary font-medium flex items-center' : 'flex items-center'}
+              title={t('menu.home')}
+            >
+              <HomeIcon className="w-4 h-4 mr-2" />
+              {t('menu.home')}
+            </span>
+          </NextLink>
         </NavbarItem>
         <NavbarItem>
           {session?.user && (
-            <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 ml-6">
-              <UserIcon className="min-w-4 min-h-4" />
-              <span className="text-sm font-medium text-gray-700 underline">{session.user.lastName}</span>
-            </Link>
+            <NextLink href="/profile" prefetch={true}>
+              <span className="flex items-center gap-2 hover:opacity-80 ml-6">
+                <UserIcon className="min-w-4 min-h-4" />
+                <span className="text-sm font-medium text-gray-700 underline">{session.user.lastName}</span>
+              </span>
+            </NextLink>
           )}
         </NavbarItem>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <div className="flex items-center gap-2">
           {isAdmin && (
-            <Button href="/admin/hospitals" as={Link} color="default" variant="light" size="md">
-              <BuildingOfficeIcon className="w-4 h-4" /> {t('hospital.title')}
-            </Button>
+            <NextLink href="/admin/hospitals" prefetch={true}>
+              <Button as="div" color="default" variant="light" size="md">
+                <BuildingOfficeIcon className="w-4 h-4" /> {t('hospital.title')}
+              </Button>
+            </NextLink>
           )}
           {isAdminOrManager ? (
-            <Button href="/staff" as={Link} color="default" variant="light" size="md">
-              <UserIcon className="w-4 h-4" /> {t('staff')}
-            </Button>
+            <NextLink href="/staff" prefetch={true}>
+              <Button as="div" color="default" variant="light" size="md">
+                <UserIcon className="w-4 h-4" /> {t('staff')}
+              </Button>
+            </NextLink>
           ) : (
-            <DropdownMenu aria-label={t('new')}>
-              {dropdownMenuItems.map(({ key, href, label, icon: Icon }) => (
-                <DropdownItem key={key} textValue={key} className="m-0 p-0">
-                  <Button href={href} as={Link} color="default" variant="light" size="md">
-                    <Icon className="w-4 h-4" /> {label}
-                  </Button>
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  variant="light"
+                  startContent={<PlusIcon className="w-4 h-4" />}
+                  endContent={<ChevronDownIcon className="w-4 h-4" />}
+                >
+                  {t('menu.new')}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label={t('menu.new')}>
+                {dropdownMenuItems.map(({ key, href, label, icon: Icon }) => (
+                  <DropdownItem key={key} textValue={key} className="m-0 p-0">
+                    <NextLink href={href} prefetch={true}>
+                      <Button as="div" color="default" variant="light" size="md">
+                        <Icon className="w-4 h-4" /> {label}
+                      </Button>
+                    </NextLink>
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
           )}
         </div>
       </NavbarContent>
