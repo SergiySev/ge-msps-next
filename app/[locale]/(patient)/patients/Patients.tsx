@@ -39,7 +39,7 @@ const Patients = ({ patients, className }: PatientsProps) => {
     birth_date: d(patient.birth_date),
     doctor: `${patient.doctor.last_name} ${patient.doctor.first_name}`,
     actions: (
-      <Button href={`/patient/${patient.id}`} as={Link} color="default" isIconOnly variant="light" size="sm">
+      <Button href={`/profile/${patient.id}`} as={Link} color="default" isIconOnly variant="light" size="sm">
         <PencilSquareIcon className="h-4 w-4" />
       </Button>
     ),

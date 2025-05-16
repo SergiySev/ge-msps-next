@@ -69,6 +69,8 @@
   "clindamycin": "კლინდამიცინი",
   "rifampicin": "რიფამპიცინი",
   "rluconazole": "ფლუკონაზოლი",
+  "other_antibiotics": "სხვა ანტიბიოტიკები",
+  "other_antibiotics_comment": "სხვა ანტიბიოტიკები (კომენტარი)",
 
   "gfr_abbr": "GFR",
   "pet_abbr": "PET",
@@ -333,5 +335,9 @@
   "admin": "ადმინისტრატორი",
   "createdAt": "შექმნის თარიღი",
   "updateStaff": "პერსონალის განახლება",
-  "staff": "პერსონალი"
+  "staff": "პერსონალი",
+
+  "assessment_saved": "შეფასება შენახულია!",
+  "error": "შეცდომა",
+  "patient_id_required": "პაციენტის ID სავალდებულოა"
 }

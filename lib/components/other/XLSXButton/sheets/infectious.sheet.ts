@@ -31,6 +31,8 @@ export const infectiousJson = (data: unknown, t: (key: string) => string) => ({
     { label: t('clindamycin'), value: 'clindamycin' },
     { label: t('rifampicin'), value: 'rifampicin' },
     { label: t('rluconazole'), value: 'rluconazole' },
+    { label: t('other_antibiotics'), value: 'other_antibiotics' },
+    { label: t('other_antibiotics_comment'), value: 'other_antibiotics_comment' },
     {
       label: t('hospital.title'),
       value: 'hospital_name',

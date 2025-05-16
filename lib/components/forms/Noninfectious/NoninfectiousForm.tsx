@@ -57,12 +57,12 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          toast.success('შეფასება შენახულია!');
+          toast.success(t('assessment_saved'));
           if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
           console.error('Error: ', error);
-          toast.error(`შეცდომა: ${error.serverError || ''}`);
+          toast.error(`${t('error')}: ${error.serverError || ''}`);
         },
       },
     }
@@ -80,7 +80,7 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
         <ControlledPatientSelector
           name="patient_id"
           editable={!isEditPage}
-          label="პაციენტი"
+          label={t('patient')}
           control={control}
           rules={{ required: true }}
         />
@@ -89,7 +89,7 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
 
         <Divider className="md:col-span-2 border-dashed my-4" />
 
-        <h4 className="text-md font-semibold md:col-span-2 my-4">არაინფექციურის დამატება</h4>
+        <h4 className="text-md font-semibold md:col-span-2 my-4">{t('noninfectious_add')}</h4>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:col-span-2">
           <ControlledCheckbox name="hernia" label={t('hernia')} control={control} />

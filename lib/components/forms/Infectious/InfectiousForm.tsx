@@ -63,22 +63,24 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
       },
       actionProps: {
         onSuccess: ({ input }) => {
-          toast.success('შეფასება შენახულია!');
+          toast.success(t('assessment_saved'));
           if (!isEditPage) resetFormAndAction();
         },
         onError: ({ error }) => {
           console.error('Error: ', error);
-          toast.error(`შეცდომა: ${error.serverError || ''}`);
+          toast.error(`${t('error')}: ${error.serverError || ''}`);
         },
       },
     }
   );
 
   const otherValue = watch('other');
+  const otherAntibioticsValue = watch('other_antibiotics');
 
   useEffect(() => {
     if (!otherValue) setValue('other_comment', '');
-  }, [otherValue, setValue]);
+    if (!otherAntibioticsValue) setValue('other_antibiotics_comment', '');
+  }, [otherValue, otherAntibioticsValue, setValue]);
 
   return (
     <form onSubmit={handleSubmitWithAction} className={clsx(className)}>
@@ -86,10 +88,10 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
         <ControlledPatientSelector
           name="patient_id"
           editable={!isEditPage}
-          label="პაციენტი"
+          label={t('patient')}
           control={control}
           rules={{
-            required: 'პაციენტის ID სავალდებულოა',
+            required: t('patient_id_required'),
           }}
         />
 
@@ -145,7 +147,7 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
 
       <Divider className="md:col-span-2 border-dashed my-4" />
 
-      <h4 className="text-md font-semibold md:col-span-2 my-4">ინფექციის გამომწვევი</h4>
+      <h4 className="text-md font-semibold md:col-span-2 my-4">მკურნალობა</h4>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:col-span-2">
         <ControlledCheckbox name="vancomycin" label={t('vancomycin')} control={control} />
@@ -160,6 +162,13 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
         <ControlledCheckbox name="clindamycin" label={t('clindamycin')} control={control} />
         <ControlledCheckbox name="rifampicin" label={t('rifampicin')} control={control} />
         <ControlledCheckbox name="rluconazole" label={t('rluconazole')} control={control} />
+        <ControlledCheckbox name="other_antibiotics" label={t('other_antibiotics')} control={control} />
+        <ControlledTextArea
+          name="other_antibiotics_comment"
+          label={t('other_antibiotics_comment')}
+          control={control}
+          isDisabled={!otherAntibioticsValue}
+        />
       </div>
 
       <Divider className="md:col-span-2 border-dashed my-4" />

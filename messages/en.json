@@ -69,6 +69,8 @@
   "clindamycin": "Clindamycin",
   "rifampicin": "Rifampicin",
   "rluconazole": "Fluconazole",
+  "other_antibiotics": "Other Antibiotics",
+  "other_antibiotics_comment": "Other Antibiotics (Comment)",
 
   "gfr_abbr": "GFR",
   "pet_abbr": "PET",
@@ -333,5 +335,8 @@
   "admin": "Admin",
   "createdAt": "Created At",
   "updateStaff": "Update Staff",
-  "staff": "Staff"
+  "staff": "Staff",
+  "assessment_saved": "Assessment saved successfully!",
+  "error": "Error",
+  "patient_id_required": "Patient ID is required"
 }
