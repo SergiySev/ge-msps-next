@@ -8,10 +8,11 @@ export default async function PatientsPage({
   params,
 }: {
   searchParams: Promise<{ page?: string; [key: string]: string | undefined }>;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const t = await getTranslations({ locale: params.locale });
+  const resolvedParams = await params;
+  const t = await getTranslations({ locale: resolvedParams.locale });
 
   // Get the current page from the searchParams or default to 1
   const currentPage = Number(resolvedSearchParams.page) || 1;
@@ -48,8 +49,8 @@ export default async function PatientsPage({
   const totalPatients = await prisma.patient.count();
   const totalPages = Math.ceil(totalPatients / patientsPerPage);
 
-  // Create base URL for pagination using params.locale which is directly available
-  const baseUrl = `/${params.locale}/patients`;
+  // Create base URL for pagination using resolved params
+  const baseUrl = `/${resolvedParams.locale}/patients`;
 
   // Prepare query params for pagination
   const queryParams: Record<string, string> = {};
