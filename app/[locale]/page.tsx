@@ -53,11 +53,9 @@ export default function Index() {
         </Button>
       </div>
 
-      {(isAdmin || isManager) && (
-        <div className="flex items-center justify-center w-full p-6 border rounded-lg">
-          <XLSXButton />
-        </div>
-      )}
+      <div className="flex items-center justify-center w-full p-6 border rounded-lg">
+        <XLSXButton />
+      </div>
     </div>
   );
 }

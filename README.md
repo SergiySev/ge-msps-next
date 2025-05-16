@@ -2,6 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Setup
+
+Create a `.env` file in the root directory with the following variables:
+
+```bash
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-key-here
+```
+
+The `NEXTAUTH_URL` should match your application's base URL. In development, this is typically `http://localhost:3000`, but should be updated to your production URL for deployment.
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash
