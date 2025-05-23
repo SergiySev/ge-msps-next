@@ -204,7 +204,7 @@ export async function GET() {
           name: true,
         },
       },
-      doctor: {
+      staff_patient_doctor_idTostaff: {
         select: {
           first_name: true,
           last_name: true,
