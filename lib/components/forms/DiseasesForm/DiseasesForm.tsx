@@ -15,6 +15,7 @@ import { Divider } from '@heroui/react';
 import { updateDiseasesClientSchema } from 'msps/lib/validation/diseases';
 import { updateDiseases } from 'msps/lib/actions/diseasesAction';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface DiseasesFormProps {
   data: Patient | Partial<Patient>;
@@ -23,6 +24,8 @@ interface DiseasesFormProps {
 
 const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
   const isEditPage = true;
+
+  const router = useRouter();
 
   const schema = updateDiseasesClientSchema;
 
@@ -49,6 +52,7 @@ const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
         onSuccess: ({ input }) => {
           toast.success(`${data.last_name} ${data.first_name} შენახულია!`);
           if (!isEditPage) resetFormAndAction();
+          else router.push(`/profile/${data.id}/diseases`);
         },
         onError: ({ error }) => {
           console.error('Error: ', error);

@@ -58,6 +58,7 @@ const PatientForm = ({ patient, regions, className }: PatientFormProps) => {
         onSuccess: ({ input }) => {
           toast.success(`${input.last_name} ${input.first_name} შენახულია!`);
           if (!isEditPage) resetFormAndAction();
+          else router.push(`/profile/${input.id}`);
         },
         onError: ({ error }) => {
           console.error('Error: ', error);

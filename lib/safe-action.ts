@@ -37,9 +37,15 @@ export const recordAccessClient = authActionClient.use(async ({ next, clientInpu
 
   // Only check record access for actions that have an ID
   if (isActionWithId(clientInput)) {
+    // Determine which patient ID to use for access check
+    const patientId =
+      'patient_id' in clientInput
+        ? (clientInput as any).patient_id // For kidney assessments, infectious, noninfectious, etc.
+        : clientInput.id; // For direct patient records
+
     // Check if the record exists and user has access to it
     const existingRecord = await prisma.patient.findUnique({
-      where: { id: clientInput.id },
+      where: { id: patientId },
       select: { hospital_id: true },
     });
 

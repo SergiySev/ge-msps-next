@@ -56,6 +56,7 @@ const PDForm = ({ data, className }: PDFormProps) => {
         onSuccess: ({ input }) => {
           toast.success('შეფასება შენახულია!');
           if (!isEditPage) resetFormAndAction();
+          else router.push(`/profile/${data.patient_id}/pd`);
         },
         onError: ({ error }) => {
           console.error('Error: ', error);

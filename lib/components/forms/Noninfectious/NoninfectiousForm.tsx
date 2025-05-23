@@ -59,6 +59,7 @@ const NoninfectiousForm = ({ data, className }: NoninfectiousFormProps) => {
         onSuccess: ({ input }) => {
           toast.success(t('assessment_saved'));
           if (!isEditPage) resetFormAndAction();
+          else router.push(`/profile/${data.patient_id}/noninfectious`);
         },
         onError: ({ error }) => {
           console.error('Error: ', error);

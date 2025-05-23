@@ -63,6 +63,7 @@ const KidneyAssessmentForm = ({ data, className }: KidneyAssessmentFormProps) =>
         onSuccess: ({ input }) => {
           toast.success('შეფასება შენახულია!');
           if (!isEditPage) resetFormAndAction();
+          else router.push(`/profile/${data.patient_id}/kidney-assessment`);
         },
         onError: ({ error }) => {
           console.error('Error: ', error);
