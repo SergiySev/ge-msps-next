@@ -36,13 +36,13 @@ export default async function InfectiousPage({ params, searchParams }: PageProps
             last_name: true,
           },
         },
-        created_by_staff: {
+        staff_infectious_created_byTostaff: {
           select: {
             first_name: true,
             last_name: true,
           },
         },
-        updated_by_staff: {
+        staff_infectious_updated_byTostaff: {
           select: {
             first_name: true,
             last_name: true,
@@ -60,10 +60,15 @@ export default async function InfectiousPage({ params, searchParams }: PageProps
       id: item.id,
       patient_id: item.patient_id,
       patient: item.patient.last_name + ' ' + item.patient.first_name,
-      doctor: item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name,
+      doctor:
+        item.staff_infectious_created_byTostaff.last_name + ' ' + item.staff_infectious_created_byTostaff.first_name,
       date: d(item.date),
-      creator: item.created_by_staff ? item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name : '',
-      updater: item.updated_by_staff ? item.updated_by_staff.last_name + ' ' + item.updated_by_staff.first_name : '',
+      creator: item.staff_infectious_created_byTostaff
+        ? item.staff_infectious_created_byTostaff.last_name + ' ' + item.staff_infectious_created_byTostaff.first_name
+        : '',
+      updater: item.staff_infectious_updated_byTostaff
+        ? item.staff_infectious_updated_byTostaff.last_name + ' ' + item.staff_infectious_updated_byTostaff.first_name
+        : '',
       createdAt: d(item.created_at),
       updatedAt: d(item.updated_at),
     };

@@ -12,7 +12,7 @@ interface Patient {
   first_name: string;
   last_name: string;
   birth_date: Date;
-  doctor: {
+  staff_patient_doctor_idTostaff: {
     first_name: string;
     last_name: string;
   };
@@ -37,7 +37,7 @@ const Patients = ({ patients, className }: PatientsProps) => {
     key: patient.id,
     patient_name: `${patient.last_name} ${patient.first_name}`,
     birth_date: d(patient.birth_date),
-    doctor: `${patient.doctor.last_name} ${patient.doctor.first_name}`,
+    doctor: `${patient.staff_patient_doctor_idTostaff.last_name} ${patient.staff_patient_doctor_idTostaff.first_name}`,
     actions: (
       <Button href={`/profile/${patient.id}`} as={Link} color="default" isIconOnly variant="light" size="sm">
         <PencilSquareIcon className="h-4 w-4" />

@@ -28,7 +28,7 @@ export default async function PatientsPage({
       last_name: true,
       first_name: true,
       birth_date: true,
-      doctor: {
+      staff_patient_doctor_idTostaff: {
         select: {
           first_name: true,
           last_name: true,

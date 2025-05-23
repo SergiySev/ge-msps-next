@@ -11,7 +11,7 @@ type ExtendedPatient = Patient & {
   region: {
     name: string;
   };
-  doctor: {
+  staff_patient_doctor_idTostaff: {
     first_name: string;
     last_name: string;
   };
@@ -68,7 +68,7 @@ export default function PatientView({ patient }: { patient: ExtendedPatient }) {
         <TableBody>
           <TableRow>
             <TableCell>
-              {data.doctor.last_name} {data.doctor.first_name}
+              {data.staff_patient_doctor_idTostaff.last_name} {data.staff_patient_doctor_idTostaff.first_name}
             </TableCell>
           </TableRow>
         </TableBody>

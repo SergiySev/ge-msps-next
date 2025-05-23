@@ -36,13 +36,13 @@ export default async function KidneyAssessmentPage({ params, searchParams }: Pag
             last_name: true,
           },
         },
-        created_by_staff: {
+        staff_kidney_assessment_created_byTostaff: {
           select: {
             first_name: true,
             last_name: true,
           },
         },
-        updated_by_staff: {
+        staff_kidney_assessment_updated_byTostaff: {
           select: {
             first_name: true,
             last_name: true,
@@ -60,14 +60,25 @@ export default async function KidneyAssessmentPage({ params, searchParams }: Pag
       id: item.id,
       patient_id: item.patient_id,
       patient: item.patient.last_name + ' ' + item.patient.first_name,
-      doctor: item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name,
+      doctor:
+        item.staff_kidney_assessment_created_byTostaff.last_name +
+        ' ' +
+        item.staff_kidney_assessment_created_byTostaff.first_name,
       gfr: item.gfr,
       pet: item.pet,
       ktv: item.ktv,
       date: d(item.check_date),
       comment: item.ka_comment,
-      creator: item.created_by_staff ? item.created_by_staff.last_name + ' ' + item.created_by_staff.first_name : '',
-      updater: item.updated_by_staff ? item.updated_by_staff.last_name + ' ' + item.updated_by_staff.first_name : '',
+      creator: item.staff_kidney_assessment_created_byTostaff
+        ? item.staff_kidney_assessment_created_byTostaff.last_name +
+          ' ' +
+          item.staff_kidney_assessment_created_byTostaff.first_name
+        : '',
+      updater: item.staff_kidney_assessment_updated_byTostaff
+        ? item.staff_kidney_assessment_updated_byTostaff.last_name +
+          ' ' +
+          item.staff_kidney_assessment_updated_byTostaff.first_name
+        : '',
       createdAt: d(item.created_at),
       updatedAt: d(item.updated_at),
     };
