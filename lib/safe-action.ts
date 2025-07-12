@@ -1,14 +1,20 @@
 import { createSafeActionClient } from 'next-safe-action';
 import { getAuthSession, checkRecordAccess } from './auth/authenticated';
+import { validateCSRFForServerAction, CSRFError } from './auth/csrf';
 import prisma from './prisma';
 import { isActionWithId } from './validation/actionTypes';
 
 class ActionError extends Error {}
 
-// Base client with error handling
+// Base client with error handling and CSRF protection
 export const actionClient = createSafeActionClient({
   handleServerError(error) {
     console.error('Server error:', error);
+
+    // If it's our custom CSRF error, return its message
+    if (error instanceof CSRFError) {
+      return error.message;
+    }
 
     // If it's our custom ActionError, return its message
     if (error instanceof ActionError) {
@@ -23,6 +29,10 @@ export const actionClient = createSafeActionClient({
     // For unknown errors, return a generic message
     return 'An unexpected error occurred';
   },
+}).use(async ({ next }) => {
+  // Add CSRF protection to all actions
+  await validateCSRFForServerAction();
+  return next();
 });
 
 // Auth client that provides session context

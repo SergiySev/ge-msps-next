@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Button } from '@heroui/react';
 import { loginSchema, LoginSchema } from 'msps/lib/validation/login';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, useSession, getCsrfToken } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
@@ -24,6 +24,12 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
   const callbackUrl = searchParams.get('callbackUrl');
   const { data: session, status } = useSession();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
+
+  // Get CSRF token on component mount
+  useEffect(() => {
+    getCsrfToken().then(token => setCsrfToken(token || null));
+  }, []);
 
   const {
     control,
@@ -61,6 +67,7 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
         username: formData.username,
         password: formData.password,
         redirect: false,
+        csrfToken, // Include CSRF token
       });
 
       if (response?.error) {

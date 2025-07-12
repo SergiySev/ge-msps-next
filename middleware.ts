@@ -13,7 +13,9 @@ const intlMiddleware = createIntlMiddleware({
 
 // List of public paths that don't require authentication
 const PUBLIC_PATHS = ['/login'];
-const SKIP_MIDDLEWARE_PATHS = ['/_next', '/api', '/_vercel'];
+const SKIP_MIDDLEWARE_PATHS = ['/_next', '/api/auth', '/_vercel'];
+// API paths that need CSRF protection
+const CSRF_PROTECTED_PATHS = ['/api/patients', '/api/staff', '/api/regions', '/api/xlsx'];
 
 async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -21,6 +23,30 @@ async function middleware(request: NextRequest) {
   // Skip middleware for static files and system paths
   if (SKIP_MIDDLEWARE_PATHS.some(path => pathname.startsWith(path)) || pathname.includes('.')) {
     return NextResponse.next();
+  }
+
+  // Add CSRF protection headers for API routes
+  if (CSRF_PROTECTED_PATHS.some(path => pathname.startsWith(path))) {
+    // Validate origin and referer for state-changing operations
+    if (request.method !== 'GET') {
+      const origin = request.headers.get('origin');
+      const referer = request.headers.get('referer');
+      const host = request.headers.get('host');
+
+      if (origin && host && !origin.includes(host)) {
+        return NextResponse.json(
+          { error: 'CSRF protection: Origin mismatch' },
+          { status: 403 }
+        );
+      }
+
+      if (referer && host && !referer.includes(host)) {
+        return NextResponse.json(
+          { error: 'CSRF protection: Referer mismatch' },
+          { status: 403 }
+        );
+      }
+    }
   }
 
   // Handle i18n

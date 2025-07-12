@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../[...nextauth]/options';
+import { withCSRFProtection } from 'msps/lib/auth/csrf';
 
-export async function POST() {
+async function logoutHandler(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
@@ -23,3 +24,5 @@ export async function POST() {
     return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const POST = withCSRFProtection(logoutHandler);
