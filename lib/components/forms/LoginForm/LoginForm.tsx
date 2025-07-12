@@ -7,9 +7,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Button } from '@heroui/react';
 import { loginSchema, LoginSchema } from 'msps/lib/validation/login';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 
 interface LoginFormProps {
   data: LoginSchema;
@@ -21,6 +22,8 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
+  const { data: session, status } = useSession();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const {
     control,
@@ -36,8 +39,24 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
     },
   });
 
+  // Hide form immediately when authenticated
+  useEffect(() => {
+    if (status === 'authenticated' && session) {
+      setIsLoggingIn(false);
+      // Redirect immediately without waiting
+      router.push(callbackUrl || '/');
+    }
+  }, [status, session, router, callbackUrl]);
+
+  // Don't render the form if user is authenticated or logging in
+  if (status === 'authenticated' || isLoggingIn) {
+    return null;
+  }
+
   const onSubmit = async (formData: LoginSchema) => {
     try {
+      setIsLoggingIn(true);
+
       const response = await signIn('credentials', {
         username: formData.username,
         password: formData.password,
@@ -45,6 +64,7 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
       });
 
       if (response?.error) {
+        setIsLoggingIn(false);
         // Handle specific error messages
         const errorMessage =
           response.error === 'No user found with this username'
@@ -58,13 +78,12 @@ const LoginForm = ({ data, className }: LoginFormProps) => {
       }
 
       if (response?.ok) {
-        // Show success toast and redirect
+        // Show success toast
         toast.success(t('loginSuccess'));
-        // Use the callbackUrl from the URL if available, otherwise redirect to home
-        router.push(callbackUrl || '/');
-        router.refresh();
+        // Keep isLoggingIn true - useEffect will handle redirect when session updates
       }
     } catch (error) {
+      setIsLoggingIn(false);
       const errorMessage = error instanceof Error ? error.message : '';
       toast.error(`${t('generalError')}${errorMessage ? `: ${errorMessage}` : ''}`);
     }
