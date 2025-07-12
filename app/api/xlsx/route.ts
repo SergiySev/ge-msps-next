@@ -106,7 +106,7 @@ export async function GET() {
       gentamicin: true,
       clindamycin: true,
       rifampicin: true,
-      rluconazole: true,
+      fluconazole: true,
       hospital: {
         select: {
           name: true,

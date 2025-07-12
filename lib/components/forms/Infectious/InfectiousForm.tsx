@@ -162,7 +162,7 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
         <ControlledCheckbox name="gentamicin" label={t('gentamicin')} control={control} />
         <ControlledCheckbox name="clindamycin" label={t('clindamycin')} control={control} />
         <ControlledCheckbox name="rifampicin" label={t('rifampicin')} control={control} />
-        <ControlledCheckbox name="rluconazole" label={t('rluconazole')} control={control} />
+        <ControlledCheckbox name="fluconazole" label={t('fluconazole')} control={control} />
         <ControlledCheckbox name="other_antibiotics" label={t('other_antibiotics')} control={control} />
         <ControlledTextArea
           name="other_antibiotics_comment"

@@ -48,7 +48,7 @@ model infectious {
   gentamicin                         Boolean                   @default(false)
   clindamycin                        Boolean                   @default(false)
   rifampicin                         Boolean                   @default(false)
-  rluconazole                        Boolean                   @default(false)
+  fluconazole                        Boolean                   @default(false)
   other_antibiotics                  Boolean                   @default(false)
   other_antibiotics_comment          String                    @default("") @db.VarChar(1024)
   created_at                         DateTime                  @default(now()) @db.Timestamp(0)

@@ -27,7 +27,7 @@ const infectiousBaseSchema = z.object({
   gentamicin: z.boolean().default(false),
   clindamycin: z.boolean().default(false),
   rifampicin: z.boolean().default(false),
-  rluconazole: z.boolean().default(false),
+  fluconazole: z.boolean().default(false),
   other_antibiotics: z.boolean().default(false),
   other_antibiotics_comment: z.string().optional(),
 
