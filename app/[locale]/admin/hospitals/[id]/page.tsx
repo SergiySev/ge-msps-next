@@ -22,7 +22,7 @@ export default async function HospitalPage({ params }: HospitalPageProps) {
   }
 
   // Await the params
-  const { id, locale } = await params;
+  const { id } = await params;
 
   const t = await getTranslations('hospital');
 

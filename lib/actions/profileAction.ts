@@ -5,10 +5,9 @@ import { updateProfileSchema, updatePasswordSchema } from '../validation/staff-p
 import prisma from '../prisma';
 import { hash } from 'bcryptjs';
 import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
 
-type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
-type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>;
+// type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+// type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>;
 
 // Profile update action with auth middleware
 export const updateProfile = authActionClient

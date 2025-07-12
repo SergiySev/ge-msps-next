@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../[...nextauth]/options';
 import { withCSRFProtection } from 'msps/lib/auth/csrf';
 
-async function logoutHandler(request: NextRequest) {
+async function logoutHandler() {
   try {
     const session = await getServerSession(authOptions);
 

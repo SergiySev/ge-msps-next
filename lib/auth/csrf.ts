@@ -23,7 +23,7 @@ export async function validateCSRFToken(request: NextRequest): Promise<void> {
   }
 
   // Get the CSRF token from the request headers
-  const csrfTokenFromHeader = request.headers.get('x-csrf-token');
+  // const csrfTokenFromHeader = request.headers.get('x-csrf-token');
 
   // Get the CSRF token from NextAuth
   const token = await getToken({
@@ -95,7 +95,7 @@ export async function validateCSRFForServerAction(): Promise<void> {
 /**
  * Middleware function to add CSRF protection to API routes
  */
-export function withCSRFProtection<T extends any[]>(handler: (request: NextRequest, ...args: T) => Promise<Response>) {
+export function withCSRFProtection<T extends unknown[]>(handler: (request: NextRequest, ...args: T) => Promise<Response>) {
   return async (request: NextRequest, ...args: T): Promise<Response> => {
     try {
       await validateCSRFToken(request);

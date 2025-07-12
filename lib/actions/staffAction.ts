@@ -4,9 +4,8 @@ import { authActionClient } from '../safe-action';
 import { updateStaffSchema } from '../validation/staff';
 import prisma from '../prisma';
 import { hash } from 'bcryptjs';
-import { z } from 'zod';
 
-type UpdateStaffInput = z.infer<typeof updateStaffSchema>;
+// type UpdateStaffInput = z.infer<typeof updateStaffSchema>;
 
 // Staff update action with auth middleware and manager/admin role check
 export const updateStaff = authActionClient
@@ -21,7 +20,7 @@ export const updateStaff = authActionClient
 
     return next();
   })
-  .action(async ({ parsedInput, ctx: { session } }) => {
+  .action(async ({ parsedInput }) => {
     try {
       const { id, username, first_name, last_name, role, isActive, newPassword } = parsedInput;
 
@@ -40,7 +39,7 @@ export const updateStaff = authActionClient
       }
 
       // Base data to update
-      const updateData: any = {
+      const updateData: Record<string, unknown> = {
         username,
         first_name,
         last_name,

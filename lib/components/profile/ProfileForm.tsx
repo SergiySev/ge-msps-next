@@ -16,8 +16,6 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm = ({ initialUsername, initialFirstName, initialLastName }: ProfileFormProps) => {
-  const t = useTranslations();
-
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

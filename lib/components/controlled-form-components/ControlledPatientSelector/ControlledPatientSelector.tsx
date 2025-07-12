@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Controller, FieldValues, UseControllerProps, useWatch } from 'react-hook-form';
-import { Input, Button } from "@heroui/react";
-import { Listbox, ListboxItem } from "@heroui/react";
-import { Spinner } from "@heroui/react";
+import { Input, Button } from '@heroui/react';
+import { Listbox, ListboxItem } from '@heroui/react';
+import { Spinner } from '@heroui/react';
 import debounce from 'lodash/debounce';
 import { XCircleIcon, UserIcon } from '@heroicons/react/16/solid';
 
@@ -103,10 +103,6 @@ const ControlledPatientSelector = <T extends FieldValues>({
     };
   }, [debouncedSearch]);
 
-  useEffect(() => {
-    handleValueChange(currentValue);
-  }, [currentValue]);
-
   const handleValueChange = useCallback(
     (value: number | null) => {
       if (value) {
@@ -115,6 +111,10 @@ const ControlledPatientSelector = <T extends FieldValues>({
     },
     [fetchPatientById]
   );
+
+  useEffect(() => {
+    handleValueChange(currentValue);
+  }, [currentValue, handleValueChange]);
 
   const handleInputChange = useCallback(
     (value: string, onChange: (value: number | null) => void) => {

@@ -21,7 +21,7 @@ export const createHospital = createActionClient
     await checkIsAdmin();
     return next();
   })
-  .action(async ({ parsedInput, ctx: { session } }) => {
+  .action(async ({ parsedInput }) => {
     try {
       const hospital = await prisma.hospital.create({
         data: {
@@ -30,8 +30,8 @@ export const createHospital = createActionClient
       });
 
       return { success: true, hospital };
-    } catch (error: any) {
-      if (error.code === 'P2002') {
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
         throw new Error('A hospital with this name already exists');
       }
       console.error('Error creating hospital:', error);
@@ -56,12 +56,14 @@ export const updateHospital = updateActionClient
       });
 
       return { success: true, hospital };
-    } catch (error: any) {
-      if (error.code === 'P2002') {
-        throw new Error('A hospital with this name already exists');
-      }
-      if (error.code === 'P2025') {
-        throw new Error('Hospital not found');
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'code' in error) {
+        if (error.code === 'P2002') {
+          throw new Error('A hospital with this name already exists');
+        }
+        if (error.code === 'P2025') {
+          throw new Error('Hospital not found');
+        }
       }
       console.error('Error updating hospital:', error);
       throw new Error('Failed to update hospital');

@@ -1,12 +1,11 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
 import { authOptions } from 'msps/app/api/auth/[...nextauth]/options';
 import prisma from 'msps/lib/prisma';
 import { ProfileForm } from 'msps/lib/components/profile/ProfileForm';
 
 export default async function ProfilePage() {
-  const t = await getTranslations();
+  // const t = await getTranslations();
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {

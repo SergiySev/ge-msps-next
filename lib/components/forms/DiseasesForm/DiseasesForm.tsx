@@ -49,7 +49,7 @@ const DiseasesForm = ({ data, className }: DiseasesFormProps) => {
         defaultValues: data,
       },
       actionProps: {
-        onSuccess: ({ input }) => {
+        onSuccess: () => {
           toast.success(`${data.last_name} ${data.first_name} შენახულია!`);
           if (!isEditPage) resetFormAndAction();
           else router.push(`/profile/${data.id}/diseases`);

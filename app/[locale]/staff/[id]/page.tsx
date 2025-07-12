@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { authOptions } from 'msps/app/api/auth/[...nextauth]/options';
 import prisma from 'msps/lib/prisma';
 import { StaffManagementForm } from 'msps/lib/components/staff/StaffManagementForm';

@@ -9,7 +9,7 @@ import { createHospitalClientSchema, updateHospitalClientSchema } from 'msps/lib
 import toast from 'react-hot-toast';
 import { createHospital, updateHospital } from 'msps/lib/actions/hospitalAction';
 import { useTranslations } from 'next-intl';
-import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
+// import DeleteButton from '../../controlled-form-components/DeleteButton/DeleteButton';
 import { useRouter } from 'next/navigation';
 
 interface HospitalFormProps {
@@ -20,7 +20,7 @@ interface HospitalFormProps {
 const HospitalForm = ({ data, className }: HospitalFormProps) => {
   const isEditPage = data.hasOwnProperty('id');
 
-  const t = useTranslations();
+  // const t = useTranslations();
   const hospitalT = useTranslations('hospital');
   const router = useRouter();
 

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ActionWithId } from './actionTypes';
+// import { ActionWithId } from './actionTypes';
 
 export const createHospitalClientSchema = z.object({
   name: z.string().min(2, 'Hospital name must be at least 2 characters').max(255),

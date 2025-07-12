@@ -62,7 +62,7 @@ const InfectiousForm = ({ data, className }: InfectiousFormProps) => {
         },
       },
       actionProps: {
-        onSuccess: ({ input }) => {
+        onSuccess: () => {
           toast.success(t('assessment_saved'));
           if (!isEditPage) resetFormAndAction();
           else router.push(`/profile/${data.patient_id}/infectious`);

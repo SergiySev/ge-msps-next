@@ -13,7 +13,7 @@ export default function Index() {
   const { control } = useForm();
   const router = useRouter();
   const t = useTranslations();
-  const { canCreateOrUpdate, isAdmin, isManager } = usePermissions();
+  const { canCreateOrUpdate } = usePermissions();
 
   const handlePatientSelect = (patientId: number) => {
     router.push(`/profile/${patientId}/diseases`);
