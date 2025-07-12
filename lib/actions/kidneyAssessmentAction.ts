@@ -49,7 +49,10 @@ export const updateKidneyAssessment = updateActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const data = await prisma.kidney_assessment.update({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId,
+        },
         data: {
           ...parsedInput,
           updated_at: new Date(),
@@ -76,7 +79,10 @@ export const deleteKidneyAssessment = deleteActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const data = await prisma.kidney_assessment.delete({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId,
+        },
       });
       return { data };
     } catch (error) {

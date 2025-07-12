@@ -46,7 +46,10 @@ export const updatePD = updateActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const data = await prisma.pd.update({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId,
+        },
         data: {
           ...parsedInput,
           updated_at: new Date(),
@@ -73,7 +76,10 @@ export const deletePD = deleteActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const data = await prisma.pd.delete({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId,
+        },
       });
       return { data };
     } catch (error) {

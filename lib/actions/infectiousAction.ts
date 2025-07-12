@@ -46,7 +46,10 @@ export const updateInfectious = updateActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const data = await prisma.infectious.update({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId,
+        },
         data: {
           ...parsedInput,
           updated_at: new Date(),
@@ -73,7 +76,10 @@ export const deleteInfectious = deleteActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const data = await prisma.infectious.delete({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId,
+        },
       });
       return { data };
     } catch (error) {
