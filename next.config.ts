@@ -10,10 +10,21 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  // Disable webpack cache in production to avoid serialization warnings
+  // Configure webpack cache for better performance
   webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      config.cache = false;
+    // Enable cache in all environments with proper configuration
+    if (!dev) {
+      // Use filesystem cache for production builds
+      config.cache = {
+        type: 'filesystem',
+        buildDependencies: {
+          config: [__filename],
+        },
+        // Customize cache directory to avoid conflicts
+        cacheDirectory: path.resolve('.next/cache/webpack'),
+        // Set compression to reduce cache size
+        compression: 'gzip',
+      };
     }
     return config;
   },
@@ -54,9 +65,9 @@ const sentryConfig = {
   // side errors will fail.
   tunnelRoute: '/monitoring',
 
-  // Hides source maps from generated client bundles
+  // Enable source maps for better debugging in production
   sourcemaps: {
-    disable: true,
+    disable: false,
   },
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size

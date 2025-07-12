@@ -11,6 +11,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint checks
 
+### Monitoring and Debugging
+- **Sentry Integration**: Configured for production error monitoring with source maps enabled
+- **Source Maps**: Enabled in production for better debugging (`sourcemaps.disable: false`)
+- **Sentry Tunnel**: Routes browser requests through `/monitoring` to circumvent ad-blockers
+
 ### Environment Setup
 Required `.env` variables:
 ```bash
