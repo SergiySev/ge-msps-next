@@ -1,5 +1,5 @@
 import { PDForm } from 'msps/lib/components/forms';
-import ProfileLink from 'msps/lib/components/other/ProfileLink/ProfileLInk';
+import ProfileLink from 'msps/lib/components/other/ProfileLink/ProfileLink';
 import prisma from 'msps/lib/prisma';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';

@@ -1,5 +1,5 @@
 import KidneyAssessmentForm from 'msps/lib/components/forms/KidneyAssessmentForm/KidneyAssessmentForm';
-import ProfileLink from 'msps/lib/components/other/ProfileLink/ProfileLInk';
+import ProfileLink from 'msps/lib/components/other/ProfileLink/ProfileLink';
 import prisma from 'msps/lib/prisma';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
