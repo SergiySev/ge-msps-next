@@ -47,7 +47,10 @@ export const updatePatient = updateActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const patient = await prisma.patient.update({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId, // Ensure user can only update patients from their hospital
+        },
         data: {
           ...parsedInput,
           updated_at: new Date(),
@@ -74,7 +77,10 @@ export const deletePatient = deleteActionClient
   .action(async ({ parsedInput, ctx: { session } }) => {
     try {
       const data = await prisma.patient.delete({
-        where: { id: parsedInput.id },
+        where: {
+          id: parsedInput.id,
+          hospital_id: session.hospitalId, // Ensure user can only delete patients from their hospital
+        },
       });
       return { data };
     } catch (error) {
