@@ -12,7 +12,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
     }
 
     // Get the patient record with hospital_id filter
-    const patient = await prisma.patient.findUnique({
+    const patient = await prisma.patient.findFirst({
       where: {
         id,
         hospital_id: session.hospitalId, // Filter by user's hospital
