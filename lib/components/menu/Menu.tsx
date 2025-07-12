@@ -39,8 +39,20 @@ export default function Menu({ className }: { className?: string }) {
   const locale = useLocale();
   const { isAdmin } = usePermissions();
 
-  if (status === 'loading' || status === 'unauthenticated') {
+  // Don't show menu if not authenticated
+  if (status === 'unauthenticated') {
     return null;
+  }
+
+  // Show a minimal loading state while session is loading
+  if (status === 'loading') {
+    return (
+      <Navbar className={clsx('', className)} position="static">
+        <NavbarContent justify="center">
+          <div className="w-4 h-4 border-2 border-gray-300 border-t-primary rounded-full animate-spin" />
+        </NavbarContent>
+      </Navbar>
+    );
   }
 
   const isActive = (path: string) => currentPath === path;
