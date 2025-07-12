@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { getAuthSession, isUserAdmin, isUserManager } from 'msps/lib/auth/authenticated';
-
-const prisma = new PrismaClient();
+import prisma from 'msps/lib/prisma';
 
 interface InputObject {
   [key: string]: string | number | boolean | null | undefined | { name: string };
