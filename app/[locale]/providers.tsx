@@ -2,7 +2,7 @@
 
 import { HeroUIProvider } from '@heroui/react';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import Menu from 'msps/lib/components/menu/Menu';
+import Navigation from 'msps/lib/components/navigation/Navigation';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { Spinner } from '@heroui/react';
 import { useTranslations } from 'next-intl';
@@ -22,7 +22,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Menu className="mb-12" />
+      <Navigation className="mb-12" />
       <NuqsAdapter>{children}</NuqsAdapter>
     </>
   );

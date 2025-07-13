@@ -21,8 +21,6 @@ import {
   UserIcon,
   GlobeAltIcon,
   ArrowLeftStartOnRectangleIcon,
-  ClipboardDocumentListIcon,
-  ClipboardDocumentCheckIcon,
   BuildingOfficeIcon,
 } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
@@ -32,7 +30,25 @@ import { signOut, useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
 import { usePermissions } from 'msps/lib/hooks/usePermissions';
 
-export default function Menu({ className }: { className?: string }) {
+export interface DropdownMenuItem {
+  key: string;
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+export interface Language {
+  key: string;
+  label: string;
+}
+
+export interface MenuProps {
+  className?: string;
+  dropdownMenuItems: DropdownMenuItem[];
+  languages: Language[];
+}
+
+export default function Menu({ className, dropdownMenuItems, languages }: MenuProps) {
   const { data: session, status } = useSession();
   const currentPath = usePathname();
   const t = useTranslations();
@@ -47,33 +63,6 @@ export default function Menu({ className }: { className?: string }) {
   const isActive = (path: string) => currentPath === path;
 
   const isAdminOrManager = session?.user?.role === 'admin' || session?.user?.role === 'manager';
-
-  const dropdownMenuItems = [
-    {
-      key: 'patient',
-      href: '/patient',
-      label: t('menu.patient'),
-      icon: UserIcon,
-    },
-    {
-      key: 'kidney-assessment',
-      href: '/kidney-assessment',
-      label: t('menu.assessment'),
-      icon: ClipboardDocumentListIcon,
-    },
-    {
-      key: 'infectious',
-      href: '/infectious',
-      label: t('menu.infectious'),
-      icon: ClipboardDocumentCheckIcon,
-    },
-    {
-      key: 'noninfectious',
-      href: '/noninfectious',
-      label: t('menu.noninfectious'),
-      icon: ClipboardDocumentCheckIcon,
-    },
-  ];
 
   const handleLogout = async () => {
     try {
@@ -96,11 +85,6 @@ export default function Menu({ className }: { className?: string }) {
       toast.error(`${t('logoutError')}${errorMessage ? `: ${errorMessage}` : ''}`);
     }
   };
-
-  const languages = [
-    { key: 'ka', label: 'ქართული' },
-    { key: 'en', label: 'English' },
-  ];
 
   const handleLanguageChange = (key: string) => {
     // Get the current path
