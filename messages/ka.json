@@ -339,5 +339,6 @@
 
   "assessment_saved": "შეფასება შენახულია!",
   "error": "შეცდომა",
-  "patient_id_required": "პაციენტის ID სავალდებულოა"
+  "patient_id_required": "პაციენტის ID სავალდებულოა",
+  "loading": "იტვირთება..."
 }

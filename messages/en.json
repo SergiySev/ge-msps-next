@@ -338,5 +338,6 @@
   "staff": "Staff",
   "assessment_saved": "Assessment saved successfully!",
   "error": "Error",
-  "patient_id_required": "Patient ID is required"
+  "patient_id_required": "Patient ID is required",
+  "loading": "Loading..."
 }

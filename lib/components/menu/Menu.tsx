@@ -44,17 +44,6 @@ export default function Menu({ className }: { className?: string }) {
     return null;
   }
 
-  // Show a minimal loading state while session is loading
-  if (status === 'loading') {
-    return (
-      <Navbar className={clsx('', className)} position="static">
-        <NavbarContent justify="center">
-          <div className="w-4 h-4 border-2 border-gray-300 border-t-primary rounded-full animate-spin" />
-        </NavbarContent>
-      </Navbar>
-    );
-  }
-
   const isActive = (path: string) => currentPath === path;
 
   const isAdminOrManager = session?.user?.role === 'admin' || session?.user?.role === 'manager';
